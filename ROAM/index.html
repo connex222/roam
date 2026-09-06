@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- ROAM v42 — photos in IndexedDB, per-trip shortlists, dated itinerary days,
-     brief-scored comparison, optional offline service worker. -->
+<!-- ROAM v40.5 — Saved shortlist reskin from v40.4; functionality preserved. -->
 <html lang="en-GB" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -83,6 +82,76 @@ button,input,select,textarea{font:inherit;color:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
+
+/* v40.5.1 — dark-mode readability fix */
+:root[data-theme="dark"] .v434-recommend-item,
+:root[data-theme="dark"] .v435-decision,
+:root[data-theme="dark"] .btn,
+:root[data-theme="dark"] .field,
+:root[data-theme="dark"] .tabs button,
+:root[data-theme="dark"] .short-compare,
+:root[data-theme="dark"] .final-decision,
+:root[data-theme="dark"] .dna-card,
+:root[data-theme="dark"] .dna-panel,
+:root[data-theme="dark"] .brief-card,
+:root[data-theme="dark"] .modal-card,
+:root[data-theme="dark"] .stat,
+:root[data-theme="dark"] .empty,
+:root[data-theme="dark"] .setup,
+:root[data-theme="dark"] .research-source,
+:root[data-theme="dark"] .shot {
+  background:var(--surface) !important;
+  color:var(--ink);
+  border-color:var(--line) !important;
+}
+:root[data-theme="dark"] .short-compare-top,
+:root[data-theme="dark"] .final-decision-stat,
+:root[data-theme="dark"] .v435-driver {
+  background:var(--surface-2) !important;
+  color:var(--ink);
+  border-color:var(--line) !important;
+}
+:root[data-theme="dark"] .final-decision-next {
+  background:#302a1b !important;
+  color:#f4e6bd;
+  border-color:#65552e !important;
+}
+:root[data-theme="dark"] .short-compare-item.winner {background:#193329 !important}
+:root[data-theme="dark"] .v434-recommend-score,
+:root[data-theme="dark"] .short-compare-score,
+:root[data-theme="dark"] .act-time,
+:root[data-theme="dark"] .v435-driver {color:#8fdac3}
+:root[data-theme="dark"] .v434-recommend-item h3,
+:root[data-theme="dark"] .v434-recommend-item p,
+:root[data-theme="dark"] .v435-decision h3,
+:root[data-theme="dark"] .short-compare-item h3,
+:root[data-theme="dark"] .final-decision h3,
+:root[data-theme="dark"] .stat b,
+:root[data-theme="dark"] .head h2,
+:root[data-theme="dark"] .place-body h3,
+:root[data-theme="dark"] #v-brief h3 {color:var(--ink) !important}
+:root[data-theme="dark"] .v434-recommend-item .muted,
+:root[data-theme="dark"] .v435-decision .muted,
+:root[data-theme="dark"] .stat .muted,
+:root[data-theme="dark"] #v-brief .small.muted,
+:root[data-theme="dark"] .view-head .muted {color:var(--ink-2) !important}
+:root[data-theme="dark"] #v-brief>.card.card-pad:first-of-type {
+  background:linear-gradient(135deg,#182f2b 0%,#1c2927 100%);
+  border-color:#31534c;
+}
+:root[data-theme="dark"] #v-brief>.card.card-pad:first-of-type:before {background:#23463f;color:#9fe1d5}
+:root[data-theme="dark"] #v-brief .fld>span {color:#b7ddd5}
+:root[data-theme="dark"] #v-brief .field {background:#18211e;border-color:#38504a;color:var(--ink)}
+:root[data-theme="dark"] #v-brief .field:focus {border-color:#6cc3a6}
+:root[data-theme="dark"] #v-brief>.dna-card {background:linear-gradient(135deg,#0b3935 0%,#0e5b57 100%)}
+:root[data-theme="dark"] .note,
+:root[data-theme="dark"] .chip {background:var(--surface-2);color:var(--ink-2);border-color:var(--line)}
+:root[data-theme="dark"] .empty {background:linear-gradient(135deg,#182a28,#29261e) !important}
+:root[data-theme="dark"] .day-top {background:var(--surface-2);border-bottom-color:var(--line)}
+:root[data-theme="dark"] .bar {background:#2b3b36}
+:root[data-theme="dark"] .ring::after {background:var(--surface)}
+:root[data-theme="dark"] .explore-tools .btn-quiet {background:var(--surface-2);color:#a9dfd1;border-color:var(--line)}
+
 /* ============================================================
    3. CONTROLS
    ============================================================ */
@@ -133,6 +202,17 @@ select.field{appearance:none;padding-right:34px;
 .head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:26px 0 13px;flex-wrap:wrap}
 .head :where(h2,h3){margin:0}
 .divide{border:0;border-top:1px solid var(--line-soft);margin:16px 0}
+
+
+/* ============================================================
+   v40.0 BUDGET REALITY
+   ============================================================ */
+.budget-reality-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.budget-reality-stat{padding:13px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--sunk)}
+.budget-reality-stat small{display:block;color:var(--ink-2);font-size:12px;margin-bottom:4px}
+.budget-reality-stat strong{font-size:20px}
+.budget-reality-warn{margin-top:12px;padding:12px 14px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--sunk);font-size:13.5px}
+@media(max-width:640px){.budget-reality-grid{grid-template-columns:1fr}}
 
 /* ============================================================
    4. SHELL
@@ -236,6 +316,16 @@ img.img-failed{display:none!important}
 .score{font-weight:700;color:var(--gold);font-size:14px}
 .score span{font-weight:400;color:var(--ink-3);font-size:12px;margin-left:5px}
 
+.dna-card{max-width:860px;margin-top:18px}
+.dna-intro{max-width:62ch;color:var(--ink-2);margin-top:5px}
+.dna-list{display:grid;gap:11px;margin-top:18px}
+.dna-row{display:grid;grid-template-columns:minmax(150px,180px) 1fr 42px;gap:12px;align-items:center}
+.dna-name{font-size:13.5px;font-weight:700}
+.dna-bar{height:10px;background:var(--surface-2);border-radius:var(--r-pill);overflow:hidden}
+.dna-bar span{display:block;height:100%;background:var(--brand);border-radius:var(--r-pill)}
+.dna-value{text-align:right;font-size:13px;font-weight:700;color:var(--brand-ink)}
+.dna-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--line);border-radius:var(--r-pill);background:var(--sunk);font-size:12px;font-weight:700}
+@media(max-width:640px){.dna-row{grid-template-columns:1fr 42px;gap:6px 10px}.dna-name{grid-column:1/-1}.dna-bar{grid-column:1}.dna-value{grid-column:2;grid-row:2}}
 .ring{width:60px;height:60px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;position:relative;
   background:conic-gradient(var(--brand) var(--pct,0%),var(--surface-2) 0)}
 .ring::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--surface)}
@@ -318,6 +408,298 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
   padding:5px 11px;border-radius:8px;font-size:13px;font-weight:700;min-height:34px;flex:0 0 auto}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 @media(min-width:1025px){#toast{bottom:24px}}
+
+/* v40.0 shortlist comparison */
+.short-compare{margin:0 0 18px;border:1px solid var(--brand);background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
+.short-compare-top{padding:16px 18px;background:var(--brand-soft);border-bottom:1px solid var(--line-soft)}
+.short-compare-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.short-compare-item{padding:16px;border-right:1px solid var(--line-soft)}
+.short-compare-item:last-child{border-right:0}
+.short-compare-item.winner{background:var(--sunk)}
+.short-compare-item h3{font-size:17px;margin:7px 0}
+.short-compare-score{font-size:26px;font-weight:700;color:var(--brand-ink)}
+.short-compare-meta{font-size:12.5px;color:var(--ink-2);margin-top:5px}
+@media(max-width:720px){.short-compare-grid{grid-template-columns:1fr}.short-compare-item{border-right:0;border-bottom:1px solid var(--line-soft)}.short-compare-item:last-child{border-bottom:0}}
+
+/* ================= V43.4 ROAM RECOMMENDATION ================= */
+.v434-recommend{position:relative;z-index:1;margin:22px 0 18px;border:1px solid var(--brand);border-radius:18px;padding:18px;background:linear-gradient(135deg,#fbfdfc,#f7faf8);overflow:visible}
+.v434-recommend-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.v434-recommend-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.v434-recommend-item{border:1px solid var(--line-soft);border-radius:14px;padding:13px;background:#fff}
+.v434-recommend-item.top{border-color:var(--brand)}
+.v434-recommend-score{font-size:25px;font-weight:900;margin-top:8px}
+.v435-decision{margin-top:14px;padding:14px;border-radius:14px;background:#fff;border:1px solid var(--line-soft)}
+.v435-drivers{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.v435-driver{padding:6px 9px;border-radius:999px;background:var(--soft);font-size:12px;font-weight:700}
+@media(max-width:800px){.v434-recommend-grid{grid-template-columns:1fr}.v434-recommend-head{display:block}}
+
+/* v40.0 — Clean Baseline */
+.final-decision{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.final-decision h3{margin:0 0 6px}.final-decision-intro{margin:0 0 14px;color:var(--muted)}
+.final-decision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.final-decision-stat{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.final-decision-stat strong{display:block;font-size:20px}.final-decision-stat span{font-size:12px;color:var(--muted)}
+.final-decision-next{margin-top:14px;padding:12px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.final-decision-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+
+
+/* ============================================================
+   ROAM v40.3 — WHOLE-SITE VISUAL RESKIN
+   Extends the approved Explore palette across every view.
+   Layout, data, navigation behaviour and backend are unchanged.
+   ============================================================ */
+:root{
+  --bg:#f4fbfc;
+  --surface:#ffffff;
+  --surface-2:#e5f5f8;
+  --sunk:#eef8fa;
+  --line:#c8e1e7;
+  --line-soft:#dcecef;
+  --ink:#08364a;
+  --ink-2:#315b6b;
+  --ink-3:#6c8792;
+  --brand:#087e96;
+  --brand-soft:#d8f1f5;
+  --brand-ink:#07556b;
+  --on-brand:#ffffff;
+  --accent:#e85d75;
+  --gold:#f4b51f;
+  --ok:#07866f;
+  --ok-bg:#dff5ef;
+  --bad:#a74355;
+  --bad-bg:#fce8ed;
+  --hero-a:#d5f2f7;
+  --hero-b:#fff2d8;
+  --shadow:0 10px 28px rgba(5,65,82,.10);
+  --scrim:rgba(4,35,46,.58);
+}
+
+body{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(31,173,196,.09),transparent 28%),
+    linear-gradient(180deg,#f8fdfe 0%,#eef8fa 100%);
+  color:var(--ink);
+}
+
+/* Header */
+.top{
+  background:#064b5f;
+  border-bottom:0;
+  box-shadow:0 4px 18px rgba(3,48,61,.18);
+  color:#fff;
+  padding:10px max(var(--pad),24px);
+}
+.brand{color:#fff;letter-spacing:.04em;font-size:30px}
+.brand small{color:rgba(255,255,255,.72);letter-spacing:.18em}
+.nav{gap:5px}
+.nav button{color:rgba(255,255,255,.88);border-radius:11px}
+.nav button:hover{background:rgba(255,255,255,.10);color:#fff}
+.nav button[aria-current="page"]{background:#1595ad;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.top-end .btn-quiet{color:#fff;background:transparent;border-color:rgba(255,255,255,.24)}
+.top-end .btn-primary{background:#fff;color:#07556b;border-color:#fff}
+.top-end .btn-primary:hover{background:#e9fbfd}
+
+.shell{max-width:1240px;padding-top:28px}
+.view>.intro{color:var(--ink-2)}
+
+/* Global cards and controls */
+.card,.stat,.day,.place,.short-compare,.final-decision,.note,.drop,.v434-recommend{
+  border-color:var(--line);
+  box-shadow:var(--shadow);
+}
+.card,.stat,.day,.place{background:var(--surface)}
+.btn{border-color:#a9ced6;background:#fff;color:var(--brand-ink);border-radius:12px;font-weight:700}
+.btn:hover{background:#eaf8fa;border-color:#79b8c6}
+.btn-primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn-primary:hover{background:#066b80;border-color:#066b80}
+.btn-quiet{background:var(--surface-2);color:var(--brand-ink);border-color:var(--line)}
+.field,.select,.textarea,select,input,textarea{
+  border-color:#b9d7de!important;background:#fff!important;color:var(--ink)!important;border-radius:12px;
+}
+.field:focus,.select:focus,input:focus,select:focus,textarea:focus{border-color:var(--brand)!important;box-shadow:0 0 0 3px rgba(8,126,150,.12)}
+.tabs button{background:#fff;border-color:var(--line);color:var(--ink-2)}
+.tabs button[aria-pressed="true"]{background:#07556b;border-color:#07556b;color:#fff}
+.chip{background:#edf9fb;border-color:#c5e3e9}
+.chip small{color:var(--ink-3)}
+.empty{background:linear-gradient(135deg,#edf9fb,#fff8ed);border-color:#b9dce3}
+.note{background:#edf9fb;color:var(--ink-2)}
+.note-ok{background:var(--ok-bg);border-color:#9dd9ca;color:#08705f}
+
+/* Home / landing */
+.hero{
+  position:relative;overflow:hidden;border:0;border-radius:24px;padding:clamp(28px,5vw,52px);
+  background:linear-gradient(120deg,#d5f3f7 0%,#eefafd 48%,#fff1d8 100%);
+  box-shadow:var(--shadow);
+}
+.hero::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;right:-120px;top:-170px;background:rgba(20,154,177,.16)}
+.hero>*{position:relative;z-index:1}
+.hero h1{color:#073e52;max-width:18ch;font-size:clamp(36px,5vw,58px)}
+.hero p{color:#315d6e}
+.hero .label{color:#087e96;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.stats{gap:14px}
+.stat{border-radius:18px;padding:16px 18px}
+.stat b{color:#07556b}
+
+/* Section headings */
+.head{margin-top:28px;margin-bottom:12px}
+.head h2{color:#08364a}
+
+/* Place cards */
+.place{border-radius:18px}
+.place .thumb{height:170px;background:linear-gradient(135deg,#d5f3f7,#ffeccf)}
+.place-body h3{color:#08364a}
+.place-body .meta,.place-body .muted{color:var(--ink-2)}
+
+/* Travel / itinerary / overview panels */
+.day{border-radius:18px;overflow:hidden}
+.day-top{background:#e7f7fa;border-bottom-color:#cbe4e9}
+.line-row{border-bottom-color:var(--line-soft)}
+.act{border-bottom-color:var(--line-soft)}
+.act-time{color:#087e96}
+.bar{background:#dceef2}.bar>span{background:linear-gradient(90deg,#087e96,#20a9b9)}
+.ring{background:conic-gradient(#087e96 var(--pct,0%),#dceef2 0)}
+.ring::after{background:#fff}
+
+/* Compare / decision */
+.short-compare{border-color:#80bdc9;background:#fff}
+.short-compare-top{background:linear-gradient(90deg,#d9f2f6,#fff2da);border-bottom-color:#c6e1e6}
+.short-compare-item.winner{background:#effaf8}
+.short-compare-score{color:#087e96}
+.final-decision{background:#fff;border-color:#a9d1d9}
+.final-decision-stat{background:#eff9fb;border-color:#c5e2e8}
+.final-decision-next{background:#fff8e9;border-color:#efd9a3}
+
+/* Brief / Holiday DNA */
+.dna-card,.dna-panel,.brief-card{background:#fff;border-color:var(--line)}
+.dna-bar{background:#dceef2}
+.dna-bar>span{background:linear-gradient(90deg,#087e96,#e9a926)}
+
+/* Research / settings / technical panels */
+pre.api{background:#073b4b;color:#dff8fb;border-color:#1a6676}
+.setup,.research-source{background:#eef9fb!important;border-color:#bddde4!important}
+
+/* Photos */
+.shot{background:#dff3f6;border:1px solid var(--line)}
+
+/* Modal and overlays */
+.modal-card{background:#fff;border-color:#b9d8df;box-shadow:0 24px 70px rgba(3,48,61,.24)}
+.detail-hero{background:linear-gradient(135deg,#d5f3f7,#fff0d5)}
+#toast{background:#064b5f;color:#fff;box-shadow:0 10px 28px rgba(3,48,61,.24)}
+
+/* Existing recommendation components — make them match Explore */
+.v434-recommend{background:linear-gradient(135deg,#07566a,#087e96);border-color:#087e96;color:#fff;box-shadow:0 14px 34px rgba(4,75,95,.18)}
+.v434-recommend h3,.v434-recommend p,.v434-recommend .muted{color:#fff}
+.v434-recommend-item{background:#fff;border-color:#c4e0e6;color:var(--ink)}
+.v434-recommend-item.top{border-color:#f4b51f;box-shadow:0 0 0 2px rgba(244,181,31,.15)}
+.v434-recommend-score{color:#087e96}
+.v435-decision{background:#eff9fb;border-color:#c4e0e6}
+.v435-driver{background:#d9f1f5;color:#07556b}
+
+/* Mobile navigation retains its structure, just adopts the new palette */
+@media(max-width:1024px){
+  .top{background:#064b5f;padding:9px 16px}
+  .mnav,.mmore{background:#fff;border-color:#b9d9df;box-shadow:0 10px 28px rgba(3,48,61,.18)}
+  .mnav button{color:#315b6b}
+  .mnav button[aria-current="page"]{background:#d8f1f5;color:#07556b}
+  .mmore button{background:#eef9fb;border-color:#c6e2e8}
+}
+
+/* Keep the Explore page's approved styling dominant while harmonising shared elements */
+.explore-tools .btn-quiet{background:#e6f7fa;color:#07556b;border-color:#b8dce4}
+
+@media(max-width:700px){
+  .shell{padding-top:18px}
+  .hero{border-radius:18px}
+  .head{margin-top:22px}
+}
+
+
+/* ============================================================
+   v40.4 HOLIDAY BRIEF RESKIN
+   ============================================================ */
+#v-brief{position:relative}
+#v-brief>.intro{max-width:720px}
+#v-brief>.card.card-pad:first-of-type{max-width:100%;margin-top:24px;background:linear-gradient(135deg,#ffffff 0%,#f3fbfa 100%);border-color:#c8e8e4;box-shadow:0 12px 32px rgba(9,75,73,.10);border-radius:24px;padding:clamp(20px,3vw,32px)}
+#v-brief>.card.card-pad:first-of-type:before{content:"YOUR HOLIDAY, YOUR WAY";display:inline-flex;padding:7px 12px;border-radius:999px;background:#dff5f1;color:#075e5b;font-size:11px;font-weight:800;letter-spacing:.08em;margin-bottom:14px}
+#v-brief .form-grid{gap:16px}
+#v-brief .fld{padding:13px 14px 12px;background:rgba(255,255,255,.78);border:1px solid #d7ebe9;border-radius:15px}
+#v-brief .fld>span{color:#245d5b;font-weight:750;margin-bottom:7px}
+#v-brief .field{background:#fff;border-color:#cfe3e1;border-radius:11px;min-height:44px}
+#v-brief .field:focus{border-color:#169c96;box-shadow:0 0 0 3px rgba(22,156,150,.12)}
+#v-brief .divide{margin:25px 0;border-top-color:#d7ebe9}
+#v-brief h3{font-size:19px;color:#123f40}
+#v-brief .small.muted{color:#607776}
+#v-brief #briefSliders{gap:11px;margin-top:16px!important}
+#v-brief #briefSliders .fld{display:grid;grid-template-columns:minmax(130px,1fr) 1fr 42px;align-items:center;gap:12px;padding:12px 14px}
+#v-brief #briefSliders .fld>span{margin:0;font-size:13px}
+#v-brief #briefSliders input[type=range]{accent-color:#159c96;width:100%}
+#v-brief #briefSliders output{font-weight:800;color:#075e5b;text-align:center;background:#e4f7f4;border-radius:999px;padding:6px 7px}
+#v-brief>.dna-card{max-width:100%;margin-top:20px;background:linear-gradient(135deg,#063f40 0%,#0a6c69 100%);border:0;color:#fff;border-radius:24px;box-shadow:0 14px 34px rgba(6,63,64,.18);padding:clamp(20px,3vw,30px)}
+#v-brief>.dna-card .label{color:#8fe0d6}
+#v-brief>.dna-card h2{color:#fff}
+#v-brief>.dna-card .dna-intro{color:#d7eeeb;max-width:760px}
+#v-brief>.dna-card .dna-bar{background:rgba(255,255,255,.18)}
+#v-brief>.dna-card .dna-bar span{background:#f5c86a}
+#v-brief>.dna-card .dna-name{color:#fff}
+#v-brief>.dna-card .dna-value{color:#f5d27d}
+#v-brief>.dna-card .dna-tag{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);color:#fff}
+@media(max-width:700px){#v-brief #briefSliders .fld{grid-template-columns:1fr 44px}#v-brief #briefSliders input[type=range]{grid-column:1/-1;grid-row:2}}
+
+/* ROAM v40.5 — Saved / shortlist visual reskin */
+#v-saved .view-head{margin-bottom:22px}
+#v-saved .view-head h1{color:#0d4f4b}
+#v-saved .view-head .muted{color:#52706d}
+#v-saved .stat{background:#fff;border:1px solid #cfe8e3;border-radius:18px;box-shadow:0 8px 24px rgba(13,79,75,.07);padding:16px 18px}
+#v-saved .stat b{color:#0d4f4b;font-size:24px}
+#v-saved .stat span{color:#64817e}
+#v-saved #savedFilters button{border:1px solid #bfe0da;background:#fff;color:#175b57;border-radius:999px;padding:9px 14px;font-weight:700}
+#v-saved #savedFilters button[aria-pressed="true"]{background:#0d5f5a;color:#fff;border-color:#0d5f5a;box-shadow:0 5px 14px rgba(13,95,90,.18)}
+#v-saved .short-compare,#v-saved .short-compare-top{background:linear-gradient(135deg,#0d5f5a,#174a63);border-radius:24px;border:0;box-shadow:0 14px 34px rgba(13,79,75,.16);color:#fff}
+#v-saved .short-compare-item{background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.45);border-radius:18px;color:#183b39;box-shadow:0 7px 18px rgba(0,0,0,.08)}
+#v-saved .short-compare-score{color:#0d5f5a}
+#v-saved .card{border-color:#cfe8e3;box-shadow:0 9px 25px rgba(13,79,75,.07)}
+#v-saved .place-card{border-radius:20px;overflow:hidden}
+#v-saved .btn-primary{background:#0d5f5a;border-color:#0d5f5a}
+#v-saved .note{background:#fff8df;border-color:#eadb9a;color:#5c4d16;border-radius:18px}
+#v-saved .empty{background:linear-gradient(135deg,#eefaf8,#fff);border:1px solid #cfe8e3;border-radius:24px}
+#v-saved select.field,#v-saved input.field{border-color:#cfe8e3;border-radius:14px}
+@media(max-width:700px){#v-saved .stat{padding:13px}.short-compare-grid{grid-template-columns:1fr!important}}
+</style>
+<style>
+.roam-overview{margin:18px 0;padding:18px;border:1px solid #dfe5ec;border-radius:18px;background:linear-gradient(180deg,#fff,#f7f9fc)}
+.roam-overview h3{margin:0 0 6px;font-size:18px}.roam-overview-sub{color:#667085;font-size:13px;margin-bottom:14px}
+.roam-overview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.roam-overview-card{padding:13px;border:1px solid #e5e7eb;border-radius:14px;background:#fff}.roam-overview-card .k{font-size:12px;color:#667085}.roam-overview-card .v{font-size:18px;font-weight:700;margin-top:4px}.roam-overview-next{margin-top:12px;padding:12px 14px;border-radius:12px;background:#f1f5f9;font-size:13px}.roam-overview-next strong{display:block;margin-bottom:3px}
+@media(max-width:800px){.roam-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+
+<style>
+
+/* v40.2 EXPLORE RESKIN */
+.explore-view{max-width:1500px;margin:0 auto;padding-bottom:34px}
+.explore-hero{position:relative;margin:-2px calc(var(--pad) * -1) 0;min-height:330px;overflow:hidden;background:radial-gradient(circle at 78% 28%,rgba(255,255,255,.55),transparent 24%),linear-gradient(120deg,#dff5f3 0%,#bfe6ef 36%,#76c7d5 67%,#08788b 100%)}
+.explore-hero:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 78% 82%,rgba(255,255,255,.62),transparent 38%),linear-gradient(160deg,transparent 46%,rgba(0,76,91,.18) 100%)}
+.explore-hero:after{content:"";position:absolute;right:-90px;bottom:-150px;width:560px;height:360px;border-radius:50%;background:rgba(255,255,255,.2);transform:rotate(-8deg)}
+.explore-hero-copy{position:relative;z-index:1;max-width:880px;padding:54px var(--pad) 34px}
+.explore-eyebrow{font-size:12px;letter-spacing:.24em;font-weight:800;color:#083f50;margin-bottom:8px}
+.explore-hero h1{font-size:clamp(40px,6vw,68px);max-width:720px;color:#073a4b;letter-spacing:-.035em}
+.explore-lead{font-size:18px;color:#124e61;margin-top:12px;max-width:680px;font-weight:500}
+.explore-search{display:flex;align-items:center;gap:8px;margin-top:24px;max-width:760px;padding:5px 6px 5px 15px;background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.8);border-radius:999px;box-shadow:0 12px 32px rgba(4,62,77,.18)}
+.explore-search-icon{font-size:30px;line-height:1;color:#174f61;transform:rotate(-20deg)}
+.explore-search .field{border:0;background:transparent;box-shadow:none;min-height:46px;padding-left:3px}.explore-search .field:focus{outline:0}
+.explore-search-btn{border-radius:999px;min-width:112px;background:#087589;border-color:#087589;color:#fff}
+.explore-quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.explore-chip{border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.88);color:#0a4355;border-radius:999px;padding:9px 14px;font-size:13px;font-weight:700;box-shadow:0 3px 12px rgba(4,62,77,.08)}.explore-chip:hover{background:#fff;transform:translateY(-1px)}
+.explore-tools{justify-content:flex-end;margin:10px 0 0}.explore-tools .btn{font-size:12px}
+.v434-recommend{position:relative;z-index:2;margin:0 0 24px;border:0;border-radius:22px;padding:20px;background:linear-gradient(135deg,#064d5d,#075f6e 58%,#0b7180);box-shadow:0 14px 32px rgba(3,57,68,.18);overflow:hidden}.v434-recommend:after{content:"";position:absolute;right:-100px;top:-130px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.06)}
+.v434-recommend-head{position:relative;z-index:1;display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:0 2px;color:#fff}.recommend-title{display:flex;gap:11px;align-items:flex-start}.recommend-title .label{color:#bceff0;margin-top:1px}.recommend-title h2{color:#fff;margin-top:2px;font-size:30px}.recommend-star{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#f5c542;color:#fff;font-size:21px;flex:0 0 auto}.recommend-sub{color:rgba(255,255,255,.84);font-size:13px;margin-top:7px}.v434-recommend-head>.pill{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.1);color:#fff;margin-top:5px}
+.v434-recommend-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin-top:16px}.v434-recommend-item{border:1px solid rgba(255,255,255,.65);border-radius:16px;padding:0;background:#fff;overflow:hidden;box-shadow:0 5px 18px rgba(0,0,0,.12)}.v434-recommend-item.top{border-color:#fff}
+.recommend-photo{height:132px;position:relative;background:#d9eef0;overflow:hidden}.recommend-photo img{width:100%;height:100%;object-fit:cover;display:block}.recommend-photo-fallback{height:100%;display:grid;place-items:center;font-size:42px;background:linear-gradient(135deg,#bfe9ed,#70c1cc);color:#075268}.recommend-badge{position:absolute;left:9px;top:9px;padding:6px 9px;border-radius:999px;background:rgba(2,57,70,.92);color:#fff;font-size:11px;font-weight:800;white-space:nowrap}.recommend-heart{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:50%;background:rgba(2,57,70,.78);border:1px solid rgba(255,255,255,.7);color:#fff;font-size:20px;line-height:1}
+.recommend-body{padding:12px}.recommend-name-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.recommend-name-row h3{font-family:var(--font-body);font-size:18px;font-weight:800;color:#103d4d}.recommend-weather{font-size:12px;color:#087b53;font-weight:800;white-space:nowrap}.recommend-description{font-size:12.5px;line-height:1.38;color:#355764;margin-top:5px;min-height:35px}.recommend-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.recommend-tags span{font-size:10.5px;padding:5px 8px;border-radius:999px;background:#e2f2f7;color:#16556a;font-weight:700}.recommend-footer{display:flex;align-items:center;gap:5px;border-top:1px solid #e3eaeb;margin-top:10px;padding-top:9px}.recommend-footer strong{font-size:21px;color:#087b53}.recommend-footer>span{font-size:10px;color:#667d84;flex:1}.recommend-footer .btn{min-height:32px;padding:5px 9px;border-radius:999px;background:#075d6e;color:#fff;border-color:#075d6e;font-size:11px}
+.explore-view #researchArea>.head{margin-top:10px}.explore-view #researchArea>.note{border-radius:14px}.explore-view #researchArea>.tabs{margin-top:14px}.explore-view #researchArea>.grid{margin-top:14px}
+@media(max-width:1150px){.v434-recommend-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.recommend-photo{height:145px}}
+@media(max-width:800px){.explore-hero{margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);min-height:360px}.explore-hero-copy{padding-top:38px}.explore-hero h1{font-size:42px}.explore-search{border-radius:18px;flex-wrap:wrap;padding:7px}.explore-search-icon{display:none}.explore-search .field{flex:1 1 100%}.explore-search-btn{width:100%}.v434-recommend-head{display:block}.v434-recommend-head>.pill{display:inline-flex;margin-top:12px}.v434-recommend-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.v434-recommend-grid{grid-template-columns:1fr}.recommend-photo{height:170px}.explore-hero h1{font-size:38px}.explore-lead{font-size:16px}}
+
 </style>
 </head>
 <body>
@@ -350,18 +732,34 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
   </section>
 
   <!-- EXPLORE -->
-  <section id="v-explore" class="view" aria-labelledby="h-explore">
-    <h1 id="h-explore">Explore a destination</h1>
-    <p class="intro muted">Search a place and collect ideas for your shortlist. Results come from the research endpoint you configure below.</p>
-    <div class="row" style="margin:18px 0">
-      <input class="field grow" id="destination" placeholder="Tenerife, Crete, Tokyo…" style="min-width:220px" autocomplete="off">
-      <button class="btn btn-primary" data-act="research" id="researchBtn">Search</button>
-      <button class="btn" data-act="setup-toggle">Research source</button>
+  <section id="v-explore" class="view explore-view" aria-labelledby="h-explore">
+    <div class="explore-hero">
+      <div class="explore-hero-copy">
+        <p class="explore-eyebrow">EXPLORE</p>
+        <h1 id="h-explore">Discover your next adventure</h1>
+        <p class="explore-lead">Personalised ideas. Real travel data. Extraordinary places.</p>
+        <div class="explore-search">
+          <span class="explore-search-icon" aria-hidden="true">⌕</span>
+          <input class="field" id="destination" placeholder="Search destinations, hotels or experiences…" autocomplete="off">
+          <button class="btn btn-primary explore-search-btn" data-act="research" id="researchBtn">Search</button>
+        </div>
+        <div class="explore-quick">
+          <button class="explore-chip" data-act="quick-destination" data-value="Beach holidays">🏝️ Beach</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="City breaks">🏙️ City breaks</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="Adventure">⛰️ Adventure</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="All-inclusive holidays">☀️ All-inclusive</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="Family holidays">👨‍👩‍👧 Family</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="Romantic escapes">♥ Couples</button>
+        </div>
+      </div>
+    </div>
+    <div class="explore-tools row">
+      <button class="btn btn-quiet" data-act="setup-toggle">⚙ Research source</button>
     </div>
     <div class="card card-pad" id="setup" hidden style="margin-bottom:18px">
       <h3>Research source</h3>
       <p class="small muted" style="margin:6px 0 12px">Roam posts to <code>/api/research</code> on this endpoint. Keep provider API keys on that server, never in this file.</p>
-      <input class="field" id="endpointField" placeholder="https://your-domain.example" autocomplete="off">
+      <input class="field" id="endpointField" placeholder="https://roam-research.unpickgames.workers.dev" autocomplete="off">
       <div class="row note" style="margin-top:11px"><span class="dot" id="testDot"></span><span id="testMsg">Not tested</span></div>
       <div class="row" style="margin-top:13px">
         <button class="btn btn-primary" data-act="endpoint-save">Save endpoint</button>
@@ -394,6 +792,12 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
         <button class="btn" data-act="go" data-view="explore">Use it in Explore</button>
       </div>
     </div>
+    <div class="card card-pad dna-card" id="holidayDna">
+      <p class="label">Your holiday DNA</p>
+      <h2 style="margin-top:5px">What matters to you</h2>
+      <p class="dna-intro">Roam turns your priorities into a simple profile. This is based only on the choices in your Holiday Brief and will be used to personalise recommendations later.</p>
+      <div class="dna-list" id="dnaList"></div>
+    </div>
   </section>
 
   <!-- OVERVIEW -->
@@ -418,6 +822,7 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
       </div>
     </div>
     <label class="fld" style="max-width:420px;margin-bottom:18px"><span>Holiday</span><select class="field" id="tripSelect"></select></label>
+    <div id="tripCoverage" style="margin-bottom:18px"></div>
     <div class="stack" id="timeline"></div>
   </section>
 
@@ -440,6 +845,15 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
     <div class="tabs" id="savedFilters"></div>
     <div id="savedBulk"></div>
     <div class="grid" id="savedGrid"></div>
+  </section>
+
+  <!-- FLIGHTS -->
+  <section id="v-flights" class="view" aria-labelledby="h-flights">
+    <div class="head" style="margin-top:0">
+      <div><h1 id="h-flights">Flights</h1><p class="intro muted">Your outbound and return flight details.</p></div>
+      <button class="btn btn-primary" data-act="flight-edit">Edit flights</button>
+    </div>
+    <div id="flightsContent"></div>
   </section>
 
   <!-- PHOTOS -->
@@ -579,6 +993,7 @@ const VIEWS=[
   {id:"overview", label:"Holiday",  glyph:"🧳", primary:true},
   {id:"itinerary",label:"Plan",     glyph:"🗓️", primary:true},
   {id:"saved",    label:"Saved",    glyph:"♡",  primary:true},
+  {id:"flights",  label:"Flights",  glyph:"✈️"},
   {id:"brief",    label:"Brief",    glyph:"✎"},
   {id:"compare",  label:"Compare",  glyph:"⇄"},
   {id:"photos",   label:"Photos",   glyph:"📷"},
@@ -866,7 +1281,7 @@ if(media&&media.addEventListener)media.addEventListener("change",applyTheme);
    ============================================================ */
 const RENDER={home:renderHome,explore:renderExplore,brief:fillBrief,overview:renderOverview,
               compare:renderCompare,itinerary:renderItinerary,saved:renderSaved,
-              photos:renderPhotos,settings:renderSettings};
+              photos:renderPhotos,settings:renderSettings,flights:renderFlights};
 function show(view){
   if(!VIEWS.some(v=>v.id===view))view="home";
   state.view=view;
@@ -878,6 +1293,53 @@ function show(view){
   render();
   window.scrollTo({top:0,behavior:"auto"});
 }
+function renderFinalDecision(){
+  const trip=currentTrip();
+  if(!trip) return '';
+  const saved=(trip.saved||[]);
+  const days=(trip.days||[]);
+  const planned=days.filter(d=>(d.items||[]).length>0).length;
+  const total=days.length||Number(trip.nights||0)||0;
+  const coverage=total?Math.round(planned/total*100):0;
+  const rec=(typeof shortlistPick==='function'&&saved.length)?shortlistPick(saved):null;
+  const budget=Number(trip.brief?.budget||trip.budget||0);
+  const spent=(trip.spending||[]).reduce((a,x)=>a+Number(x.amount||0),0);
+  let next='Your holiday is taking shape.';
+  if(!trip.destination) next='Set your destination in your Holiday Brief.';
+  else if(!saved.length) next='Research your destination and build your shortlist.';
+  else if(!rec) next='Save at least two places to start comparing your options.';
+  else if(!total) next='Set your dates or trip length to start building the itinerary.';
+  else if(coverage<100) next='Build the next open itinerary day.';
+  else if(budget&&spent>budget) next='Review your spending before you commit to the plan.';
+  else next='Your holiday looks ready. Review your choices and make your final bookings.';
+  return `<section class="final-decision"><h3>🧭 Your holiday decision</h3><p class="final-decision-intro">Everything important, in one place.</p><div class="final-decision-grid">
+    <div class="final-decision-stat"><strong>${esc(trip.destination||'Not set')}</strong><span>Destination</span></div>
+    <div class="final-decision-stat"><strong>${saved.length}</strong><span>Shortlisted</span></div>
+    <div class="final-decision-stat"><strong>${coverage}%</strong><span>Itinerary planned</span></div>
+    <div class="final-decision-stat"><strong>${budget?'£'+budget.toLocaleString():'Not set'}</strong><span>Budget</span></div>
+    <div class="final-decision-stat"><strong>${rec?esc(rec.name):'Not chosen'}</strong><span>Roam's Pick</span></div>
+  </div><div class="final-decision-next"><strong>Next best step</strong><div>${esc(next)}</div></div></section>`;
+}
+
+function renderFlights(){
+  const el=$("#flightsContent");
+  if(!el)return;
+  const h=holiday();
+  if(!h){
+    el.innerHTML=`<div class="card card-pad"><h3>No holiday selected</h3><p class="muted">Create or open a holiday first, then add your flight details here.</p><button class="btn btn-primary" data-act="nav" data-view="home">Go to Holidays</button></div>`;
+    return;
+  }
+  const t=h.travel||{};
+  const out=t.outboundFlight||{};
+  const ret=t.returnFlightDetails||{};
+  const card=(title,icon,obj,legacy)=>{
+    const airline=obj.airline||"", number=obj.number||"", from=obj.from||"", to=obj.to||"", date=obj.date||"", dep=obj.departure||"", arr=obj.arrival||"";
+    const route=(from||to)?`${esc(from||"?")} → ${esc(to||"?")}`:(legacy?esc(legacy):"Not added");
+    return `<div class="card card-pad"><div class="head"><div><h2 style="margin:0">${icon} ${title}</h2><p class="muted" style="margin:4px 0 0">${route}</p></div><span class="pill">${airline||number?esc([airline,number].filter(Boolean).join(" · ")):"Not added"}</span></div><div class="chips" style="margin-top:14px"><div class="chip"><small>Date</small><b>${esc(date||"Not added")}</b></div><div class="chip"><small>Departure</small><b>${esc(dep||"Not added")}</b></div><div class="chip"><small>Arrival</small><b>${esc(arr||"Not added")}</b></div></div></div>`;
+  };
+  el.innerHTML=`<div class="stack">${card("Outbound","✈️",out,t.outbound)}${card("Return","↩️",ret,t.returnFlight)}</div>`;
+}
+
 function render(){
   renderNav();
   const fn=RENDER[state.view];
@@ -1016,6 +1478,56 @@ function renderHome(){
 /* ============================================================
    9. HOLIDAY OVERVIEW
    ============================================================ */
+function holidayNextSteps(h){
+  const r=readiness(h), d=h.details||{}, t=h.travel||{};
+  const steps=[];
+  if(!d.start||!d.end) steps.push({icon:"📅",title:"Set your dates",text:"Add your travel dates so Roam can build the trip around the time you are away.",act:"holiday-edit",label:"Set dates"});
+  else if(!t.outbound||!t.returnFlight) steps.push({icon:"✈️",title:"Add your flights",text:"Keep your outbound and return details together with the rest of the holiday.",act:"travel-edit",label:"Add flights"});
+  if(!t.hotel) steps.push({icon:"🏨",title:"Add your hotel",text:"Record where you are staying so your holiday workspace has the essentials.",act:"travel-edit",label:"Add hotel"});
+  const mine=tripIdeas(h.id);
+  if(mine.length<2) steps.push({icon:"🔎",title:"Build your shortlist",text:"Research the destination and save a couple of places. Roam can then help you decide between them.",act:"go",view:"explore",label:"Explore"});
+  if(!h.activities.length) steps.push({icon:"🗓️",title:"Start the itinerary",text:"Add your first activity and turn the shortlist into an actual holiday plan.",act:"act-add",label:"Plan a day"});
+  if(!steps.length) steps.push({icon:"✓",title:"You're in good shape",text:"The essentials are in place. Keep refining your itinerary, spending and shortlist before you book.",act:"go",view:"itinerary",label:"Open itinerary"});
+  return steps.slice(0,3);
+}
+function renderNextSteps(h){
+  return holidayNextSteps(h).map(x=>`<article class="card card-pad" style="flex:1;min-width:220px">
+    <div class="gl" style="font-size:25px">${x.icon}</div><h3 style="margin-top:7px">${esc(x.title)}</h3>
+    <p class="small muted" style="margin-top:6px;min-height:42px">${esc(x.text)}</p>
+    <button class="btn btn-sm btn-primary" style="margin-top:12px" data-act="${x.act}"${x.view?` data-view="${x.view}"`:""}>${esc(x.label)}</button>
+  </article>`).join("");
+}
+
+
+function renderBudgetReality(h){
+  const d=h.details||{}, budget=money(d.budget), spent=(h.expenses||[]).reduce((sum,e)=>sum+money(e.amount),0);
+  if(!budget){
+    return `<div class="card card-pad"><p class="note">No budget set yet. Add a budget in your holiday details and Roam will show what is committed, what is left and whether the plan is getting expensive.</p></div>`;
+  }
+  const left=budget-spent, pct=Math.min(100,Math.round(spent/budget*100));
+  const categories={};
+  (h.expenses||[]).forEach(e=>{const c=e.category||"Other";categories[c]=(categories[c]||0)+money(e.amount)});
+  const top=Object.entries(categories).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  let title="Budget looks healthy", text=`You have ${gbp(Math.max(0,left))} left from your ${gbp(budget)} budget.`;
+  if(left<0){title="You're over budget";text=`Your tracked spending is ${gbp(Math.abs(left))} above the ${gbp(budget)} budget.`;}
+  else if(pct>=80){title="You're getting close to the limit";text=`You've used ${pct}% of the budget, leaving ${gbp(left)}.`;}
+  else if(pct>=50){title="More than half of the budget is committed";text=`You've used ${pct}% so far, with ${gbp(left)} remaining.`;}
+  return `<div class="card card-pad">
+    <div class="row" style="justify-content:space-between;align-items:flex-start;gap:14px">
+      <div><p class="label">Budget reality</p><h3 style="margin-top:4px">${esc(title)}</h3><p class="small muted" style="margin-top:5px">${esc(text)}</p></div>
+      <strong style="font-size:22px">${pct}%</strong>
+    </div>
+    <div class="bar" style="margin-top:13px"><span style="width:${pct}%"></span></div>
+    <div class="budget-reality-grid">
+      <div class="budget-reality-stat"><small>Budget</small><strong>${gbp(budget)}</strong></div>
+      <div class="budget-reality-stat"><small>Tracked</small><strong>${gbp(spent)}</strong></div>
+      <div class="budget-reality-stat"><small>${left<0?'Over':'Remaining'}</small><strong>${gbp(Math.abs(left))}</strong></div>
+    </div>
+    ${top.length?`<div style="margin-top:14px"><strong class="small">Biggest spending areas</strong>${top.map(([c,v])=>`<div class="row" style="justify-content:space-between;margin-top:8px"><span class="small">${esc(c)}</span><strong class="small">${gbp(v)}</strong></div>`).join('')}</div>`:''}
+    <div class="budget-reality-warn">${left<0?'⚠️ Roam is tracking you above budget. Consider trimming planned spending before booking.':pct>=80?'⚠️ Your tracked spending is getting close to the limit.':'✓ There is still room in the budget for the rest of the holiday.'}</div>
+  </div>`;
+}
+
 function renderOverview(){
   const box=$("#overviewContent"),h=holiday();
   if(!h){
@@ -1050,6 +1562,9 @@ function renderOverview(){
     </div>
   </div>
 
+  <div class="head"><h2>Roam's next steps</h2><span class="pill">What to do next</span></div>
+  <div class="row" style="align-items:stretch;flex-wrap:wrap;margin-bottom:8px">${renderNextSteps(h)}</div>
+
   <div class="head"><h2>Trip readiness</h2><span class="pill">${r.done} of ${r.checks.length} done</span></div>
   <div class="card card-pad">
     <div class="row" style="gap:16px;align-items:flex-start;flex-wrap:nowrap">
@@ -1065,23 +1580,8 @@ function renderOverview(){
     </div>
   </div>
 
-  <div class="head"><h2>Budget</h2><button class="btn btn-sm" data-act="expense-add">Add spending</button></div>
-  <div class="card card-pad">
-    ${budget?`<div class="row" style="justify-content:space-between"><strong>${gbp(spent)} of ${gbp(budget)}</strong>
-      <span class="small ${left<0?"":"muted"}" ${left<0?'style="color:var(--bad);font-weight:700"':""}>${left<0?gbp(Math.abs(left))+" over":gbp(left)+" left"}</span></div>
-      <div class="bar" style="margin-top:9px"><span style="width:${budget?Math.min(100,Math.round(spent/budget*100)):0}%"></span></div>`
-     :`<p class="note">No budget set yet. Add one and Roam tracks what you have left.</p>`}
-    ${h.expenses.length?`<div style="margin-top:14px">${h.expenses.map((e,i)=>`
-      <div class="line-row">
-        <div class="grow"><strong>${esc(e.description)}</strong>
-          <div class="tiny muted">${esc(e.category||"Other")}${e.date?" · "+esc(fmtDate(e.date)):""}</div></div>
-        <strong>${gbp(e.amount)}</strong>
-        <div class="act-tools">
-          <button class="btn btn-sm" data-act="expense-edit" data-i="${i}">Edit</button>
-          <button class="btn btn-sm btn-danger" data-act="expense-delete" data-i="${i}" aria-label="Delete ${esc(e.description)}">✕</button>
-        </div>
-      </div>`).join("")}</div>`:`<p class="small muted" style="margin-top:12px">Nothing logged yet.</p>`}
-  </div>
+  <div class="head"><h2>Budget reality</h2><button class="btn btn-sm" data-act="expense-add">Add spending</button></div>
+  ${renderBudgetReality(h)}
 
   <div class="head"><h2>Travel and bookings</h2><button class="btn btn-sm" data-act="travel-edit">Edit</button></div>
   <div class="card card-pad">
@@ -1213,7 +1713,7 @@ function renderCompare(){
    ============================================================ */
 function endpointBase(){
   const raw=(store.get(K.endpoint)||"").trim();
-  return (raw||"http://localhost:8787")
+  return (raw||"https://roam-research.unpickgames.workers.dev")
     .replace(/\/+$/,"").replace(/\/api\/research$/i,"").replace(/\/api$/i,"");
 }
 function photoUrl(x){
@@ -1249,8 +1749,59 @@ function briefPreferences(){
     brief:b
   };
 }
+
+function roamMatch(x){
+  const b=state.brief||{};
+  const dna=Object.fromEntries(PRIORITIES.map(p=>[p[0],Math.max(0,Math.min(5,num(b[p[0]])||0))]));
+  const total=Object.values(dna).reduce((a,v)=>a+v,0);
+  if(!total)return null;
+
+  const cat=category(x.cat||x.category);
+  const profiles={
+    "Hotels":      {beach:.70,food:.62,sight:.38,activity:.35,relax:.90,night:.45},
+    "Restaurants": {beach:.18,food:1.00,sight:.32,activity:.18,relax:.42,night:.55},
+    "Nightlife":   {beach:.20,food:.48,sight:.20,activity:.42,relax:.12,night:1.00},
+    "Beaches":     {beach:1.00,food:.18,sight:.40,activity:.38,relax:.92,night:.18},
+    "Things to do":{beach:.30,food:.25,sight:.72,activity:1.00,relax:.25,night:.22},
+    "Places to see":{beach:.28,food:.22,sight:1.00,activity:.62,relax:.30,night:.14},
+    "Day trips":   {beach:.34,food:.30,sight:.92,activity:.88,relax:.22,night:.12}
+  };
+  const prof=profiles[cat]||{beach:.45,food:.45,sight:.45,activity:.45,relax:.45,night:.45};
+  const fit=Object.keys(dna).reduce((sum,k)=>sum+dna[k]*(prof[k]||0),0)/total;
+
+  const text=((x.name||'')+' '+(x.description||'')).toLowerCase();
+  const keywordBoost={
+    beach:/beach|coast|sea|ocean|waterfront|swim/,
+    food:/restaurant|food|dining|cuisine|market|bar|cafe|café/,
+    sight:/museum|historic|landmark|old town|view|scenic|culture|architecture/,
+    activity:/hike|walk|tour|sport|adventure|kayak|diving|surf|excursion|park/,
+    relax:/spa|quiet|peaceful|relax|resort|pool|garden|wellness/,
+    night:/nightlife|club|bar|music|cocktail|late night|evening/
+  };
+  let boost=0;
+  Object.keys(keywordBoost).forEach(k=>{if(dna[k]>0&&keywordBoost[k].test(text))boost+=(dna[k]/total)*.10});
+
+  const r=num(x.rating);
+  const quality=r==null?0:Math.max(-.03,Math.min(.06,(r-4.0)*.06));
+  const pct=Math.round(Math.max(35,Math.min(98,(fit+boost+quality)*100)));
+
+  const ranked=PRIORITIES
+    .map(p=>({key:p[0],label:p[1],glyph:p[2],v:dna[p[0]],aff:prof[p[0]]||0}))
+    .filter(q=>q.v>0)
+    .sort((a,b)=>(b.v*b.aff)-(a.v*a.aff));
+  const strengths=ranked.filter(q=>q.aff>=.55).slice(0,2);
+  const weak=ranked.slice().reverse().find(q=>q.v>=3&&q.aff<.4);
+  let reason='A balanced fit for the priorities in your Holiday DNA.';
+  if(strengths.length){
+    reason='Strong for '+strengths.map(q=>q.label.toLowerCase()).join(' and ')+' based on your Holiday DNA.';
+  }
+  if(weak&&pct<78)reason+=' Less aligned with your '+weak.label.toLowerCase()+' priority.';
+  const drivers=strengths.map(q=>q.label);
+  return {pct,reason,drivers};
+}
+
 function placeCard(x,i){
-  const url=photoUrl(x),cat=category(x.cat||x.category),rate=num(x.rating);
+  const url=photoUrl(x),cat=category(x.cat||x.category),rate=num(x.rating),match=roamMatch(x);
   const ref=i==null?`data-id="${esc(x.id)}"`:`data-i="${i}"`;
   const kept=i!=null&&state.ideas.some(k=>k.name===x.name);
   const badge=i==null&&x.holidayId?tripName(x.holidayId):"";
@@ -1260,6 +1811,7 @@ function placeCard(x,i){
       <p class="tiny muted">${esc(cat)}${badge?" · "+esc(badge):(i==null?" · no trip yet":"")}</p>
       <h3>${esc(x.name)}</h3>
       <p class="score">${rate!=null?"★ "+rate.toFixed(1):"No rating"}${x.ratingCount?`<span>${Number(x.ratingCount).toLocaleString("en-GB")} reviews</span>`:""}</p>
+      ${match?`<div class="note" style="padding:9px 11px"><strong style="color:var(--brand-ink)">Roam Match ${match.pct}%</strong><br><span class="tiny">${esc(match.reason)}</span></div>`:""}
       <p class="desc">${esc(x.description||"No description available.")}</p>
       <div class="row">
         <button class="btn btn-primary btn-sm" data-act="place-view" ${ref}>View</button>
@@ -1271,6 +1823,38 @@ function placeCard(x,i){
              <button class="btn btn-sm" data-act="place-plan" data-i="${i}">Add to plan</button>`}
       </div>
     </div></article>`;
+}
+function renderExploreRecommendation(list){
+  if(!Array.isArray(list)||list.length===0)return "";
+  const ranked=list.map(x=>({x,m:roamMatch(x)})).filter(r=>r.m).sort((a,b)=>b.m.pct-a.m.pct).slice(0,5);
+  if(!ranked.length)return "";
+  const winner=ranked[0];
+  return `<section class="v434-recommend">
+    <div class="v434-recommend-head">
+      <div>
+        <div class="recommend-title"><span class="recommend-star">★</span><div><div class="label">Roam recommends</div><h2>Your strongest matches</h2></div></div>
+        <p class="recommend-sub">Based on your preferences, budget and travel style, these places could be perfect for you.</p>
+      </div>
+      <div class="pill">Best match · ${winner.m.pct}%</div>
+    </div>
+    <div class="v434-recommend-grid">${ranked.map((r,i)=>{
+      const idx=state.research.indexOf(r.x),img=photoUrl(r.x),cat=category(r.x.cat||r.x.category),rating=num(r.x.rating);
+      const drivers=(r.m.drivers||[]).slice(0,2).map(d=>`<span>${esc(d)}</span>`).join('');
+      return `<article class="v434-recommend-item${i===0?' top':''}">
+        <div class="recommend-photo">
+          ${img?`<img src="${esc(img)}" alt="${esc(r.x.name||'Destination')}" loading="lazy">`:`<div class="recommend-photo-fallback">${esc(r.x.icon||'✈️')}</div>`}
+          <span class="recommend-badge">${i===0?'🏆 Best match':i===1?'♥ Great fit':'✦ Strong match'}</span>
+          <button class="recommend-heart" aria-label="Save ${esc(r.x.name||'place')}" data-act="place-save" data-i="${idx}">♡</button>
+        </div>
+        <div class="recommend-body">
+          <div class="recommend-name-row"><h3>${esc(r.x.name)}</h3>${rating!=null?`<span class="recommend-weather">★ ${rating.toFixed(1)}</span>`:''}</div>
+          <p class="recommend-description">${esc(r.x.description||r.m.reason||'A strong match for your holiday preferences.')}</p>
+          <div class="recommend-tags"><span>${esc(cat)}</span>${drivers}</div>
+          <div class="recommend-footer"><strong>${r.m.pct}%</strong><span>Roam Match</span><button class="btn btn-sm" data-act="place-view" data-i="${idx}">View →</button></div>
+        </div>
+      </article>`;
+    }).join('')}</div>
+  </section>`;
 }
 function renderExplore(){
   const area=$("#researchArea");
@@ -1315,6 +1899,8 @@ function renderExplore(){
   area.innerHTML=`
     <div class="head" style="margin-top:0"><h2>Ideas for ${esc(state.researchTitle)}</h2>
       <span class="pill">${state.research.length} result${state.research.length===1?"":"s"}</span></div>
+    ${Object.keys(state.brief||{}).length?`<p class="note" style="margin-bottom:14px">🧠 Roam Match uses your saved Holiday DNA to show how closely each result fits the trip you described. It is Roam's score, not a Google rating.</p>`:`<p class="note" style="margin-bottom:14px">Fill in your Holiday Brief to add personalised Roam Match scores. <button class="btn btn-sm" data-act="go" data-view="brief" style="margin-left:8px">Set Holiday DNA</button></p>`}
+    ${renderExploreRecommendation(list)}
     <div class="tabs">${tabs.map(t=>
       `<button data-act="research-tab" data-tab="${esc(t)}" aria-pressed="${t===state.researchTab}">${esc(t)}</button>`).join("")}</div>
     <div class="grid">${list.length?list.map((x,i)=>placeCard(x,state.research.indexOf(x))).join("")
@@ -1374,7 +1960,7 @@ async function research(){
 }
 async function testEndpoint(){
   const field=$("#endpointField"),dot=$("#testDot"),msg=$("#testMsg");
-  const base=(field.value.trim()||"http://localhost:8787")
+  const base=(field.value.trim()||"https://roam-research.unpickgames.workers.dev")
     .replace(/\/+$/,"").replace(/\/api\/research$/i,"").replace(/\/api$/i,"");
   field.value=base;
   dot.className="dot";msg.textContent="Testing…";
@@ -1471,6 +2057,83 @@ function saveIdea(x){
 /* ============================================================
    13. SHORTLIST
    ============================================================ */
+function shortlistPick(src){
+  if(!src.length)return null;
+  const ranked=src.map(x=>{
+    const match=roamMatch(x);
+    const rating=num(x.rating)||0;
+    const reviews=num(x.ratingCount)||0;
+    const quality=rating?Math.min(1,rating/5):0;
+    const reviewConfidence=reviews?Math.min(1,Math.log10(reviews+1)/4):0;
+    const score=match ? match.pct*.78 + quality*14 + reviewConfidence*8
+                       : quality*78 + reviewConfidence*22;
+    return {x,match,score};
+  }).sort((a,b)=>b.score-a.score);
+  return ranked[0];
+}
+
+function renderShortlistPick(src){
+  const pick=shortlistPick(src);
+  if(!pick)return "";
+  const x=pick.x,match=pick.match;
+  const cat=category(x.cat||x.category),rate=num(x.rating);
+  const why=match
+    ? match.reason.replace(/based on your Holiday DNA\.?/i,"based on your Holiday DNA.")
+    : "The strongest rated option in your shortlist, with review confidence taken into account.";
+  return `<div class="card card-pad" style="margin-bottom:18px;border-color:var(--brand)">
+    <div class="row" style="align-items:flex-start">
+      <div class="grow">
+        <p class="label">🏆 Roam's pick</p>
+        <h2 style="margin-top:4px">${esc(x.name)}</h2>
+        <p class="small muted" style="margin-top:4px">${esc(cat)}${rate!=null?` · ★ ${rate.toFixed(1)}`:""}</p>
+      </div>
+      ${match?`<div class="ring" style="--pct:${match.pct}%"><b>${match.pct}%</b></div>`:""}
+    </div>
+    <p style="margin-top:13px">${esc(why)}</p>
+    <p class="small muted" style="margin-top:6px">Roam's pick is based on your saved shortlist and Holiday DNA. It is a recommendation, not a booking decision.</p>
+    <div class="row" style="margin-top:13px">
+      <button class="btn btn-primary btn-sm" data-act="place-view" data-id="${esc(x.id)}">View ${esc(x.name)}</button>
+    </div>
+  </div>`;
+}
+
+function renderOneShortlistComparison(list,label){
+  if(!Array.isArray(list)||list.length<2)return "";
+  const ranked=list.map(x=>({x,m:roamMatch(x)})).sort((a,b)=>{
+    const am=a.m?a.m.pct:0,bm=b.m?b.m.pct:0;
+    return (bm-am)||((num(b.x.rating)||0)-(num(a.x.rating)||0));
+  }).slice(0,3);
+  const winner=ranked[0];
+  return `<section class="short-compare">
+    <div class="short-compare-top">
+      <div class="label">Decision helper</div>
+      <h2 style="margin-top:3px">Compare your ${esc(label.toLowerCase())}</h2>
+      <p class="small muted" style="margin-top:5px">Roam has ranked these shortlisted options using your Holiday DNA, rating and review confidence.</p>
+    </div>
+    <div class="short-compare-grid">${ranked.map((r,i)=>{
+      const rate=num(r.x.rating),reviews=Number(r.x.ratingCount)||0;
+      return `<article class="short-compare-item${i===0?' winner':''}">
+        ${i===0?'<span class="pill">🏆 Roam\'s pick</span>':'<span class="tiny muted">Alternative '+(i+1)+'</span>'}
+        <h3>${esc(r.x.name)}</h3>
+        <div class="short-compare-score">${r.m?r.m.pct+'%':'—'}</div>
+        <div class="small"><strong>Roam Match</strong></div>
+        <div class="short-compare-meta">${rate!=null?'★ '+rate.toFixed(1):'No rating'}${reviews?' · '+reviews.toLocaleString('en-GB')+' reviews':''}</div>
+        <p class="tiny muted" style="margin-top:9px">${esc(r.m?r.m.reason:'No personalised score yet.')}</p>
+        <button class="btn btn-sm" style="margin-top:11px" data-act="place-view" data-id="${esc(r.x.id)}">View</button>
+      </article>`;
+    }).join('')}</div>
+    <div style="padding:12px 18px;border-top:1px solid var(--line-soft);font-size:13px;color:var(--ink-2)">
+      <strong>Why this wins:</strong> ${esc(winner.m?winner.m.reason:'Best available overall fit in this shortlist.')}
+    </div>
+  </section>`;
+}
+function renderShortlistComparison(list){
+  if(!Array.isArray(list)||list.length<2)return "";
+  if(state.savedFilter!=="All")return renderOneShortlistComparison(list,state.savedFilter);
+  const groups=CATS.map(cat=>({cat,list:list.filter(x=>category(x.cat)===cat)})).filter(g=>g.list.length>=2);
+  if(!groups.length)return `<section class="short-compare"><div class="short-compare-top"><div class="label">Decision helper</div><h2 style="margin-top:3px">Compare your shortlist</h2><p class="small muted" style="margin-top:5px">Save at least two places in the same category to compare them. Roam keeps hotels, restaurants and attractions separate so the comparison stays meaningful.</p></div></section>`;
+  return groups.map(g=>renderOneShortlistComparison(g.list,g.cat)).join("");
+}
 function renderSaved(){
   const grid=$("#savedGrid"),stats=$("#savedStats"),filters=$("#savedFilters"),trip=$("#savedTrip");
   const unassigned=state.ideas.filter(x=>!x.holidayId).length;
@@ -1512,6 +2175,9 @@ function renderSaved(){
     ? `<div class="note" style="margin-bottom:14px">These were saved before you had trips.
         <button class="btn btn-sm" data-act="saved-assign-all" style="margin-left:8px">Add all ${unassigned} to ${esc(tripName(state.current))}</button></div>`
     : "";
+  const pickSource=src.filter(x=>x&&x.name);
+  const pickHtml=state.savedFilter==="All"&&!q ? renderShortlistPick(pickSource) : "";
+  const compareHtml=!q ? renderShortlistComparison(list) : "";
   if(!list.length){
     const filtered=state.ideas.length>0;
     grid.innerHTML=`<div class="empty"><div class="gl">${filtered?"🔎":"♡"}</div>
@@ -1520,7 +2186,7 @@ function renderSaved(){
       ${filtered?`<button class="btn" data-act="saved-reset">Show everything</button>`
                 :`<button class="btn btn-primary" data-act="go" data-view="explore">Explore a destination</button>`}</div>`;
   }else{
-    grid.innerHTML=list.map(x=>placeCard(x)).join("");
+    grid.innerHTML=pickHtml+compareHtml+list.map(x=>placeCard(x)).join("");
   }
   const row=$("#savedBulk");
   if(row)row.innerHTML=bulk;
@@ -1529,12 +2195,65 @@ function renderSaved(){
 /* ============================================================
    14. ITINERARY — real day grouping
    ============================================================ */
+function renderHolidayOverview(){
+  const b=state.brief||{};
+  const days=Math.max(1,Number(b.nights)||0);
+  const items=Array.isArray(state.plan)?state.plan:[];
+  const plannedDays=new Set(items.map(x=>x.day).filter(Boolean));
+  const saved=Array.isArray(state.saved)?state.saved:[];
+  const readyItems=Array.isArray(state.readiness)?state.readiness:[];
+  const dest=b.destination||b.where||'Your destination';
+  const budget=b.budget?('£'+Number(b.budget).toLocaleString()):'Not set';
+  const next=!b.destination?'Set your destination':!b.nights?'Set your trip length':saved.length<2?'Build your shortlist':plannedDays.size<days?'Build your next day':'Review your holiday';
+  return `<section class="roam-overview"><h3>🧭 Your holiday at a glance</h3><div class="roam-overview-sub">${esc(dest)} · A quick view of where your holiday stands.</div><div class="roam-overview-grid"><div class="roam-overview-card"><div class="k">Trip</div><div class="v">${days} night${days===1?'':'s'}</div></div><div class="roam-overview-card"><div class="k">Budget</div><div class="v">${esc(budget)}</div></div><div class="roam-overview-card"><div class="k">Shortlist</div><div class="v">${saved.length}</div></div><div class="roam-overview-card"><div class="k">Planned</div><div class="v">${days?Math.round((plannedDays.size/days)*100):0}%</div></div></div><div class="roam-overview-next"><strong>Next best step</strong>${esc(next)}</div></section>`;
+}
+
+function renderTripCoverage(h){
+  const holidayOverview=renderHolidayOverview();
+
+  const box=$("#tripCoverage");
+  if(!box||!h)return;
+  const span=tripLength(h);
+  if(!span){box.innerHTML="";return}
+  const planned=new Set((h.activities||[]).map(a=>Number(a.day)||1));
+  const open=[];
+  for(let d=1;d<=span;d++)if(!planned.has(d))open.push(d);
+  const pct=Math.round(((span-open.length)/span)*100);
+  const next=open[0];
+  box.innerHTML=`<div class="card card-pad">
+    <div class="head" style="margin:0"><div><p class="label">Trip coverage</p><h2 style="margin-top:4px">${pct}% of your days planned</h2></div><span class="pill">${open.length} open day${open.length===1?"":"s"}</span></div>
+    <div class="dna-bar" style="margin-top:12px"><span style="width:${pct}%"></span></div>
+    <div class="row" style="justify-content:space-between;margin-top:10px">
+      <span class="small muted">${span-open.length} of ${span} days have at least one activity.</span>
+      ${next?`<button class="btn btn-sm btn-primary" data-act="day-suggest-open" data-day="${next}">Build Day ${next}</button>`:`<span class="small" style="font-weight:700">✓ Every day has a plan</span>`}
+    </div>
+  </div>`;
+}
+
+function renderItineraryBalance(h){
+  const box=$("#tripBalance");
+  if(!box||!h){if(box)box.innerHTML="";return}
+  const span=tripLength(h);
+  if(!span){box.innerHTML="";return}
+  const counts=[...Array(span)].map((_,i)=>({day:i+1,count:h.activities.filter(a=>Number(a.day)===i+1).length}));
+  const planned=counts.filter(x=>x.count>0), open=counts.filter(x=>x.count===0);
+  const busiest=counts.slice().sort((a,b)=>b.count-a.count)[0];
+  const overloaded=counts.filter(x=>x.count>=4);
+  let title="Your itinerary looks balanced", text="You have a reasonable spread of activities across the trip.";
+  if(!planned.length){box.innerHTML="";return}
+  if(overloaded.length){title="A few days look busy";text="Roam has spotted days with four or more activities. Consider leaving some breathing room."}
+  else if(open.length){title="You still have some free days";text=open.length===1?"One day is still completely open. That could be a good day for something spontaneous.":open.length+" days are completely open. You can keep them flexible or build another day."}
+  box.innerHTML=`<div class="card card-pad" style="margin-bottom:14px"><div class="head" style="margin:0"><div><p class="label">Itinerary balance</p><h2 style="margin-top:4px">${esc(title)}</h2></div><span class="pill">${planned.length} of ${span} days active</span></div><p class="small muted" style="margin-top:7px">${esc(text)}</p><div class="row" style="margin-top:12px;gap:8px;flex-wrap:wrap">${counts.map(x=>`<span class="pill" style="${x.count===0?'opacity:.65':''}">Day ${x.day}: ${x.count} item${x.count===1?'':'s'}</span>`).join('')}</div>${busiest&&busiest.count>=3?`<p class="tiny muted" style="margin-top:10px">Busiest day: Day ${busiest.day} with ${busiest.count} items.</p>`:''}</div>`;
+}
+
 function renderItinerary(){
   const sel=$("#tripSelect"),tl=$("#timeline"),h=holiday();
   sel.innerHTML=state.holidays.map(x=>
     `<option value="${esc(x.id)}"${h&&x.id===h.id?" selected":""}>${esc(x.name)}</option>`).join("")
     ||`<option value="">No holidays yet</option>`;
   sel.disabled=!state.holidays.length;
+  if(h){renderTripCoverage(h);renderItineraryBalance(h);}
+  else {const box=$("#tripCoverage");if(box)box.innerHTML=""}
   if(!h){
     tl.innerHTML=`<div class="empty"><div class="gl">🗓️</div><h3>No holiday to plan</h3>
       <p>Create a holiday and its days appear here.</p>
@@ -1543,9 +2262,9 @@ function renderItinerary(){
   }
   if(!h.activities.length){
     tl.innerHTML=`<div class="empty"><div class="gl">🗓️</div><h3>${esc(h.name)} is wide open</h3>
-      <p>Add an activity, or let Roam sketch a morning, afternoon and evening for you.</p>
+      <p>Add an activity, or let Roam build a day around your saved shortlist and Holiday DNA. Roam avoids reusing places already planned.</p>
       <button class="btn btn-primary" data-act="act-add">Add activity</button>
-      <button class="btn" data-act="day-suggest" style="margin-left:8px">Suggest a day</button></div>`;
+      <button class="btn" data-act="day-suggest" style="margin-left:8px">Build my day</button></div>`;
     return;
   }
   const days=[...new Set(h.activities.map(a=>a.day))].sort((a,b)=>a-b);
@@ -1558,7 +2277,7 @@ function renderItinerary(){
     const items=h.activities.filter(a=>a.day===day);
     const when=dayLabel(h,day);
     const over=span&&day>span;
-    return `<section class="day">
+    return `${holidayOverview}<section class="day">
       <div class="day-top">
         <div><strong style="font-family:var(--font-display);font-size:20px">Day ${day}</strong>
           ${when?`<div class="tiny" style="font-weight:600;color:var(--brand-ink)">${esc(when)}</div>`:""}
@@ -1700,6 +2419,23 @@ async function deletePhoto(id){
 /* ============================================================
    16. BRIEF + SETTINGS
    ============================================================ */
+const DNA_LABELS={
+  beach:"Beach lover",food:"Foodie",sight:"Explorer",activity:"Activity seeker",relax:"Relaxer",night:"Nightlife"
+};
+function renderHolidayDna(){
+  const box=$("#dnaList");
+  if(!box)return;
+  const b=state.brief||{};
+  box.innerHTML=PRIORITIES.map(p=>{
+    const raw=Math.max(0,Math.min(5,num(b[p[0]])==null?3:num(b[p[0]])));
+    const pct=Math.round(raw*20);
+    return `<div class="dna-row">
+      <div class="dna-name">${p[2]} ${esc(DNA_LABELS[p[0]]||p[1])}</div>
+      <div class="dna-bar" aria-label="${esc(DNA_LABELS[p[0]]||p[1])}: ${pct}%"><span style="width:${pct}%"></span></div>
+      <div class="dna-value">${pct}%</div>
+    </div>`;
+  }).join("");
+}
 function fillBrief(){
   const b=state.brief||{};
   const set=(id,v)=>{const el=$(id);if(el&&v!=null&&v!=="")el.value=v};
@@ -1715,7 +2451,13 @@ function fillBrief(){
     const el=$("#s-"+p[0]);
     el.value=b[p[0]]!=null?b[p[0]]:3;
     $("#o-"+p[0]).textContent=el.value;
+    el.oninput=()=>{
+      $("#o-"+p[0]).textContent=el.value;
+      const b={...state.brief};PRIORITIES.forEach(q=>b[q[0]]=num($("#s-"+q[0]).value)||0);
+      state.brief=b;renderHolidayDna();
+    };
   });
+  renderHolidayDna();
 }
 function saveBrief(){
   const b={
@@ -1725,6 +2467,7 @@ function saveBrief(){
   PRIORITIES.forEach(p=>b[p[0]]=num($("#s-"+p[0]).value)||0);
   state.brief=b;
   store.set(K.brief,JSON.stringify(b));
+  renderHolidayDna();
   toast("Brief saved — searches will use it");
 }
 const OFFLINE_TEXT={
@@ -1976,6 +2719,7 @@ const ACT={
     });
   },
   "travel-edit":openTravelEditor,
+  "flight-edit":openTravelEditor,
   "expense-add":()=>openExpenseEditor(),
   "expense-edit":el=>openExpenseEditor(Number(el.dataset.i)),
   "expense-delete":el=>{
@@ -1988,6 +2732,7 @@ const ACT={
 
   "brief-save":saveBrief,
   research,
+  "quick-destination":el=>{const d=$("#destination"),v=el.dataset.value||"";if(d){d.value=v;research()}},
   "research-tab":el=>{state.researchTab=el.dataset.tab;renderExplore()},
   "setup-toggle":()=>{
     const s=$("#setup");
@@ -2109,15 +2854,45 @@ const ACT={
   "day-suggest":()=>{
     const h=holiday();
     if(!h){toast("Create a holiday first");return}
-    const day=(h.activities.length?Math.max.apply(null,h.activities.map(a=>a.day)):0)+1;
-    [["Morning","Explore the local area","Sightseeing"],
-     ["Afternoon","Beach or pool time","Relax"],
-     ["Evening","Dinner somewhere good","Food and drink"]]
-      .forEach(s=>h.activities.push(normActivity({day,time:s[0],name:s[1],type:s[2]})));
+    const span=tripLength(h);
+    const planned=new Set(h.activities.map(a=>Number(a.day)||1));
+    const open=span?[...Array(span)].map((_,i)=>i+1).find(d=>!planned.has(d)):null;
+    const day=open||((h.activities.length?Math.max.apply(null,h.activities.map(a=>a.day)):0)+1);
+    const used=new Set(h.activities.map(a=>String(a.name||'').trim().toLowerCase()).filter(Boolean));
+    const shortlist=tripIdeas(h.id).filter(x=>!used.has(String(x.name||'').trim().toLowerCase())).slice().sort((a,b)=>(roamMatch(b)?.pct||0)-(roamMatch(a)?.pct||0));
+    const picks=shortlist.slice(0,3);
+    const morning=picks.find(x=>/place|see|sight|museum|park|landmark|attraction/i.test((x.cat||"")+" "+(x.description||"")))||picks[0];
+    const afternoon=picks.find(x=>x!==morning&&/beach|pool|activity|thing|day trip/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning);
+    const evening=picks.find(x=>x!==morning&&x!==afternoon&&/restaurant|food|nightlife|bar/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning&&x!==afternoon);
+    const rows=[];
+    if(morning)rows.push(["Morning",morning.name,"From your shortlist"]);
+    else rows.push(["Morning","Explore the local area","Sightseeing"]);
+    if(afternoon)rows.push(["Afternoon",afternoon.name,"From your shortlist"]);
+    else rows.push(["Afternoon","Beach or pool time","Relax"]);
+    if(evening)rows.push(["Evening",evening.name,"From your shortlist"]);
+    else rows.push(["Evening","Dinner somewhere good","Food and drink"]);
+    rows.forEach(s=>h.activities.push(normActivity({day,time:s[0],name:s[1],type:s[2]})));
     persist();
     const when=dayLabel(h,day);
-    toast("Day "+day+(when?" ("+when+")":"")+" sketched out");
+    toast("Day "+day+(when?" ("+when+")":"")+" built from your shortlist");
     if(state.view!=="itinerary")show("itinerary");else renderItinerary();
+  },
+
+  "day-suggest-open":el=>{
+    const h=holiday();if(!h)return;
+    const target=Math.max(1,num(el.dataset.day)||1);
+    const used=new Set(h.activities.map(a=>String(a.name||'').trim().toLowerCase()).filter(Boolean));
+    const shortlist=tripIdeas(h.id).filter(x=>!used.has(String(x.name||'').trim().toLowerCase())).slice().sort((a,b)=>(roamMatch(b)?.pct||0)-(roamMatch(a)?.pct||0));
+    const picks=shortlist.slice(0,3);
+    const morning=picks.find(x=>/place|see|sight|museum|park|landmark|attraction/i.test((x.cat||"")+" "+(x.description||"")))||picks[0];
+    const afternoon=picks.find(x=>x!==morning&&/beach|pool|activity|thing|day trip/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning);
+    const evening=picks.find(x=>x!==morning&&x!==afternoon&&/restaurant|food|nightlife|bar/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning&&x!==afternoon);
+    const rows=[];
+    if(morning)rows.push(["Morning",morning.name,"From your shortlist"]);else rows.push(["Morning","Explore the local area","Sightseeing"]);
+    if(afternoon)rows.push(["Afternoon",afternoon.name,"From your shortlist"]);else rows.push(["Afternoon","Beach or pool time","Relax"]);
+    if(evening)rows.push(["Evening",evening.name,"From your shortlist"]);else rows.push(["Evening","Dinner somewhere good","Food and drink"]);
+    rows.forEach(s=>h.activities.push(normActivity({day:target,time:s[0],name:s[1],type:s[2]})));
+    persist();toast("Day "+target+" built from your shortlist");renderItinerary();
   },
 
   "photo-delete":el=>deletePhoto(el.dataset.id),
