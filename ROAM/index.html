@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- ROAM v40.5 — Saved shortlist reskin from v40.4; functionality preserved. -->
+<!-- ROAM v42.3 — Open-Meteo destination weather. -->
 <html lang="en-GB" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -83,7 +83,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
 
-/* v40.5.1 — dark-mode readability fix */
+/* v41.0 — dark-mode readability fix carried forward */
 :root[data-theme="dark"] .v434-recommend-item,
 :root[data-theme="dark"] .v435-decision,
 :root[data-theme="dark"] .btn,
@@ -445,7 +445,7 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 
 
 /* ============================================================
-   ROAM v40.3 — WHOLE-SITE VISUAL RESKIN
+   ROAM v41.0 — WHOLE-SITE VISUAL RESKIN
    Extends the approved Explore palette across every view.
    Layout, data, navigation behaviour and backend are unchanged.
    ============================================================ */
@@ -561,6 +561,13 @@ body{
 .ring{background:conic-gradient(#087e96 var(--pct,0%),#dceef2 0)}
 .ring::after{background:#fff}
 
+
+/* Holiday plan proposal */
+.plan-proposal{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.plan-proposal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:14px}
+.plan-day{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--bg)}
+.plan-day strong{display:block}.plan-day span{display:block;margin-top:5px;font-size:13px;color:var(--muted)}
+
 /* Compare / decision */
 .short-compare{border-color:#80bdc9;background:#fff}
 .short-compare-top{background:linear-gradient(90deg,#d9f2f6,#fff2da);border-bottom-color:#c6e1e6}
@@ -665,6 +672,9 @@ pre.api{background:#073b4b;color:#dff8fb;border-color:#1a6676}
 #v-saved .empty{background:linear-gradient(135deg,#eefaf8,#fff);border:1px solid #cfe8e3;border-radius:24px}
 #v-saved select.field,#v-saved input.field{border-color:#cfe8e3;border-radius:14px}
 @media(max-width:700px){#v-saved .stat{padding:13px}.short-compare-grid{grid-template-columns:1fr!important}}
+
+/* V42.2 destination intelligence */
+.dest-intel{margin:16px 0 18px}.dest-intel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.dest-intel-item{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.dest-intel-item small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}.dest-intel-item strong{display:block;font-size:18px;margin-top:5px}.dest-intel-note{margin-top:10px;font-size:12px;color:var(--muted)}@media(max-width:760px){.dest-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 <style>
 .roam-overview{margin:18px 0;padding:18px;border:1px solid #dfe5ec;border-radius:18px;background:linear-gradient(180deg,#fff,#f7f9fc)}
@@ -847,6 +857,11 @@ pre.api{background:#073b4b;color:#dff8fb;border-color:#1a6676}
     <div class="grid" id="savedGrid"></div>
   </section>
 
+  <!-- DECISION -->
+  <section id="v-decision" class="view" aria-labelledby="h-decision">
+    <div id="decisionContent"></div>
+  </section>
+
   <!-- FLIGHTS -->
   <section id="v-flights" class="view" aria-labelledby="h-flights">
     <div class="head" style="margin-top:0">
@@ -982,7 +997,7 @@ function loadJSON(key,fallback){
 const state={
   view:"home", current:null,
   holidays:[], ideas:[], photos:[], brief:{},
-  research:[], researchTitle:"", researchTab:"All", researchError:"", busy:false, abort:null,
+  research:[], researchTitle:"", researchTab:"All", researchError:"", busy:false, abort:null, destinationInfo:null, destinationInfoBusy:false, destinationInfoError:"",
   savedQuery:"", savedFilter:"All", savedSort:"saved", savedTrip:"all",
   photosReady:false, photoFallback:false, offline:"",
   detail:null, sheet:null, lastFocus:null, undo:null, scrollY:0
@@ -993,6 +1008,7 @@ const VIEWS=[
   {id:"overview", label:"Holiday",  glyph:"🧳", primary:true},
   {id:"itinerary",label:"Plan",     glyph:"🗓️", primary:true},
   {id:"saved",    label:"Saved",    glyph:"♡",  primary:true},
+  {id:"decision", label:"Decision", glyph:"🧭"},
   {id:"flights",  label:"Flights",  glyph:"✈️"},
   {id:"brief",    label:"Brief",    glyph:"✎"},
   {id:"compare",  label:"Compare",  glyph:"⇄"},
@@ -1280,7 +1296,7 @@ if(media&&media.addEventListener)media.addEventListener("change",applyTheme);
    6. ROUTER — one render pass, only for the visible view
    ============================================================ */
 const RENDER={home:renderHome,explore:renderExplore,brief:fillBrief,overview:renderOverview,
-              compare:renderCompare,itinerary:renderItinerary,saved:renderSaved,
+              compare:renderCompare,itinerary:renderItinerary,saved:renderSaved,decision:renderDecision,
               photos:renderPhotos,settings:renderSettings,flights:renderFlights};
 function show(view){
   if(!VIEWS.some(v=>v.id===view))view="home";
@@ -1293,32 +1309,111 @@ function show(view){
   render();
   window.scrollTo({top:0,behavior:"auto"});
 }
-function renderFinalDecision(){
-  const trip=currentTrip();
-  if(!trip) return '';
-  const saved=(trip.saved||[]);
-  const days=(trip.days||[]);
-  const planned=days.filter(d=>(d.items||[]).length>0).length;
-  const total=days.length||Number(trip.nights||0)||0;
-  const coverage=total?Math.round(planned/total*100):0;
-  const rec=(typeof shortlistPick==='function'&&saved.length)?shortlistPick(saved):null;
-  const budget=Number(trip.brief?.budget||trip.budget||0);
-  const spent=(trip.spending||[]).reduce((a,x)=>a+Number(x.amount||0),0);
-  let next='Your holiday is taking shape.';
-  if(!trip.destination) next='Set your destination in your Holiday Brief.';
-  else if(!saved.length) next='Research your destination and build your shortlist.';
-  else if(!rec) next='Save at least two places to start comparing your options.';
-  else if(!total) next='Set your dates or trip length to start building the itinerary.';
-  else if(coverage<100) next='Build the next open itinerary day.';
-  else if(budget&&spent>budget) next='Review your spending before you commit to the plan.';
-  else next='Your holiday looks ready. Review your choices and make your final bookings.';
-  return `<section class="final-decision"><h3>🧭 Your holiday decision</h3><p class="final-decision-intro">Everything important, in one place.</p><div class="final-decision-grid">
-    <div class="final-decision-stat"><strong>${esc(trip.destination||'Not set')}</strong><span>Destination</span></div>
-    <div class="final-decision-stat"><strong>${saved.length}</strong><span>Shortlisted</span></div>
-    <div class="final-decision-stat"><strong>${coverage}%</strong><span>Itinerary planned</span></div>
-    <div class="final-decision-stat"><strong>${budget?'£'+budget.toLocaleString():'Not set'}</strong><span>Budget</span></div>
-    <div class="final-decision-stat"><strong>${rec?esc(rec.name):'Not chosen'}</strong><span>Roam's Pick</span></div>
-  </div><div class="final-decision-next"><strong>Next best step</strong><div>${esc(next)}</div></div></section>`;
+function decisionEngine(h){
+  if(!h)return {ready:false};
+  const b=state.brief||{}, mine=tripIdeas(h.id), r=readiness(h), d=h.details||{}, t=h.travel||{};
+  const ranked=mine.map(x=>({x,m:roamMatch(x),rating:num(x.rating)||0,reviews:num(x.ratingCount)||0}))
+    .sort((a,z)=>((z.m?z.m.pct:0)-(a.m?a.m.pct:0))||z.rating-a.rating||z.reviews-a.reviews);
+  const picks={};
+  CATS.forEach(cat=>{
+    const hit=ranked.filter(v=>category(v.x.cat||v.x.category)===cat)[0];
+    if(hit)picks[cat]=hit;
+  });
+  const priorityLabels={beach:'beach',food:'food',sight:'sightseeing',activity:'activities',relax:'relaxation',night:'nightlife'};
+  const priorities=PRIORITIES.map(p=>({key:p[0],label:p[1],value:num(b[p[0]])||0})).filter(x=>x.value>0).sort((a,z)=>z.value-a.value);
+  const strong=priorities.filter(p=>p.value>=4);
+  const coverage=strong.map(p=>{
+    const cats=PRIORITY_CATS[p.key]||[];
+    const count=mine.filter(x=>cats.includes(category(x.cat||x.category))).length;
+    return {...p,count};
+  });
+  const covered=coverage.filter(x=>x.count>0), missing=coverage.filter(x=>x.count===0);
+  const budget=money(d.budget), spent=(h.expenses||[]).reduce((sum,e)=>sum+money(e.amount),0);
+  const out=t.outboundFlight||{}, ret=t.returnFlightDetails||{};
+  const flights=!!(t.outbound&&t.returnFlight)||(!!out.number&&!!ret.number)||(!!out.from&&!!out.to&&!!ret.from&&!!ret.to);
+  const destination=d.destination||b.destination||h.destination||h.name||'';
+  let headline='Your holiday is not ready to call yet.';
+  if(!destination)headline='Set your destination first.';
+  else if(!mine.length)headline='Research '+destination+' and build your shortlist.';
+  else if(!ranked.length)headline='Save places from Explore so Roam can make a recommendation.';
+  else if(missing.length)headline='Your shortlist is missing some of your strongest priorities.';
+  else if(!flights)headline='Your holiday is taking shape — add your flights before you commit.';
+  else headline='This is the holiday Roam would choose from what you have built.';
+  const confidence=ranked.length?Math.min(100,Math.round(45+Math.min(25,ranked.length*5)+(covered.length*8)+(flights?8:0)+(budget?7:0))):0;
+  return {ready:!!(destination&&ranked.length),headline,destination,ranked,picks,priorities,strong,coverage,covered,missing,budget,spent,flights,r,confidence};
+}
+function decisionWhy(pick){
+  if(!pick)return 'No suitable shortlisted option yet.';
+  if(pick.m&&pick.m.reason)return pick.m.reason.replace(/based on your Holiday DNA\.?/i,'based on your Holiday DNA.');
+  if(pick.rating)return 'Strongest available option in your shortlist, supported by its rating.';
+  return 'Best available fit from the information Roam has so far.';
+}
+function buildHolidayPlan(h){
+  if(!h)return [];
+  const span=Math.max(1,tripLength(h)||Math.min(7,Math.max(3,Math.ceil((h.activities||[]).length/2)+2)));
+  const e=decisionEngine(h), ranked=e.ranked||[];
+  const used=new Set((h.activities||[]).map(a=>String(a.name||'').trim().toLowerCase()));
+  const pool=ranked.filter(v=>!used.has(String(v.x.name||'').trim().toLowerCase()));
+  const find=(cats,offset=0)=>pool.find(v=>cats.includes(category(v.x.cat||v.x.category)) && !planUsed.has(v.x.id))||pool.find(v=>!planUsed.has(v.x.id));
+  const plan=[],planUsed=new Set();
+  for(let day=1;day<=span;day++){
+    const isFirst=day===1,isLast=day===span;
+    const rows=[];
+    if(isFirst) rows.push({time:'Arrival',name:'Arrive and settle in',type:'Arrival'});
+    else if(!isLast){
+      let v=find(['Places to see','Things to do','Day trips']);
+      if(v){planUsed.add(v.x.id);rows.push({time:'Morning',name:v.x.name,type:v.x.cat||'Sightseeing'});}
+      v=find(['Beaches','Things to do','Parks']);
+      if(v){planUsed.add(v.x.id);rows.push({time:'Afternoon',name:v.x.name,type:v.x.cat||'Relax'});}
+    }
+    if(isLast) rows.push({time:'Departure',name:'Final morning and departure',type:'Departure'});
+    else {
+      let v=find(['Restaurants','Nightlife']);
+      if(v){planUsed.add(v.x.id);rows.push({time:'Evening',name:v.x.name,type:v.x.cat||'Food and drink'});}
+      else rows.push({time:'Evening',name:'Dinner and a relaxed evening',type:'Food and drink'});
+    }
+    if(!rows.length) rows.push({time:'Flexible',name:'Free time to explore',type:'Flexible'});
+    plan.push({day,rows});
+  }
+  return plan;
+}
+function renderPlanProposal(h){
+  const box=$('#planProposal'); if(!box||!h)return;
+  const plan=buildHolidayPlan(h);
+  if(!plan.length){box.innerHTML='';return}
+  const source=tripIdeas(h.id).length;
+  box.innerHTML=`<div class="plan-proposal"><div class="head" style="margin:0"><div><p class="label">ROAM PROPOSED PLAN</p><h2 style="margin-top:4px">Turn your decision into a holiday plan</h2></div><span class="pill">${plan.length} days</span></div>
+    <p class="muted" style="margin-top:7px">Roam has built a draft from your recommendation, shortlist and Holiday DNA. Nothing will be added to your itinerary until you approve it.</p>
+    <div class="plan-proposal-grid">${plan.map(d=>`<div class="plan-day"><strong>Day ${d.day}${dayLabel(h,d.day)?' · '+esc(dayLabel(h,d.day)):''}</strong>${d.rows.map(r=>`<span>${esc(r.time)} — ${esc(r.name)}</span>`).join('')}</div>`).join('')}</div>
+    <div class="row" style="margin-top:14px"><button class="btn btn-primary" data-act="plan-build">Use this plan</button><button class="btn" data-act="go" data-view="itinerary">View current itinerary</button></div>
+    <p class="tiny muted" style="margin-top:9px">${source} shortlisted place${source===1?'':'s'} available to Roam. The draft avoids places already in your itinerary.</p></div>`;
+}
+
+function renderDecision(){
+  const box=$('#decisionContent'),h=holiday();
+  if(!box)return;
+  if(!h){box.innerHTML=`<div class="empty"><div class="gl">🧭</div><h3>No holiday selected</h3><p>Create a holiday first and Roam can turn your research into a recommendation.</p><button class="btn btn-primary" data-act="holiday-new">Create a holiday</button></div>`;return;}
+  const e=decisionEngine(h), top=e.ranked[0], b=state.brief||{};
+  const destination=e.destination||'your destination';
+  const priorityText=e.strong.length?e.strong.map(x=>x.label).join(', '):'your overall holiday style';
+  const shortlistHtml=top?`<div class="card card-pad" style="border-color:var(--brand)">
+      <div class="row" style="align-items:flex-start"><div class="grow"><p class="label">🏆 Roam's recommendation</p><h1 style="margin-top:4px">${esc(top.x.name)}</h1><p class="muted" style="margin-top:5px">${esc(category(top.x.cat||top.x.category))}${top.rating?` · ★ ${top.rating.toFixed(1)}`:''}${top.reviews?` · ${top.reviews.toLocaleString('en-GB')} reviews`:''}</p></div>${top.m?`<div class="ring" style="--pct:${top.m.pct}%"><b>${top.m.pct}%</b></div>`:''}</div>
+      <p style="margin-top:15px">${esc(decisionWhy(top))}</p>
+      <p class="small muted" style="margin-top:7px">Roam chose this from your shortlist, your Holiday DNA and available quality signals.</p>
+      <div class="row" style="margin-top:14px"><button class="btn btn-primary" data-act="place-view" data-id="${esc(top.x.id)}">View recommendation</button><button class="btn" data-act="go" data-view="saved">Review shortlist</button></div>
+    </div>`:`<div class="card card-pad"><h2>Build the evidence first</h2><p class="muted" style="margin-top:6px">${esc(e.headline)}</p><button class="btn btn-primary" style="margin-top:14px" data-act="go" data-view="explore">Explore ${esc(destination)}</button></div>`;
+  const areaPicks=['Hotels','Restaurants','Beaches','Places to see','Things to do','Day trips','Nightlife'].filter(c=>e.picks[c]).slice(0,6);
+  const pickCards=areaPicks.map(cat=>{const p=e.picks[cat];return `<article class="card card-pad"><p class="label">${esc(cat)}</p><h3 style="margin-top:4px">${esc(p.x.name)}</h3><p class="small muted" style="margin-top:5px">${p.m?p.m.pct+'% Roam Match':''}${p.rating?' · ★ '+p.rating.toFixed(1):''}</p><p class="tiny muted" style="margin-top:9px">${esc(decisionWhy(p))}</p><button class="btn btn-sm" style="margin-top:11px" data-act="place-view" data-id="${esc(p.x.id)}">View</button></article>`}).join('');
+  const compromise=e.missing.length?`<div class="card card-pad"><p class="label">⚠️ Potential compromise</p><h3 style="margin-top:4px">${esc(e.missing.map(x=>x.label).join(' and '))}</h3><p class="muted" style="margin-top:7px">You marked ${esc(e.missing.map(x=>x.label.toLowerCase()).join(' and '))} as a strong priority, but your shortlist has nothing covering it yet. That could change the final recommendation.</p><button class="btn btn-sm" style="margin-top:12px" data-act="go" data-view="explore">Research more</button></div>`:`<div class="card card-pad"><p class="label">✓ Priorities covered</p><h3 style="margin-top:4px">Your shortlist reflects ${esc(priorityText)}</h3><p class="muted" style="margin-top:7px">Roam has evidence for the strongest priorities you entered.</p></div>`;
+  const readinessText=e.r?`${e.r.done} of ${e.r.checks.length} essentials complete · ${e.r.pct}% ready`:'Readiness unavailable';
+  box.innerHTML=`<div class="hero"><p class="label">YOUR ROAM DECISION</p><h1>${esc(destination)}</h1><p>${esc(e.headline)}</p><div class="row" style="margin-top:14px"><span class="pill pill-line">${e.r.pct}% ready</span><span class="pill pill-line">${e.ranked.length} shortlisted</span><span class="pill pill-line">${e.confidence}% recommendation confidence</span></div></div>
+    ${shortlistHtml}
+    ${pickCards?`<div class="head"><h2>Your strongest options</h2><span class="pill">Based on your current shortlist</span></div><div class="grid">${pickCards}</div>`:''}
+    <div class="head"><h2>What could change the decision?</h2></div>${compromise}
+    <div class="head"><h2>Holiday evidence</h2></div><div class="card card-pad"><div class="chips"><div class="chip"><small>Budget</small><b>${e.budget?gbp(e.budget):'Not set'}</b></div><div class="chip"><small>Tracked</small><b>${gbp(e.spent)}</b></div><div class="chip"><small>Flights</small><b>${e.flights?'Added':'Missing'}</b></div><div class="chip"><small>Readiness</small><b>${e.r.pct}%</b></div></div><p class="small muted" style="margin-top:12px">${esc(readinessText)}. The recommendation will become stronger as you add better evidence — it does not pretend certainty where Roam has little information.</p></div>
+    <div id="planProposal"></div>
+    <div class="row" style="margin-top:18px"><button class="btn btn-primary" data-act="go" data-view="saved">Review shortlist</button><button class="btn" data-act="go" data-view="itinerary">Open itinerary</button><button class="btn" data-act="go" data-view="overview">Holiday overview</button></div>`;;
+  renderPlanProposal(h);
 }
 
 function renderFlights(){
@@ -1557,6 +1652,7 @@ function renderOverview(){
     <div class="row" style="margin-top:14px">${facts.map(f=>`<span class="pill pill-line">${f}</span>`).join("")}</div>
     <div class="row">
       <button class="btn btn-primary" data-act="holiday-edit">Edit holiday</button>
+      <button class="btn" data-act="go" data-view="decision">Roam’s decision</button>
       <button class="btn" data-act="travel-edit">Travel details</button>
       <button class="btn" data-act="expense-add">Add spending</button>
     </div>
@@ -1856,6 +1952,58 @@ function renderExploreRecommendation(list){
     }).join('')}</div>
   </section>`;
 }
+function priceSignal(list){
+  const vals=(Array.isArray(list)?list:[]).map(x=>x.priceLevel||x.price_level||"").filter(Boolean).map(v=>String(v).toUpperCase());
+  if(!vals.length)return null;
+  const score=vals.reduce((n,v)=>n+(v.includes("FREE")?0:v.includes("INEXPENSIVE")?1:v.includes("MODERATE")?2:v.includes("EXPENSIVE")?3:v.includes("VERY_EXPENSIVE")?4:(v.match(/\$/g)||[]).length),0)/vals.length;
+  if(score<.9)return {label:"Budget-friendly",symbol:"£"};
+  if(score<1.8)return {label:"Lower mid-range",symbol:"££"};
+  if(score<2.7)return {label:"Mid-range",symbol:"£££"};
+  if(score<3.5)return {label:"Higher-priced",symbol:"££££"};
+  return {label:"Premium-priced",symbol:"£££££"};
+}
+async function loadDestinationIntel(destination,list){
+  const q=String(destination||"").trim(); if(!q)return;
+  state.destinationInfoBusy=true;state.destinationInfoError="";renderExplore();
+  try{
+    const geoRes=await fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(q)+"&count=1&language=en&format=json");
+    if(!geoRes.ok)throw new Error("Weather location lookup failed");
+    const geo=await geoRes.json(),place=geo.results&&geo.results[0];
+    if(!place)throw new Error("Weather location not found for "+q);
+    const wxRes=await fetch("https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(place.latitude)+"&longitude="+encodeURIComponent(place.longitude)+"&current=temperature_2m,apparent_temperature,precipitation,rain,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=7&timezone=auto");
+    if(!wxRes.ok)throw new Error("Weather forecast unavailable");
+    const wx=await wxRes.json();
+    const days=wx.daily||{},max=(days.temperature_2m_max||[]).filter(Number.isFinite),min=(days.temperature_2m_min||[]).filter(Number.isFinite),rain=(days.precipitation_probability_max||[]).filter(Number.isFinite);
+    const avgMax=max.length?Math.round(max.reduce((a,b)=>a+b,0)/max.length):null;
+    const avgMin=min.length?Math.round(min.reduce((a,b)=>a+b,0)/min.length):null;
+    const rainMax=rain.length?Math.max(...rain):null;
+    state.destinationInfo={name:place.name||q,country:place.country||"",current:wx.current||{},avgMax,avgMin,rainMax,price:priceSignal(list)};
+  }catch(err){console.warn("Destination intelligence:",err);state.destinationInfoError=err.message||"Destination information unavailable";state.destinationInfo=null}
+  finally{state.destinationInfoBusy=false;renderExplore()}
+}
+function weatherLabel(code){
+  const n=Number(code);
+  if(n===0)return "Clear sky";
+  if(n===1)return "Mainly clear";
+  if(n===2)return "Partly cloudy";
+  if(n===3)return "Overcast";
+  if([45,48].includes(n))return "Foggy";
+  if([51,53,55,56,57].includes(n))return "Drizzle";
+  if([61,63,65,66,67].includes(n))return "Rain";
+  if([71,73,75,77].includes(n))return "Snow";
+  if([80,81,82].includes(n))return "Rain showers";
+  if([85,86].includes(n))return "Snow showers";
+  if([95,96,99].includes(n))return "Thunderstorms";
+  return "Weather available";
+}
+function renderDestinationIntel(list){
+  if(!state.researchTitle)return "";
+  if(state.destinationInfoBusy)return `<section class="dest-intel card card-pad"><div class="label">DESTINATION SNAPSHOT</div><h3 style="margin-top:4px">Checking ${esc(state.researchTitle)}…</h3><p class="dest-intel-note">Fetching current weather and building a local price signal from the places Roam researched.</p></section>`;
+  const d=state.destinationInfo;if(!d)return state.destinationInfoError?`<section class="dest-intel card card-pad"><div class="label">DESTINATION SNAPSHOT</div><p class="dest-intel-note">${esc(state.destinationInfoError)}. Roam can still show the researched places below.</p></section>`:"";
+  const c=d.current||{}, temp=Number.isFinite(c.temperature_2m)?Math.round(c.temperature_2m):null, feels=Number.isFinite(c.apparent_temperature)?Math.round(c.apparent_temperature):null;
+  const rain=d.rainMax!=null?d.rainMax+"%":"—", price=d.price, condition=weatherLabel(c.weather_code);
+  return `<section class="dest-intel card card-pad"><div class="head" style="margin-top:0"><div><div class="label">DESTINATION WEATHER</div><h2>${esc(d.name)}${d.country?`, ${esc(d.country)}`:""}</h2></div><span class="pill">Open-Meteo · Live</span></div><div style="margin-top:10px;font-weight:800;color:var(--brand-ink)">${esc(condition)}</div><div class="dest-intel-grid" style="margin-top:14px"><div class="dest-intel-item"><small>Now</small><strong>${temp!=null?temp+"°C":"—"}</strong><span class="tiny muted">${feels!=null?"Feels "+feels+"°C":"Current temperature"}</span></div><div class="dest-intel-item"><small>7-day high</small><strong>${d.avgMax!=null?d.avgMax+"°C":"—"}</strong><span class="tiny muted">Average forecast high</span></div><div class="dest-intel-item"><small>7-day low</small><strong>${d.avgMin!=null?d.avgMin+"°C":"—"}</strong><span class="tiny muted">Average forecast low</span></div><div class="dest-intel-item"><small>Rain chance</small><strong>${rain}</strong><span class="tiny muted">Highest daily probability</span></div></div><p class="dest-intel-note">Live weather supplied by Open-Meteo. Forecasts are useful for current planning; they are not a guarantee of conditions for a future holiday.</p><p class="dest-intel-note" style="margin-top:5px">Weather data: Open-Meteo, CC BY 4.0.</p></section>`;
+}
 function renderExplore(){
   const area=$("#researchArea");
   $("#researchBtn").disabled=state.busy;
@@ -1900,6 +2048,7 @@ function renderExplore(){
     <div class="head" style="margin-top:0"><h2>Ideas for ${esc(state.researchTitle)}</h2>
       <span class="pill">${state.research.length} result${state.research.length===1?"":"s"}</span></div>
     ${Object.keys(state.brief||{}).length?`<p class="note" style="margin-bottom:14px">🧠 Roam Match uses your saved Holiday DNA to show how closely each result fits the trip you described. It is Roam's score, not a Google rating.</p>`:`<p class="note" style="margin-bottom:14px">Fill in your Holiday Brief to add personalised Roam Match scores. <button class="btn btn-sm" data-act="go" data-view="brief" style="margin-left:8px">Set Holiday DNA</button></p>`}
+    ${renderDestinationIntel(list)}
     ${renderExploreRecommendation(list)}
     <div class="tabs">${tabs.map(t=>
       `<button data-act="research-tab" data-tab="${esc(t)}" aria-pressed="${t===state.researchTab}">${esc(t)}</button>`).join("")}</div>
@@ -1950,6 +2099,7 @@ async function research(){
       reviewSummary:(x.reviewSummary&&x.reviewSummary.text)||x.reviewSummary||"",
       reviewsUrl:x.reviewsUrl||x.mapsUrl||x.googleMapsUri||""
     }));
+    loadDestinationIntel(q,state.research);
   }catch(err){
     if(err.name==="AbortError"||seq!==researchSeq)return;
     console.error("Roam research failed:",err);
@@ -2812,6 +2962,20 @@ const ACT={
       });
   },
 
+  "plan-build":()=>{
+    const h=holiday();if(!h)return;
+    const plan=buildHolidayPlan(h);if(!plan.length){toast('Roam needs some shortlist evidence first','warn');return}
+    confirmSheet('Use Roam’s proposed plan?',plan.length+' days will be added to your existing itinerary. Your current activities will not be removed.', 'Add to itinerary',()=>{
+      const existing=new Set(h.activities.map(a=>String(a.name||'').trim().toLowerCase()));
+      plan.forEach(d=>d.rows.forEach(r=>{
+        const key=String(r.name||'').trim().toLowerCase();
+        if(existing.has(key))return;
+        h.activities.push(normActivity({day:d.day,time:r.time,name:r.name,type:r.type,note:'Proposed by Roam from your Holiday DNA and shortlist.'}));
+        existing.add(key);
+      }));
+      persist();toast('Roam plan added to your itinerary');show('itinerary');
+    });
+  },
   "act-add":el=>{
     const h=holiday();
     if(!h){toast("Create a holiday first");return}
