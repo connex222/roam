@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- ROAM v42.5 — Date-aware Open-Meteo weather. -->
+<!-- ROAM v43.0 — Consolidation: one stylesheet, real match scoring, working date-aware weather. -->
 <html lang="en-GB" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -16,42 +16,75 @@
 <title>Roam — holiday planner</title>
 <style>
 /* ============================================================
+   ROAM — STYLESHEET
+   One block. Every colour comes from a token defined in section 1.
+   Both themes are defined for every token, so no rule below needs
+   a theme-specific override and there are no !important patches.
+
+   Adding a colour? Add a token. If you find yourself typing a hex
+   value below line 120, that is the bug.
+
+   NETWORK: this file is not offline. Roam talks to three hosts —
+   the configured research endpoint (places, photos) and
+   geocoding-api.open-meteo.com / api.open-meteo.com (weather).
+   Everything else, including fonts, is local. To bundle a webfont,
+   paste a base64 woff2 @font-face here and prepend the family to
+   --font-display / --font-body.
+   ============================================================ */
+
+/* ============================================================
    1. TOKENS
-   Theme is resolved in JS and written to <html data-theme>.
-   Light theme is high-contrast for direct sunlight; dark theme
-   is low-glare for night use.
-   To bundle a webfont, paste a base64 woff2 @font-face here and
-   prepend the family to --font-display / --font-body. Nothing
-   else in this file makes a network request.
+   Light is high-contrast for direct sunlight, dark is low-glare
+   for night use. Text tokens are checked to 4.5:1 against their
+   intended background in both themes.
    ============================================================ */
 :root{
   --font-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
   --font-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --r-sm:10px; --r-md:14px; --r-lg:20px; --r-pill:999px;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r-sm:12px; --r-md:16px; --r-lg:20px; --r-xl:24px; --r-pill:999px;
   --pad:clamp(16px,4vw,40px);
   --tap:44px;
 }
 :root[data-theme="light"]{
-  --bg:#f4f3ee; --surface:#fff; --surface-2:#ebeee7; --sunk:#f7f8f4;
-  --line:#d5d8ce; --line-soft:#e6e8e0;
-  --ink:#111a16; --ink-2:#4b5751; --ink-3:#6d7973;
-  --brand:#0f5645; --brand-soft:#d6e7df; --brand-ink:#0b4034; --on-brand:#fff;
-  --accent:#a94c19; --gold:#7a5210;
-  --ok:#1c6b52; --ok-bg:#e2f0e9; --bad:#9a3a3a; --bad-bg:#fbeceb;
-  --hero-a:#dfeae4; --hero-b:#f0e5d0;
-  --shadow:0 6px 18px rgba(14,30,24,.08);
-  --scrim:rgba(12,24,20,.55);
+  --bg:#f4fbfc; --surface:#ffffff; --surface-2:#e5f5f8; --sunk:#eef8fa;
+  --line:#bcd9e0; --line-soft:#d7e9ed;
+  --ink:#08364a; --ink-2:#2c5666; --ink-3:#55707a;
+  --brand:#076e83; --brand-soft:#d8f1f5; --brand-ink:#07556b; --on-brand:#ffffff;
+  --brand-deep:#064b5f; --brand-2:#0d7f99; --on-deep:#ffffff; --deep-ink-2:#b9dfe9;
+  --accent:#a8442c; --gold:#7d5c04; --gold-2:#c08c12;
+  --ok:#06705d; --ok-bg:#dff5ef; --ok-line:#8ccfbe;
+  --bad:#96323f; --bad-bg:#fce8ed; --bad-line:#e0adb8;
+  --warn-bg:#fff6e2; --warn-line:#dcc389; --warn-ink:#61490a;
+  --hero-a:#d5f2f7; --hero-b:#eefafd; --hero-c:#fff1d8;
+  --hero-ink:#073e52; --hero-ink-2:#2c5666;
+  --code-bg:#06323f; --code-ink:#dff8fb; --code-line:#1a6676;
+  --shadow:0 6px 18px rgba(5,65,82,.09);
+  --shadow-lg:0 14px 34px rgba(4,60,76,.14);
+  --scrim:rgba(4,35,46,.58);
+  --wash:rgba(13,127,153,.09);
+  --glass:rgba(255,255,255,.86);
+  --glass-line:rgba(255,255,255,.9);
 }
 :root[data-theme="dark"]{
-  --bg:#0e1412; --surface:#18211e; --surface-2:#212c28; --sunk:#131b19;
-  --line:#2e3b36; --line-soft:#26322e;
-  --ink:#eef3f0; --ink-2:#a7b4ae; --ink-3:#8b9892;
-  --brand:#6cc3a6; --brand-soft:#1b2f28; --brand-ink:#8fd4bb; --on-brand:#08201a;
-  --accent:#e28b57; --gold:#d3b06a;
-  --ok:#7fcfaf; --ok-bg:#162a23; --bad:#e79a9a; --bad-bg:#2c1c1c;
-  --hero-a:#1d2c27; --hero-b:#2a2820;
-  --shadow:0 10px 28px rgba(0,0,0,.5);
-  --scrim:rgba(0,0,0,.66);
+  --bg:#071316; --surface:#0f2126; --surface-2:#183338; --sunk:#0c1c20;
+  --line:#2b4c55; --line-soft:#203c43;
+  --ink:#e8f5f7; --ink-2:#a8c4cc; --ink-3:#83a0a8;
+  --brand:#43b8d1; --brand-soft:#12333b; --brand-ink:#7fd2e4; --on-brand:#04222a;
+  --brand-deep:#0a2a33; --brand-2:#2e9cb5; --on-deep:#e8f5f7; --deep-ink-2:#8fbac6;
+  --accent:#f19878; --gold:#dfba64; --gold-2:#b8912f;
+  --ok:#5ec9ab; --ok-bg:#0e2a24; --ok-line:#2b6b5c;
+  --bad:#f0a3af; --bad-bg:#2a1620; --bad-line:#6a3542;
+  --warn-bg:#2a2212; --warn-line:#5d4d23; --warn-ink:#f3e0aa;
+  --hero-a:#0e2a31; --hero-b:#0a2025; --hero-c:#292312;
+  --hero-ink:#e8f5f7; --hero-ink-2:#a8c4cc;
+  --code-bg:#051a20; --code-ink:#cfeef4; --code-line:#1d4b56;
+  --shadow:0 8px 22px rgba(0,0,0,.45);
+  --shadow-lg:0 16px 40px rgba(0,0,0,.55);
+  --scrim:rgba(0,0,0,.68);
+  --wash:rgba(67,184,209,.07);
+  --glass:rgba(16,38,44,.86);
+  --glass-line:rgba(126,196,214,.28);
 }
 
 /* ============================================================
@@ -60,9 +93,12 @@
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
-  margin:0;background:var(--bg);color:var(--ink);
+  margin:0;color:var(--ink);
   font:400 16px/1.55 var(--font-body);
   min-height:100dvh;
+  background:
+    radial-gradient(circle at 8% 0%,var(--wash),transparent 28%),
+    var(--bg);
 }
 h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.12;margin:0}
 h1{font-size:clamp(30px,5vw,46px);letter-spacing:-.01em}
@@ -82,76 +118,6 @@ button,input,select,textarea{font:inherit;color:inherit}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
-
-/* v41.0 — dark-mode readability fix carried forward */
-:root[data-theme="dark"] .v434-recommend-item,
-:root[data-theme="dark"] .v435-decision,
-:root[data-theme="dark"] .btn,
-:root[data-theme="dark"] .field,
-:root[data-theme="dark"] .tabs button,
-:root[data-theme="dark"] .short-compare,
-:root[data-theme="dark"] .final-decision,
-:root[data-theme="dark"] .dna-card,
-:root[data-theme="dark"] .dna-panel,
-:root[data-theme="dark"] .brief-card,
-:root[data-theme="dark"] .modal-card,
-:root[data-theme="dark"] .stat,
-:root[data-theme="dark"] .empty,
-:root[data-theme="dark"] .setup,
-:root[data-theme="dark"] .research-source,
-:root[data-theme="dark"] .shot {
-  background:var(--surface) !important;
-  color:var(--ink);
-  border-color:var(--line) !important;
-}
-:root[data-theme="dark"] .short-compare-top,
-:root[data-theme="dark"] .final-decision-stat,
-:root[data-theme="dark"] .v435-driver {
-  background:var(--surface-2) !important;
-  color:var(--ink);
-  border-color:var(--line) !important;
-}
-:root[data-theme="dark"] .final-decision-next {
-  background:#302a1b !important;
-  color:#f4e6bd;
-  border-color:#65552e !important;
-}
-:root[data-theme="dark"] .short-compare-item.winner {background:#193329 !important}
-:root[data-theme="dark"] .v434-recommend-score,
-:root[data-theme="dark"] .short-compare-score,
-:root[data-theme="dark"] .act-time,
-:root[data-theme="dark"] .v435-driver {color:#8fdac3}
-:root[data-theme="dark"] .v434-recommend-item h3,
-:root[data-theme="dark"] .v434-recommend-item p,
-:root[data-theme="dark"] .v435-decision h3,
-:root[data-theme="dark"] .short-compare-item h3,
-:root[data-theme="dark"] .final-decision h3,
-:root[data-theme="dark"] .stat b,
-:root[data-theme="dark"] .head h2,
-:root[data-theme="dark"] .place-body h3,
-:root[data-theme="dark"] #v-brief h3 {color:var(--ink) !important}
-:root[data-theme="dark"] .v434-recommend-item .muted,
-:root[data-theme="dark"] .v435-decision .muted,
-:root[data-theme="dark"] .stat .muted,
-:root[data-theme="dark"] #v-brief .small.muted,
-:root[data-theme="dark"] .view-head .muted {color:var(--ink-2) !important}
-:root[data-theme="dark"] #v-brief>.card.card-pad:first-of-type {
-  background:linear-gradient(135deg,#182f2b 0%,#1c2927 100%);
-  border-color:#31534c;
-}
-:root[data-theme="dark"] #v-brief>.card.card-pad:first-of-type:before {background:#23463f;color:#9fe1d5}
-:root[data-theme="dark"] #v-brief .fld>span {color:#b7ddd5}
-:root[data-theme="dark"] #v-brief .field {background:#18211e;border-color:#38504a;color:var(--ink)}
-:root[data-theme="dark"] #v-brief .field:focus {border-color:#6cc3a6}
-:root[data-theme="dark"] #v-brief>.dna-card {background:linear-gradient(135deg,#0b3935 0%,#0e5b57 100%)}
-:root[data-theme="dark"] .note,
-:root[data-theme="dark"] .chip {background:var(--surface-2);color:var(--ink-2);border-color:var(--line)}
-:root[data-theme="dark"] .empty {background:linear-gradient(135deg,#182a28,#29261e) !important}
-:root[data-theme="dark"] .day-top {background:var(--surface-2);border-bottom-color:var(--line)}
-:root[data-theme="dark"] .bar {background:#2b3b36}
-:root[data-theme="dark"] .ring::after {background:var(--surface)}
-:root[data-theme="dark"] .explore-tools .btn-quiet {background:var(--surface-2);color:#a9dfd1;border-color:var(--line)}
-
 /* ============================================================
    3. CONTROLS
    ============================================================ */
@@ -160,21 +126,22 @@ button{cursor:pointer;border:1px solid transparent;background:none;border-radius
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:7px;
   min-height:var(--tap);padding:10px 16px;border-radius:var(--r-sm);
-  font-weight:600;font-size:15px;text-decoration:none;
-  background:var(--surface-2);border:1px solid var(--line);color:var(--ink);
+  font-weight:700;font-size:15px;text-decoration:none;
+  background:var(--surface);border:1px solid var(--line);color:var(--brand-ink);
   transition:background .15s ease,border-color .15s ease;
 }
-.btn:hover{background:var(--line-soft)}
+.btn:hover{background:var(--surface-2);border-color:var(--brand)}
 .btn:active{transform:translateY(1px)}
 .btn[disabled]{opacity:.42;cursor:not-allowed;transform:none}
 .btn-primary{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
-.btn-primary:hover{filter:brightness(1.08);background:var(--brand)}
-.btn-quiet{background:none;border-color:transparent;color:var(--ink-2)}
-.btn-quiet:hover{background:var(--surface-2);color:var(--ink)}
-.btn-danger{color:var(--bad)}
+.btn-primary:hover{background:var(--brand-2);border-color:var(--brand-2)}
+.btn-quiet{background:var(--surface-2);border-color:var(--line);color:var(--brand-ink)}
+.btn-quiet:hover{background:var(--brand-soft)}
+.btn-danger{color:var(--bad);border-color:var(--bad-line)}
+.btn-danger:hover{background:var(--bad-bg);border-color:var(--bad)}
 .btn-sm{min-height:40px;padding:7px 12px;font-size:13px}
 .act-tools .btn,.mnav button,.tabs button{-webkit-user-select:none;user-select:none}
-@media(pointer:coarse){.act-tools .btn,.tabs button,.line-row .btn{min-height:var(--tap)}}
+@media(pointer:coarse){.act-tools .btn,.tabs button{min-height:var(--tap)}}
 .btn-icon{min-width:var(--tap);padding:8px}
 .field{
   width:100%;min-height:var(--tap);padding:10px 13px;
@@ -182,37 +149,29 @@ button{cursor:pointer;border:1px solid transparent;background:none;border-radius
   color:var(--ink);
 }
 .field::placeholder{color:var(--ink-3)}
+.field:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--wash);outline:none}
 textarea.field{min-height:84px;resize:vertical;line-height:1.5}
 select.field{appearance:none;padding-right:34px;
   background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
   background-position:calc(100% - 18px) 50%,calc(100% - 12px) 50%;
   background-size:6px 6px,6px 6px;background-repeat:no-repeat}
+input[type=range]{accent-color:var(--brand)}
 .fld{display:block}
 .fld>span{display:block;margin-bottom:5px;font-size:13px;font-weight:600;color:var(--ink-2)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
 .form-grid .wide{grid-column:1/-1}
 @media(max-width:640px){.form-grid{grid-template-columns:1fr}}
 
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
 .card-pad{padding:clamp(16px,2.5vw,22px)}
 .pill{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:var(--r-pill);
   background:var(--brand-soft);color:var(--brand-ink);font-size:12px;font-weight:700}
 .pill-line{background:none;border:1px solid var(--line);color:var(--ink-2)}
-.label{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.02em}
-.head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:26px 0 13px;flex-wrap:wrap}
+.label{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:28px 0 12px;flex-wrap:wrap}
 .head :where(h2,h3){margin:0}
+.head h2{color:var(--ink)}
 .divide{border:0;border-top:1px solid var(--line-soft);margin:16px 0}
-
-
-/* ============================================================
-   v40.0 BUDGET REALITY
-   ============================================================ */
-.budget-reality-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-.budget-reality-stat{padding:13px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--sunk)}
-.budget-reality-stat small{display:block;color:var(--ink-2);font-size:12px;margin-bottom:4px}
-.budget-reality-stat strong{font-size:20px}
-.budget-reality-warn{margin-top:12px;padding:12px 14px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--sunk);font-size:13.5px}
-@media(max-width:640px){.budget-reality-grid{grid-template-columns:1fr}}
 
 /* ============================================================
    4. SHELL
@@ -220,97 +179,116 @@ select.field{appearance:none;padding-right:34px;
 .top{
   position:sticky;top:0;z-index:20;
   display:flex;align-items:center;gap:22px;
-  padding:11px var(--pad);
-  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:10px max(var(--pad),24px);
+  background:var(--brand-deep);color:var(--on-deep);
+  border-bottom:1px solid var(--line);
+  box-shadow:var(--shadow);
 }
-.brand{font-family:var(--font-display);font-size:27px;color:var(--brand-ink);line-height:1}
-.brand small{display:block;font-family:var(--font-body);font-size:11px;color:var(--ink-3);letter-spacing:.06em;margin-top:2px}
-.nav{display:flex;gap:2px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.brand{font-family:var(--font-display);font-size:30px;color:var(--on-deep);line-height:1;letter-spacing:.04em}
+.brand small{display:block;font-family:var(--font-body);font-size:11px;color:var(--deep-ink-2);letter-spacing:.18em;margin-top:2px}
+.nav{display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
-.nav button{min-height:38px;padding:8px 12px;border-radius:var(--r-sm);color:var(--ink-2);font-size:14px;font-weight:600}
-.nav button:hover{background:var(--surface-2);color:var(--ink)}
-.nav button[aria-current="page"]{background:var(--brand-soft);color:var(--brand-ink)}
+.nav button{min-height:38px;padding:8px 12px;border-radius:11px;color:var(--deep-ink-2);font-size:14px;font-weight:600}
+.nav button:hover{background:var(--brand-2);color:var(--on-deep)}
+.nav button[aria-current="page"]{background:var(--brand-2);color:var(--on-deep)}
 .top-end{margin-left:auto;display:flex;gap:8px;align-items:center}
-.shell{max-width:1180px;margin:0 auto;padding:26px var(--pad) 80px}
+.top-end .btn{background:transparent;color:var(--on-deep);border-color:var(--glass-line)}
+.top-end .btn:hover{background:var(--brand-2);border-color:var(--brand-2)}
+.top-end .btn-primary{background:var(--surface);color:var(--brand-ink);border-color:var(--surface)}
+.top-end .btn-primary:hover{background:var(--brand-soft);border-color:var(--brand-soft);color:var(--brand-ink)}
+.shell{max-width:1240px;margin:0 auto;padding:28px var(--pad) 80px}
 .view{display:none}
 .view.on{display:block}
-.view>.intro{max-width:62ch;margin-bottom:6px}
+.view>.intro{display:block;max-width:62ch;margin-bottom:6px;color:var(--ink-2)}
 
 /* mobile navigation */
 .mnav,.mmore{display:none}
 @media(max-width:1024px){
   .nav{display:none}
   .top{gap:12px;padding:9px 16px}
-  .brand{font-size:23px}
+  .brand{font-size:24px}
   .shell{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
   .mnav{
     display:grid;grid-template-columns:repeat(6,1fr);gap:2px;
     position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:30;
     padding:6px;background:var(--surface);border:1px solid var(--line);
-    border-radius:18px;box-shadow:var(--shadow);
+    border-radius:18px;box-shadow:var(--shadow-lg);
   }
-  .mnav button{min-height:54px;border-radius:13px;font-size:10px;font-weight:700;color:var(--ink-2);display:grid;gap:2px;place-items:center;padding:4px 2px}
+  .mnav button{min-height:54px;border-radius:13px;font-size:10px;font-weight:700;color:var(--ink-2);
+    display:grid;gap:2px;place-items:center;padding:4px 2px;white-space:nowrap;overflow:hidden}
   .mnav button[aria-current="page"]{background:var(--brand-soft);color:var(--brand-ink)}
   .mnav .gl{font-size:18px;line-height:1}
-  .mnav button{white-space:nowrap;overflow:hidden}
   .mmore{
     display:none;position:fixed;left:8px;right:8px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:30;
-    padding:8px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
+    padding:8px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);
     grid-template-columns:repeat(2,1fr);gap:6px;
   }
   .mmore.open{display:grid}
-  .mmore button{min-height:var(--tap);border-radius:11px;font-weight:600;background:var(--sunk);border:1px solid var(--line-soft)}
+  .mmore button{min-height:var(--tap);border-radius:11px;font-weight:600;background:var(--sunk);
+    border:1px solid var(--line-soft);color:var(--ink)}
 }
-
 @media(max-width:380px){
   .mnav{gap:0;padding:5px}
   .mnav button{font-size:9px;letter-spacing:-.02em}
   .mnav .gl{font-size:17px}
+}
+@media(max-width:700px){
+  .shell{padding-top:18px}
+  .head{margin-top:22px}
 }
 
 /* ============================================================
    5. PATTERNS
    ============================================================ */
 .hero{
-  border:1px solid var(--line);border-radius:var(--r-lg);
-  padding:clamp(20px,3.5vw,34px);
-  background:linear-gradient(135deg,var(--hero-a),var(--hero-b));
+  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--r-xl);
+  padding:clamp(24px,4.5vw,48px);
+  background:linear-gradient(120deg,var(--hero-a) 0%,var(--hero-b) 48%,var(--hero-c) 100%);
+  box-shadow:var(--shadow);
 }
-.hero h1{margin:6px 0 12px;max-width:22ch}
-.hero p{max-width:56ch;color:var(--ink-2)}
+.hero::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;
+  right:-120px;top:-170px;background:var(--wash)}
+.hero>*{position:relative;z-index:1}
+.hero h1{margin:6px 0 12px;max-width:18ch;font-size:clamp(34px,5vw,54px);color:var(--hero-ink)}
+.hero p{max-width:56ch;color:var(--hero-ink-2)}
+.hero .label{color:var(--brand-ink);letter-spacing:.16em}
 .hero .row{margin-top:20px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px}
-.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 16px}
-.stat b{display:block;font-size:26px;font-weight:700;line-height:1.2}
+@media(max-width:700px){.hero{border-radius:18px}}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:14px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:26px;font-weight:700;line-height:1.2;color:var(--brand-ink)}
 .stat span{font-size:12.5px;color:var(--ink-2)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:16px}
 .tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 12px;-webkit-overflow-scrolling:touch}
 .tabs button{white-space:nowrap;min-height:38px;padding:8px 14px;border-radius:var(--r-pill);
   background:var(--surface);border:1px solid var(--line);color:var(--ink-2);font-size:13.5px;font-weight:600}
-.tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.tabs button:hover{border-color:var(--brand)}
+.tabs button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
 .empty{
   grid-column:1/-1;text-align:center;padding:44px 22px;
-  border:1px dashed var(--line);border-radius:var(--r-lg);background:var(--sunk);
+  border:1px dashed var(--line);border-radius:var(--r-xl);
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-c));
 }
 .empty .gl{font-size:38px;line-height:1;margin-bottom:8px}
-.empty h3{margin-bottom:6px}
-.empty p{max-width:46ch;margin:0 auto;color:var(--ink-2)}
+.empty h3{margin-bottom:6px;color:var(--hero-ink)}
+.empty p{max-width:46ch;margin:0 auto;color:var(--hero-ink-2)}
 .empty .btn{margin-top:16px}
-.note{padding:12px 14px;border-radius:var(--r-sm);background:var(--sunk);border:1px solid var(--line-soft);font-size:13.5px;color:var(--ink-2)}
-.note-bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
-.note-ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.note{padding:12px 14px;border-radius:var(--r-sm);background:var(--sunk);
+  border:1px solid var(--line-soft);font-size:13.5px;color:var(--ink-2)}
+.note-warn{background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-ink)}
 .bar{height:9px;background:var(--surface-2);border-radius:var(--r-pill);overflow:hidden}
-.bar>span{display:block;height:100%;background:var(--brand);border-radius:var(--r-pill)}
+.bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:var(--r-pill)}
 
 /* thumbnail with glyph fallback behind the image — no inline onerror */
-.thumb{position:relative;height:148px;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--hero-a),var(--hero-b));font-size:42px}
+.thumb{position:relative;height:170px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-c));font-size:42px}
 .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 img.img-failed{display:none!important}
 
-.place{overflow:hidden;display:flex;flex-direction:column}
+.place{overflow:hidden;display:flex;flex-direction:column;border-radius:18px}
 .place-body{padding:15px;display:flex;flex-direction:column;flex:1;gap:7px}
-.place-body h3{font-size:19px}
+.place-body h3{font-size:19px;color:var(--ink)}
 .place-body .desc{font-size:13.5px;color:var(--ink-2);flex:1}
 .place-body .row{margin-top:auto}
 .score{font-weight:700;color:var(--gold);font-size:14px}
@@ -322,14 +300,17 @@ img.img-failed{display:none!important}
 .dna-row{display:grid;grid-template-columns:minmax(150px,180px) 1fr 42px;gap:12px;align-items:center}
 .dna-name{font-size:13.5px;font-weight:700}
 .dna-bar{height:10px;background:var(--surface-2);border-radius:var(--r-pill);overflow:hidden}
-.dna-bar span{display:block;height:100%;background:var(--brand);border-radius:var(--r-pill)}
+.dna-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--gold-2));border-radius:var(--r-pill)}
 .dna-value{text-align:right;font-size:13px;font-weight:700;color:var(--brand-ink)}
-.dna-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--line);border-radius:var(--r-pill);background:var(--sunk);font-size:12px;font-weight:700}
 @media(max-width:640px){.dna-row{grid-template-columns:1fr 42px;gap:6px 10px}.dna-name{grid-column:1/-1}.dna-bar{grid-column:1}.dna-value{grid-column:2;grid-row:2}}
+
 .ring{width:60px;height:60px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;position:relative;
   background:conic-gradient(var(--brand) var(--pct,0%),var(--surface-2) 0)}
 .ring::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--surface)}
-.ring b{position:relative;font-size:13px}
+.ring b{position:relative;font-size:13px;color:var(--ink)}
+.ring-none{background:var(--surface-2)}
+.ring-none b{color:var(--ink-3)}
+
 .checks{display:grid;gap:4px;margin-top:12px}
 .check{display:flex;align-items:center;gap:9px;padding:7px 0;font-size:14px;border-bottom:1px solid var(--line-soft)}
 .check:last-child{border-bottom:0}
@@ -337,18 +318,17 @@ img.img-failed{display:none!important}
 .check.done{color:var(--ok)}
 .check .txt{flex:1}
 
-.line-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft)}
-.line-row:last-child{border-bottom:0}
 .chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .chip{padding:11px 13px;border:1px solid var(--line-soft);border-radius:var(--r-sm);background:var(--sunk)}
 .chip small{display:block;color:var(--ink-3);font-size:12px;margin-bottom:2px}
 .chip b{font-size:14.5px;font-weight:600}
 
-.day{border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);overflow:hidden}
-.day-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;background:var(--sunk);border-bottom:1px solid var(--line-soft)}
+.day{border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden;box-shadow:var(--shadow)}
+.day-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;
+  background:var(--surface-2);border-bottom:1px solid var(--line-soft)}
 .act{display:grid;grid-template-columns:88px 1fr auto;gap:12px;align-items:center;padding:13px 16px;border-bottom:1px solid var(--line-soft)}
 .act:last-child{border-bottom:0}
-.act-time{font-size:13px;font-weight:700;color:var(--ink-2)}
+.act-time{font-size:13px;font-weight:700;color:var(--brand-ink)}
 .act-name{font-weight:600}
 .act-meta{font-size:12.5px;color:var(--ink-3)}
 .act-tools{display:flex;gap:4px}
@@ -357,21 +337,23 @@ img.img-failed{display:none!important}
   .act-tools{justify-content:flex-start}
 }
 .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:11px}
-.shot{position:relative;aspect-ratio:1;border-radius:var(--r-md);overflow:hidden;background:var(--surface-2)}
+.shot{position:relative;aspect-ratio:1;border-radius:var(--r-md);overflow:hidden;
+  background:var(--surface-2);border:1px solid var(--line)}
 .shot img{width:100%;height:100%;object-fit:cover;display:block}
 .shot button{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;
   background:var(--scrim);color:#fff;font-size:15px;line-height:1}
-.drop{padding:32px 20px;text-align:center;border:2px dashed var(--line);border-radius:var(--r-lg);background:var(--sunk)}
+.drop{padding:32px 20px;text-align:center;border:2px dashed var(--line);border-radius:var(--r-xl);
+  background:var(--sunk);box-shadow:var(--shadow)}
 .drop.over{border-color:var(--brand);background:var(--brand-soft)}
-pre.api{white-space:pre-wrap;word-break:break-word;background:var(--sunk);border:1px solid var(--line-soft);
-  border-radius:var(--r-sm);padding:13px;font-size:12px;line-height:1.5;overflow-x:auto;
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre.api{white-space:pre-wrap;word-break:break-word;background:var(--code-bg);color:var(--code-ink);
+  border:1px solid var(--code-line);border-radius:var(--r-sm);padding:13px;font-size:12px;line-height:1.5;
+  overflow-x:auto;font-family:var(--font-mono)}
 .dot{width:9px;height:9px;border-radius:50%;background:var(--ink-3);flex:0 0 auto}
 .dot.ok{background:var(--ok)}
 .dot.bad{background:var(--bad)}
 
 /* ============================================================
-   6. MODAL (one implementation) + TOAST
+   6. MODAL + TOAST
    ============================================================ */
 .modal{
   display:none;position:fixed;inset:0;z-index:60;
@@ -382,7 +364,7 @@ pre.api{white-space:pre-wrap;word-break:break-word;background:var(--sunk);border
 body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .modal-card{
   width:min(680px,100%);margin:0 auto;background:var(--surface);
-  border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);
+  border:1px solid var(--line);border-radius:var(--r-xl);box-shadow:var(--shadow-lg);
   padding:clamp(16px,3vw,24px);
 }
 .modal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
@@ -390,7 +372,8 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .modal-foot .btn{flex:1 1 auto;min-width:130px}
 @media(min-width:560px){.modal-foot .btn{flex:0 0 auto}}
 .detail-hero{height:250px;border-radius:var(--r-md);overflow:hidden;margin-bottom:16px;
-  background:linear-gradient(135deg,var(--hero-a),var(--hero-b));display:grid;place-items:center;font-size:44px;position:relative}
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-c));display:grid;place-items:center;
+  font-size:44px;position:relative}
 .detail-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 @media(max-width:600px){.detail-hero{height:180px}}
 .review{padding:12px 0;border-top:1px solid var(--line-soft)}
@@ -399,8 +382,8 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 #toast{
   position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translate(-50%,12px);
   z-index:90;max-width:min(420px,92vw);padding:12px 16px;border-radius:var(--r-sm);
-  background:var(--ink);color:var(--bg);font-size:14px;font-weight:600;
-  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;
+  background:var(--brand-deep);color:var(--on-deep);font-size:14px;font-weight:600;
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;
   display:flex;align-items:center;gap:14px;
 }
 #toast.has-action{pointer-events:auto}
@@ -409,9 +392,15 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 @media(min-width:1025px){#toast{bottom:24px}}
 
-/* v40.0 shortlist comparison */
-.short-compare{margin:0 0 18px;border:1px solid var(--brand);background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
-.short-compare-top{padding:16px 18px;background:var(--brand-soft);border-bottom:1px solid var(--line-soft)}
+/* ============================================================
+   7. SHORTLIST COMPARISON
+   ============================================================ */
+.short-compare{margin:0 0 18px;border:1px solid var(--brand);background:var(--surface);
+  border-radius:var(--r-xl);box-shadow:var(--shadow);overflow:hidden}
+.short-compare-top{padding:16px 18px;background:linear-gradient(90deg,var(--hero-a),var(--hero-c));
+  border-bottom:1px solid var(--line-soft)}
+.short-compare-top h2,.short-compare-top .label{color:var(--hero-ink)}
+.short-compare-top .muted{color:var(--hero-ink-2)}
 .short-compare-grid{display:grid;grid-template-columns:repeat(3,1fr)}
 .short-compare-item{padding:16px;border-right:1px solid var(--line-soft)}
 .short-compare-item:last-child{border-right:0}
@@ -419,297 +408,201 @@ body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
 .short-compare-item h3{font-size:17px;margin:7px 0}
 .short-compare-score{font-size:26px;font-weight:700;color:var(--brand-ink)}
 .short-compare-meta{font-size:12.5px;color:var(--ink-2);margin-top:5px}
-@media(max-width:720px){.short-compare-grid{grid-template-columns:1fr}.short-compare-item{border-right:0;border-bottom:1px solid var(--line-soft)}.short-compare-item:last-child{border-bottom:0}}
-
-/* ================= V43.4 ROAM RECOMMENDATION ================= */
-.v434-recommend{position:relative;z-index:1;margin:22px 0 18px;border:1px solid var(--brand);border-radius:18px;padding:18px;background:linear-gradient(135deg,#fbfdfc,#f7faf8);overflow:visible}
-.v434-recommend-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
-.v434-recommend-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.v434-recommend-item{border:1px solid var(--line-soft);border-radius:14px;padding:13px;background:#fff}
-.v434-recommend-item.top{border-color:var(--brand)}
-.v434-recommend-score{font-size:25px;font-weight:900;margin-top:8px}
-.v435-decision{margin-top:14px;padding:14px;border-radius:14px;background:#fff;border:1px solid var(--line-soft)}
-.v435-drivers{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
-.v435-driver{padding:6px 9px;border-radius:999px;background:var(--soft);font-size:12px;font-weight:700}
-@media(max-width:800px){.v434-recommend-grid{grid-template-columns:1fr}.v434-recommend-head{display:block}}
-
-/* v40.0 — Clean Baseline */
-.final-decision{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
-.final-decision h3{margin:0 0 6px}.final-decision-intro{margin:0 0 14px;color:var(--muted)}
-.final-decision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
-.final-decision-stat{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
-.final-decision-stat strong{display:block;font-size:20px}.final-decision-stat span{font-size:12px;color:var(--muted)}
-.final-decision-next{margin-top:14px;padding:12px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
-.final-decision-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-
-
+.short-compare-foot{padding:12px 18px;border-top:1px solid var(--line-soft);font-size:13px;color:var(--ink-2)}
+@media(max-width:720px){
+  .short-compare-grid{grid-template-columns:1fr}
+  .short-compare-item{border-right:0;border-bottom:1px solid var(--line-soft)}
+  .short-compare-item:last-child{border-bottom:0}
+}
 
 /* ============================================================
-   ROAM v41.0 — WHOLE-SITE VISUAL RESKIN
-   Extends the approved Explore palette across every view.
-   Layout, data, navigation behaviour and backend are unchanged.
+   8. BUDGET REALITY
    ============================================================ */
-:root{
-  --bg:#f4fbfc;
-  --surface:#ffffff;
-  --surface-2:#e5f5f8;
-  --sunk:#eef8fa;
-  --line:#c8e1e7;
-  --line-soft:#dcecef;
-  --ink:#08364a;
-  --ink-2:#315b6b;
-  --ink-3:#6c8792;
-  --brand:#087e96;
-  --brand-soft:#d8f1f5;
-  --brand-ink:#07556b;
-  --on-brand:#ffffff;
-  --accent:#e85d75;
-  --gold:#f4b51f;
-  --ok:#07866f;
-  --ok-bg:#dff5ef;
-  --bad:#a74355;
-  --bad-bg:#fce8ed;
-  --hero-a:#d5f2f7;
-  --hero-b:#fff2d8;
-  --shadow:0 10px 28px rgba(5,65,82,.10);
-  --scrim:rgba(4,35,46,.58);
-}
-
-body{
-  background:
-    radial-gradient(circle at 8% 0%,rgba(31,173,196,.09),transparent 28%),
-    linear-gradient(180deg,#f8fdfe 0%,#eef8fa 100%);
-  color:var(--ink);
-}
-
-/* Header */
-.top{
-  background:#064b5f;
-  border-bottom:0;
-  box-shadow:0 4px 18px rgba(3,48,61,.18);
-  color:#fff;
-  padding:10px max(var(--pad),24px);
-}
-.brand{color:#fff;letter-spacing:.04em;font-size:30px}
-.brand small{color:rgba(255,255,255,.72);letter-spacing:.18em}
-.nav{gap:5px}
-.nav button{color:rgba(255,255,255,.88);border-radius:11px}
-.nav button:hover{background:rgba(255,255,255,.10);color:#fff}
-.nav button[aria-current="page"]{background:#1595ad;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-.top-end .btn-quiet{color:#fff;background:transparent;border-color:rgba(255,255,255,.24)}
-.top-end .btn-primary{background:#fff;color:#07556b;border-color:#fff}
-.top-end .btn-primary:hover{background:#e9fbfd}
-
-.shell{max-width:1240px;padding-top:28px}
-.view>.intro{color:var(--ink-2)}
-
-/* Global cards and controls */
-.card,.stat,.day,.place,.short-compare,.final-decision,.note,.drop,.v434-recommend{
-  border-color:var(--line);
-  box-shadow:var(--shadow);
-}
-.card,.stat,.day,.place{background:var(--surface)}
-.btn{border-color:#a9ced6;background:#fff;color:var(--brand-ink);border-radius:12px;font-weight:700}
-.btn:hover{background:#eaf8fa;border-color:#79b8c6}
-.btn-primary{background:var(--brand);border-color:var(--brand);color:#fff}
-.btn-primary:hover{background:#066b80;border-color:#066b80}
-.btn-quiet{background:var(--surface-2);color:var(--brand-ink);border-color:var(--line)}
-.field,.select,.textarea,select,input,textarea{
-  border-color:#b9d7de!important;background:#fff!important;color:var(--ink)!important;border-radius:12px;
-}
-.field:focus,.select:focus,input:focus,select:focus,textarea:focus{border-color:var(--brand)!important;box-shadow:0 0 0 3px rgba(8,126,150,.12)}
-.tabs button{background:#fff;border-color:var(--line);color:var(--ink-2)}
-.tabs button[aria-pressed="true"]{background:#07556b;border-color:#07556b;color:#fff}
-.chip{background:#edf9fb;border-color:#c5e3e9}
-.chip small{color:var(--ink-3)}
-.empty{background:linear-gradient(135deg,#edf9fb,#fff8ed);border-color:#b9dce3}
-.note{background:#edf9fb;color:var(--ink-2)}
-.note-ok{background:var(--ok-bg);border-color:#9dd9ca;color:#08705f}
-
-/* Home / landing */
-.hero{
-  position:relative;overflow:hidden;border:0;border-radius:24px;padding:clamp(28px,5vw,52px);
-  background:linear-gradient(120deg,#d5f3f7 0%,#eefafd 48%,#fff1d8 100%);
-  box-shadow:var(--shadow);
-}
-.hero::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;right:-120px;top:-170px;background:rgba(20,154,177,.16)}
-.hero>*{position:relative;z-index:1}
-.hero h1{color:#073e52;max-width:18ch;font-size:clamp(36px,5vw,58px)}
-.hero p{color:#315d6e}
-.hero .label{color:#087e96;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
-.stats{gap:14px}
-.stat{border-radius:18px;padding:16px 18px}
-.stat b{color:#07556b}
-
-/* Section headings */
-.head{margin-top:28px;margin-bottom:12px}
-.head h2{color:#08364a}
-
-/* Place cards */
-.place{border-radius:18px}
-.place .thumb{height:170px;background:linear-gradient(135deg,#d5f3f7,#ffeccf)}
-.place-body h3{color:#08364a}
-.place-body .meta,.place-body .muted{color:var(--ink-2)}
-
-/* Travel / itinerary / overview panels */
-.day{border-radius:18px;overflow:hidden}
-.day-top{background:#e7f7fa;border-bottom-color:#cbe4e9}
-.line-row{border-bottom-color:var(--line-soft)}
-.act{border-bottom-color:var(--line-soft)}
-.act-time{color:#087e96}
-.bar{background:#dceef2}.bar>span{background:linear-gradient(90deg,#087e96,#20a9b9)}
-.ring{background:conic-gradient(#087e96 var(--pct,0%),#dceef2 0)}
-.ring::after{background:#fff}
-
-
-/* Holiday plan proposal */
-.plan-proposal{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
-.plan-proposal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:14px}
-.plan-day{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--bg)}
-.plan-day strong{display:block}.plan-day span{display:block;margin-top:5px;font-size:13px;color:var(--muted)}
-
-/* Compare / decision */
-.short-compare{border-color:#80bdc9;background:#fff}
-.short-compare-top{background:linear-gradient(90deg,#d9f2f6,#fff2da);border-bottom-color:#c6e1e6}
-.short-compare-item.winner{background:#effaf8}
-.short-compare-score{color:#087e96}
-.final-decision{background:#fff;border-color:#a9d1d9}
-.final-decision-stat{background:#eff9fb;border-color:#c5e2e8}
-.final-decision-next{background:#fff8e9;border-color:#efd9a3}
-
-/* Brief / Holiday DNA */
-.dna-card,.dna-panel,.brief-card{background:#fff;border-color:var(--line)}
-.dna-bar{background:#dceef2}
-.dna-bar>span{background:linear-gradient(90deg,#087e96,#e9a926)}
-
-/* Research / settings / technical panels */
-pre.api{background:#073b4b;color:#dff8fb;border-color:#1a6676}
-.setup,.research-source{background:#eef9fb!important;border-color:#bddde4!important}
-
-/* Photos */
-.shot{background:#dff3f6;border:1px solid var(--line)}
-
-/* Modal and overlays */
-.modal-card{background:#fff;border-color:#b9d8df;box-shadow:0 24px 70px rgba(3,48,61,.24)}
-.detail-hero{background:linear-gradient(135deg,#d5f3f7,#fff0d5)}
-#toast{background:#064b5f;color:#fff;box-shadow:0 10px 28px rgba(3,48,61,.24)}
-
-/* Existing recommendation components — make them match Explore */
-.v434-recommend{background:linear-gradient(135deg,#07566a,#087e96);border-color:#087e96;color:#fff;box-shadow:0 14px 34px rgba(4,75,95,.18)}
-.v434-recommend h3,.v434-recommend p,.v434-recommend .muted{color:#fff}
-.v434-recommend-item{background:#fff;border-color:#c4e0e6;color:var(--ink)}
-.v434-recommend-item.top{border-color:#f4b51f;box-shadow:0 0 0 2px rgba(244,181,31,.15)}
-.v434-recommend-score{color:#087e96}
-.v435-decision{background:#eff9fb;border-color:#c4e0e6}
-.v435-driver{background:#d9f1f5;color:#07556b}
-
-/* Mobile navigation retains its structure, just adopts the new palette */
-@media(max-width:1024px){
-  .top{background:#064b5f;padding:9px 16px}
-  .mnav,.mmore{background:#fff;border-color:#b9d9df;box-shadow:0 10px 28px rgba(3,48,61,.18)}
-  .mnav button{color:#315b6b}
-  .mnav button[aria-current="page"]{background:#d8f1f5;color:#07556b}
-  .mmore button{background:#eef9fb;border-color:#c6e2e8}
-}
-
-/* Keep the Explore page's approved styling dominant while harmonising shared elements */
-.explore-tools .btn-quiet{background:#e6f7fa;color:#07556b;border-color:#b8dce4}
-
-@media(max-width:700px){
-  .shell{padding-top:18px}
-  .hero{border-radius:18px}
-  .head{margin-top:22px}
-}
-
+.budget-reality-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.budget-reality-stat{padding:13px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--sunk)}
+.budget-reality-stat small{display:block;color:var(--ink-2);font-size:12px;margin-bottom:4px}
+.budget-reality-stat strong{font-size:20px}
+.budget-reality-warn{margin-top:12px;padding:12px 14px;border-radius:var(--r-sm);
+  border:1px solid var(--warn-line);background:var(--warn-bg);color:var(--warn-ink);font-size:13.5px}
+@media(max-width:640px){.budget-reality-grid{grid-template-columns:1fr}}
 
 /* ============================================================
-   v40.4 HOLIDAY BRIEF RESKIN
+   9. PLAN PROPOSAL
+   ============================================================ */
+.plan-proposal{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:var(--r-md);
+  background:var(--surface);box-shadow:var(--shadow)}
+.plan-proposal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:14px}
+.plan-day{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--sunk)}
+.plan-day strong{display:block;color:var(--brand-ink)}
+.plan-day span{display:block;margin-top:5px;font-size:13px;color:var(--ink-2)}
+
+/* ============================================================
+   10. OVERVIEW SUMMARY
+   ============================================================ */
+.roam-overview{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:18px;
+  background:var(--surface);box-shadow:var(--shadow)}
+.roam-overview h3{margin:0 0 6px;font-size:18px}
+.roam-overview-sub{color:var(--ink-2);font-size:13px;margin-bottom:14px}
+.roam-overview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.roam-overview-card{padding:13px;border:1px solid var(--line-soft);border-radius:14px;background:var(--sunk)}
+.roam-overview-card .k{font-size:12px;color:var(--ink-2)}
+.roam-overview-card .v{font-size:18px;font-weight:700;margin-top:4px}
+.roam-overview-next{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--brand-soft);
+  color:var(--brand-ink);font-size:13px}
+.roam-overview-next strong{display:block;margin-bottom:3px}
+@media(max-width:800px){.roam-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ============================================================
+   11. DESTINATION SNAPSHOT
+   ============================================================ */
+.dest-intel{margin:16px 0 18px}
+.dest-intel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.dest-intel-item{padding:14px;border:1px solid var(--line-soft);border-radius:16px;background:var(--sunk)}
+.dest-intel-item small{display:block;color:var(--ink-2);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.dest-intel-item strong{display:block;font-size:18px;margin-top:5px}
+.dest-intel-trip{background:var(--brand-soft);border-color:var(--brand);color:var(--brand-ink)}
+.dest-intel-note{margin-top:10px;font-size:12px;color:var(--ink-2)}
+@media(max-width:760px){.dest-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ============================================================
+   12. MATCH PANEL  (was .v434-recommend / .v435-*)
+   ============================================================ */
+.match-panel{position:relative;z-index:2;margin:0 0 24px;border:1px solid var(--brand);
+  border-radius:22px;padding:20px;background:var(--brand-deep);color:var(--on-deep);
+  box-shadow:var(--shadow-lg);overflow:hidden}
+.match-panel::after{content:"";position:absolute;right:-100px;top:-130px;width:360px;height:360px;
+  border-radius:50%;background:var(--glass-line);opacity:.07}
+.match-head{position:relative;z-index:1;display:flex;justify-content:space-between;gap:20px;
+  align-items:flex-start;padding:0 2px}
+.match-title{display:flex;gap:11px;align-items:flex-start}
+.match-title .label{color:var(--deep-ink-2);margin-top:1px}
+.match-title h2{color:var(--on-deep);margin-top:2px;font-size:clamp(22px,3vw,28px)}
+.match-star{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
+  background:var(--gold-2);color:var(--brand-deep);font-size:21px;flex:0 0 auto;font-weight:800}
+.match-sub{color:var(--deep-ink-2);font-size:13px;margin-top:7px;max-width:62ch}
+.match-head>.pill{border:1px solid var(--glass-line);background:transparent;color:var(--on-deep);margin-top:5px}
+.match-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:11px;margin-top:16px}
+.match-item{border:1px solid var(--line);border-radius:16px;padding:0;background:var(--surface);
+  color:var(--ink);overflow:hidden;box-shadow:var(--shadow)}
+.match-item.top{border-color:var(--gold-2);box-shadow:0 0 0 2px var(--gold-2),var(--shadow)}
+.match-photo{height:132px;position:relative;background:var(--surface-2);overflow:hidden}
+.match-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.match-photo-fallback{height:100%;display:grid;place-items:center;font-size:42px;
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-c));color:var(--brand-ink)}
+.match-badge{position:absolute;left:9px;top:9px;padding:6px 9px;border-radius:var(--r-pill);
+  background:var(--brand-deep);color:var(--on-deep);font-size:11px;font-weight:800;white-space:nowrap}
+.match-heart{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:50%;
+  background:var(--scrim);border:1px solid var(--glass-line);color:#fff;font-size:20px;line-height:1}
+.match-body{padding:12px}
+.match-name-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.match-name-row h3{font-family:var(--font-body);font-size:18px;font-weight:800;color:var(--ink)}
+.match-rating{font-size:12px;color:var(--gold);font-weight:800;white-space:nowrap}
+.match-reason{font-size:12.5px;line-height:1.38;color:var(--ink-2);margin-top:5px;min-height:35px}
+.match-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.match-tags span{font-size:10.5px;padding:5px 8px;border-radius:var(--r-pill);
+  background:var(--brand-soft);color:var(--brand-ink);font-weight:700}
+.match-footer{display:flex;align-items:center;gap:5px;border-top:1px solid var(--line-soft);
+  margin-top:10px;padding-top:9px}
+.match-footer strong{font-size:21px;color:var(--brand-ink)}
+.match-footer>span{font-size:10px;color:var(--ink-3);flex:1}
+.match-footer .btn{min-height:32px;padding:5px 9px;border-radius:var(--r-pill);font-size:11px}
+@media(max-width:1150px){.match-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.match-photo{height:145px}}
+@media(max-width:800px){.match-head{display:block}.match-head>.pill{display:inline-flex;margin-top:12px}}
+@media(max-width:520px){.match-grid{grid-template-columns:1fr}.match-photo{height:170px}}
+
+/* ============================================================
+   13. EXPLORE
+   ============================================================ */
+.explore-view{max-width:1500px;margin:0 auto;padding-bottom:34px}
+.explore-hero{position:relative;margin:-2px calc(var(--pad) * -1) 0;min-height:330px;overflow:hidden;
+  background:
+    radial-gradient(circle at 78% 28%,var(--glass-line),transparent 24%),
+    linear-gradient(120deg,var(--hero-b) 0%,var(--hero-a) 36%,var(--brand) 100%)}
+.explore-hero::before{content:"";position:absolute;inset:0;
+  background:linear-gradient(160deg,transparent 46%,var(--scrim) 130%)}
+.explore-hero::after{content:"";position:absolute;right:-90px;bottom:-150px;width:560px;height:360px;
+  border-radius:50%;background:var(--glass-line);opacity:.2;transform:rotate(-8deg)}
+.explore-hero-copy{position:relative;z-index:1;max-width:880px;padding:54px var(--pad) 34px}
+.explore-eyebrow{font-size:12px;letter-spacing:.24em;font-weight:800;color:var(--hero-ink);margin-bottom:8px;text-transform:uppercase}
+.explore-hero h1{font-size:clamp(38px,6vw,64px);max-width:720px;color:var(--hero-ink);letter-spacing:-.035em}
+.explore-lead{font-size:18px;color:var(--hero-ink-2);margin-top:12px;max-width:680px;font-weight:500}
+.explore-search{display:flex;align-items:center;gap:8px;margin-top:24px;max-width:760px;
+  padding:5px 6px 5px 15px;background:var(--glass);border:1px solid var(--glass-line);
+  border-radius:var(--r-pill);box-shadow:var(--shadow-lg)}
+.explore-search-icon{font-size:30px;line-height:1;color:var(--brand-ink);transform:rotate(-20deg)}
+.explore-search .field{border:0;background:transparent;box-shadow:none;min-height:46px;padding-left:3px}
+.explore-search .field:focus{outline:0;box-shadow:none}
+.explore-search-btn{border-radius:var(--r-pill);min-width:112px}
+.explore-quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.explore-chip{border:1px solid var(--glass-line);background:var(--glass);color:var(--brand-ink);
+  border-radius:var(--r-pill);padding:9px 14px;font-size:13px;font-weight:700;box-shadow:var(--shadow)}
+.explore-chip:hover{background:var(--surface);transform:translateY(-1px)}
+.explore-tools{justify-content:flex-end;margin:10px 0 0}
+.explore-tools .btn{font-size:12px}
+.explore-view #researchArea>.head{margin-top:10px}
+.explore-view #researchArea>.note{border-radius:14px}
+.explore-view #researchArea>.tabs{margin-top:14px}
+.explore-view #researchArea>.grid{margin-top:14px}
+@media(max-width:800px){
+  .explore-hero{min-height:360px}
+  .explore-hero-copy{padding-top:38px}
+  .explore-hero h1{font-size:40px}
+  .explore-search{border-radius:18px;flex-wrap:wrap;padding:7px}
+  .explore-search-icon{display:none}
+  .explore-search .field{flex:1 1 100%}
+  .explore-search-btn{width:100%}
+}
+@media(max-width:520px){.explore-hero h1{font-size:34px}.explore-lead{font-size:16px}}
+
+/* ============================================================
+   14. HOLIDAY BRIEF
    ============================================================ */
 #v-brief{position:relative}
 #v-brief>.intro{max-width:720px}
-#v-brief>.card.card-pad:first-of-type{max-width:100%;margin-top:24px;background:linear-gradient(135deg,#ffffff 0%,#f3fbfa 100%);border-color:#c8e8e4;box-shadow:0 12px 32px rgba(9,75,73,.10);border-radius:24px;padding:clamp(20px,3vw,32px)}
-#v-brief>.card.card-pad:first-of-type:before{content:"YOUR HOLIDAY, YOUR WAY";display:inline-flex;padding:7px 12px;border-radius:999px;background:#dff5f1;color:#075e5b;font-size:11px;font-weight:800;letter-spacing:.08em;margin-bottom:14px}
+#v-brief>.card.card-pad:first-of-type{
+  max-width:100%;margin-top:24px;background:var(--surface);border-color:var(--line);
+  box-shadow:var(--shadow-lg);border-radius:var(--r-xl);padding:clamp(20px,3vw,32px)}
+#v-brief>.card.card-pad:first-of-type::before{
+  content:"YOUR HOLIDAY, YOUR WAY";display:inline-flex;padding:7px 12px;border-radius:var(--r-pill);
+  background:var(--brand-soft);color:var(--brand-ink);font-size:11px;font-weight:800;
+  letter-spacing:.08em;margin-bottom:14px}
 #v-brief .form-grid{gap:16px}
-#v-brief .fld{padding:13px 14px 12px;background:rgba(255,255,255,.78);border:1px solid #d7ebe9;border-radius:15px}
-#v-brief .fld>span{color:#245d5b;font-weight:750;margin-bottom:7px}
-#v-brief .field{background:#fff;border-color:#cfe3e1;border-radius:11px;min-height:44px}
-#v-brief .field:focus{border-color:#169c96;box-shadow:0 0 0 3px rgba(22,156,150,.12)}
-#v-brief .divide{margin:25px 0;border-top-color:#d7ebe9}
-#v-brief h3{font-size:19px;color:#123f40}
-#v-brief .small.muted{color:#607776}
-#v-brief #briefSliders{gap:11px;margin-top:16px!important}
-#v-brief #briefSliders .fld{display:grid;grid-template-columns:minmax(130px,1fr) 1fr 42px;align-items:center;gap:12px;padding:12px 14px}
+#v-brief .fld{padding:13px 14px 12px;background:var(--sunk);border:1px solid var(--line-soft);border-radius:15px}
+#v-brief .fld>span{color:var(--ink-2);font-weight:700;margin-bottom:7px}
+#v-brief .field{min-height:44px}
+#v-brief .divide{margin:25px 0}
+#v-brief h3{font-size:19px}
+#v-brief #briefSliders{gap:11px;margin-top:16px}
+#v-brief #briefSliders .fld{display:grid;grid-template-columns:minmax(130px,1fr) 1fr 42px;
+  align-items:center;gap:12px;padding:12px 14px}
 #v-brief #briefSliders .fld>span{margin:0;font-size:13px}
-#v-brief #briefSliders input[type=range]{accent-color:#159c96;width:100%}
-#v-brief #briefSliders output{font-weight:800;color:#075e5b;text-align:center;background:#e4f7f4;border-radius:999px;padding:6px 7px}
-#v-brief>.dna-card{max-width:100%;margin-top:20px;background:linear-gradient(135deg,#063f40 0%,#0a6c69 100%);border:0;color:#fff;border-radius:24px;box-shadow:0 14px 34px rgba(6,63,64,.18);padding:clamp(20px,3vw,30px)}
-#v-brief>.dna-card .label{color:#8fe0d6}
-#v-brief>.dna-card h2{color:#fff}
-#v-brief>.dna-card .dna-intro{color:#d7eeeb;max-width:760px}
-#v-brief>.dna-card .dna-bar{background:rgba(255,255,255,.18)}
-#v-brief>.dna-card .dna-bar span{background:#f5c86a}
-#v-brief>.dna-card .dna-name{color:#fff}
-#v-brief>.dna-card .dna-value{color:#f5d27d}
-#v-brief>.dna-card .dna-tag{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);color:#fff}
-@media(max-width:700px){#v-brief #briefSliders .fld{grid-template-columns:1fr 44px}#v-brief #briefSliders input[type=range]{grid-column:1/-1;grid-row:2}}
+#v-brief #briefSliders input[type=range]{width:100%}
+#v-brief #briefSliders output{font-weight:800;color:var(--brand-ink);text-align:center;
+  background:var(--brand-soft);border-radius:var(--r-pill);padding:6px 7px}
+#v-brief>.dna-card{max-width:100%;margin-top:20px;background:var(--brand-deep);border:1px solid var(--brand);
+  color:var(--on-deep);border-radius:var(--r-xl);box-shadow:var(--shadow-lg);padding:clamp(20px,3vw,30px)}
+#v-brief>.dna-card .label{color:var(--deep-ink-2)}
+#v-brief>.dna-card h2{color:var(--on-deep)}
+#v-brief>.dna-card .dna-intro{color:var(--deep-ink-2);max-width:760px}
+#v-brief>.dna-card .dna-bar{background:var(--glass-line)}
+#v-brief>.dna-card .dna-bar span{background:var(--gold-2)}
+#v-brief>.dna-card .dna-name{color:var(--on-deep)}
+#v-brief>.dna-card .dna-value{color:var(--gold)}
+@media(max-width:700px){
+  #v-brief #briefSliders .fld{grid-template-columns:1fr 44px}
+  #v-brief #briefSliders input[type=range]{grid-column:1/-1;grid-row:2}
+}
 
-/* ROAM v40.5 — Saved / shortlist visual reskin */
-#v-saved .view-head{margin-bottom:22px}
-#v-saved .view-head h1{color:#0d4f4b}
-#v-saved .view-head .muted{color:#52706d}
-#v-saved .stat{background:#fff;border:1px solid #cfe8e3;border-radius:18px;box-shadow:0 8px 24px rgba(13,79,75,.07);padding:16px 18px}
-#v-saved .stat b{color:#0d4f4b;font-size:24px}
-#v-saved .stat span{color:#64817e}
-#v-saved #savedFilters button{border:1px solid #bfe0da;background:#fff;color:#175b57;border-radius:999px;padding:9px 14px;font-weight:700}
-#v-saved #savedFilters button[aria-pressed="true"]{background:#0d5f5a;color:#fff;border-color:#0d5f5a;box-shadow:0 5px 14px rgba(13,95,90,.18)}
-#v-saved .short-compare,#v-saved .short-compare-top{background:linear-gradient(135deg,#0d5f5a,#174a63);border-radius:24px;border:0;box-shadow:0 14px 34px rgba(13,79,75,.16);color:#fff}
-#v-saved .short-compare-item{background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.45);border-radius:18px;color:#183b39;box-shadow:0 7px 18px rgba(0,0,0,.08)}
-#v-saved .short-compare-score{color:#0d5f5a}
-#v-saved .card{border-color:#cfe8e3;box-shadow:0 9px 25px rgba(13,79,75,.07)}
-#v-saved .place-card{border-radius:20px;overflow:hidden}
-#v-saved .btn-primary{background:#0d5f5a;border-color:#0d5f5a}
-#v-saved .note{background:#fff8df;border-color:#eadb9a;color:#5c4d16;border-radius:18px}
-#v-saved .empty{background:linear-gradient(135deg,#eefaf8,#fff);border:1px solid #cfe8e3;border-radius:24px}
-#v-saved select.field,#v-saved input.field{border-color:#cfe8e3;border-radius:14px}
-@media(max-width:700px){#v-saved .stat{padding:13px}.short-compare-grid{grid-template-columns:1fr!important}}
-
-/* V42.2 destination intelligence */
-.dest-intel{margin:16px 0 18px}.dest-intel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.dest-intel-item{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.dest-intel-item small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}.dest-intel-item strong{display:block;font-size:18px;margin-top:5px}.dest-intel-note{margin-top:10px;font-size:12px;color:var(--muted)}@media(max-width:760px){.dest-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-</style>
-<style>
-.roam-overview{margin:18px 0;padding:18px;border:1px solid #dfe5ec;border-radius:18px;background:linear-gradient(180deg,#fff,#f7f9fc)}
-.roam-overview h3{margin:0 0 6px;font-size:18px}.roam-overview-sub{color:#667085;font-size:13px;margin-bottom:14px}
-.roam-overview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.roam-overview-card{padding:13px;border:1px solid #e5e7eb;border-radius:14px;background:#fff}.roam-overview-card .k{font-size:12px;color:#667085}.roam-overview-card .v{font-size:18px;font-weight:700;margin-top:4px}.roam-overview-next{margin-top:12px;padding:12px 14px;border-radius:12px;background:#f1f5f9;font-size:13px}.roam-overview-next strong{display:block;margin-bottom:3px}
-@media(max-width:800px){.roam-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-</style>
-
-<style>
-
-/* v40.2 EXPLORE RESKIN */
-.explore-view{max-width:1500px;margin:0 auto;padding-bottom:34px}
-.explore-hero{position:relative;margin:-2px calc(var(--pad) * -1) 0;min-height:330px;overflow:hidden;background:radial-gradient(circle at 78% 28%,rgba(255,255,255,.55),transparent 24%),linear-gradient(120deg,#dff5f3 0%,#bfe6ef 36%,#76c7d5 67%,#08788b 100%)}
-.explore-hero:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 78% 82%,rgba(255,255,255,.62),transparent 38%),linear-gradient(160deg,transparent 46%,rgba(0,76,91,.18) 100%)}
-.explore-hero:after{content:"";position:absolute;right:-90px;bottom:-150px;width:560px;height:360px;border-radius:50%;background:rgba(255,255,255,.2);transform:rotate(-8deg)}
-.explore-hero-copy{position:relative;z-index:1;max-width:880px;padding:54px var(--pad) 34px}
-.explore-eyebrow{font-size:12px;letter-spacing:.24em;font-weight:800;color:#083f50;margin-bottom:8px}
-.explore-hero h1{font-size:clamp(40px,6vw,68px);max-width:720px;color:#073a4b;letter-spacing:-.035em}
-.explore-lead{font-size:18px;color:#124e61;margin-top:12px;max-width:680px;font-weight:500}
-.explore-search{display:flex;align-items:center;gap:8px;margin-top:24px;max-width:760px;padding:5px 6px 5px 15px;background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.8);border-radius:999px;box-shadow:0 12px 32px rgba(4,62,77,.18)}
-.explore-search-icon{font-size:30px;line-height:1;color:#174f61;transform:rotate(-20deg)}
-.explore-search .field{border:0;background:transparent;box-shadow:none;min-height:46px;padding-left:3px}.explore-search .field:focus{outline:0}
-.explore-search-btn{border-radius:999px;min-width:112px;background:#087589;border-color:#087589;color:#fff}
-.explore-quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.explore-chip{border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.88);color:#0a4355;border-radius:999px;padding:9px 14px;font-size:13px;font-weight:700;box-shadow:0 3px 12px rgba(4,62,77,.08)}.explore-chip:hover{background:#fff;transform:translateY(-1px)}
-.explore-tools{justify-content:flex-end;margin:10px 0 0}.explore-tools .btn{font-size:12px}
-.v434-recommend{position:relative;z-index:2;margin:0 0 24px;border:0;border-radius:22px;padding:20px;background:linear-gradient(135deg,#064d5d,#075f6e 58%,#0b7180);box-shadow:0 14px 32px rgba(3,57,68,.18);overflow:hidden}.v434-recommend:after{content:"";position:absolute;right:-100px;top:-130px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.06)}
-.v434-recommend-head{position:relative;z-index:1;display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:0 2px;color:#fff}.recommend-title{display:flex;gap:11px;align-items:flex-start}.recommend-title .label{color:#bceff0;margin-top:1px}.recommend-title h2{color:#fff;margin-top:2px;font-size:30px}.recommend-star{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#f5c542;color:#fff;font-size:21px;flex:0 0 auto}.recommend-sub{color:rgba(255,255,255,.84);font-size:13px;margin-top:7px}.v434-recommend-head>.pill{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.1);color:#fff;margin-top:5px}
-.v434-recommend-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin-top:16px}.v434-recommend-item{border:1px solid rgba(255,255,255,.65);border-radius:16px;padding:0;background:#fff;overflow:hidden;box-shadow:0 5px 18px rgba(0,0,0,.12)}.v434-recommend-item.top{border-color:#fff}
-.recommend-photo{height:132px;position:relative;background:#d9eef0;overflow:hidden}.recommend-photo img{width:100%;height:100%;object-fit:cover;display:block}.recommend-photo-fallback{height:100%;display:grid;place-items:center;font-size:42px;background:linear-gradient(135deg,#bfe9ed,#70c1cc);color:#075268}.recommend-badge{position:absolute;left:9px;top:9px;padding:6px 9px;border-radius:999px;background:rgba(2,57,70,.92);color:#fff;font-size:11px;font-weight:800;white-space:nowrap}.recommend-heart{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:50%;background:rgba(2,57,70,.78);border:1px solid rgba(255,255,255,.7);color:#fff;font-size:20px;line-height:1}
-.recommend-body{padding:12px}.recommend-name-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.recommend-name-row h3{font-family:var(--font-body);font-size:18px;font-weight:800;color:#103d4d}.recommend-weather{font-size:12px;color:#087b53;font-weight:800;white-space:nowrap}.recommend-description{font-size:12.5px;line-height:1.38;color:#355764;margin-top:5px;min-height:35px}.recommend-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.recommend-tags span{font-size:10.5px;padding:5px 8px;border-radius:999px;background:#e2f2f7;color:#16556a;font-weight:700}.recommend-footer{display:flex;align-items:center;gap:5px;border-top:1px solid #e3eaeb;margin-top:10px;padding-top:9px}.recommend-footer strong{font-size:21px;color:#087b53}.recommend-footer>span{font-size:10px;color:#667d84;flex:1}.recommend-footer .btn{min-height:32px;padding:5px 9px;border-radius:999px;background:#075d6e;color:#fff;border-color:#075d6e;font-size:11px}
-.explore-view #researchArea>.head{margin-top:10px}.explore-view #researchArea>.note{border-radius:14px}.explore-view #researchArea>.tabs{margin-top:14px}.explore-view #researchArea>.grid{margin-top:14px}
-@media(max-width:1150px){.v434-recommend-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.recommend-photo{height:145px}}
-@media(max-width:800px){.explore-hero{margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);min-height:360px}.explore-hero-copy{padding-top:38px}.explore-hero h1{font-size:42px}.explore-search{border-radius:18px;flex-wrap:wrap;padding:7px}.explore-search-icon{display:none}.explore-search .field{flex:1 1 100%}.explore-search-btn{width:100%}.v434-recommend-head{display:block}.v434-recommend-head>.pill{display:inline-flex;margin-top:12px}.v434-recommend-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:520px){.v434-recommend-grid{grid-template-columns:1fr}.recommend-photo{height:170px}.explore-hero h1{font-size:38px}.explore-lead{font-size:16px}}
-
+/* ============================================================
+   15. SAVED / SHORTLIST
+   ============================================================ */
+#v-saved #savedFilters button{border:1px solid var(--line);background:var(--surface);
+  color:var(--brand-ink);border-radius:var(--r-pill);padding:9px 14px;font-weight:700}
+#v-saved #savedFilters button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);
+  border-color:var(--brand)}
+#v-saved .place{border-radius:20px;overflow:hidden}
+@media(max-width:700px){#v-saved .stat{padding:13px}}
 </style>
 </head>
 <body>
@@ -1015,7 +908,7 @@ const VIEWS=[
   {id:"photos",   label:"Photos",   glyph:"📷"},
   {id:"settings", label:"Settings", glyph:"⚙"}
 ];
-const CATS=["Hotels","Restaurants","Nightlife","Beaches","Parks","Places to see","Things to do","Day trips"];
+const CATS=["Hotels","Restaurants","Nightlife","Beaches","Parks","Places to see","Things to do","Day trips","Other"];
 const PRIORITIES=[["beach","Beach","🏖️"],["food","Food","🍴"],["sight","Sightseeing","🏛️"],
                   ["activity","Activities","🎯"],["relax","Relaxation","🧘"],["night","Nightlife","🌙"]];
 
@@ -1031,7 +924,13 @@ function uid(){
 }
 function money(v){const n=Number(String(v==null?"":v).replace(/[^0-9.-]/g,""));return Number.isFinite(n)?n:0}
 function gbp(n){return "£"+money(n).toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2})}
-function num(v){const n=Number(v);return Number.isFinite(n)?n:null}
+/* Number(null), Number("") and Number([]) are all 0, which meant a place
+   with no rating was scored as a zero-star place. Absent is not zero. */
+function num(v){
+  if(v==null||v==="")return null;
+  const n=Number(v);
+  return Number.isFinite(n)?n:null;
+}
 function fmtDate(iso){
   if(!iso)return "";
   const d=new Date(iso+"T00:00:00");
@@ -1057,6 +956,27 @@ function dayLabel(h,day){
   return d?d.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}):"";
 }
 function tripLength(h){const n=nights(h);return n?n+1:null}
+/* --- date helpers used by the weather panel --- */
+/* Open-Meteo wants a local YYYY-MM-DD, so build it from local parts.
+   toISOString() would shift the date by a day west of UTC. */
+function isoDate(d){
+  const x=d instanceof Date?d:new Date(d);
+  if(isNaN(x))return "";
+  const m=String(x.getMonth()+1).padStart(2,"0"),day=String(x.getDate()).padStart(2,"0");
+  return x.getFullYear()+"-"+m+"-"+day;
+}
+function formatDateShort(d){
+  const x=d instanceof Date?d:new Date(d);
+  return isNaN(x)?"":x.toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+}
+/* the selected holiday's dates as Date objects, or null if they are not set */
+function holidayWeatherDates(){
+  const h=holiday(),d=(h&&h.details)||{};
+  if(!d.start||!d.end)return null;
+  const start=new Date(d.start+"T00:00:00"),end=new Date(d.end+"T00:00:00");
+  if(isNaN(start)||isNaN(end)||end<start)return null;
+  return {start,end};
+}
 function nights(h){
   const d=h.details||{};
   if(!d.start||!d.end)return null;
@@ -1066,16 +986,21 @@ function nights(h){
   return n>0?n:null;
 }
 /* the single category normaliser, used by Explore and the shortlist */
+/* Anything this does not recognise becomes "Other", NOT "Places to see".
+   The old fallback silently relabelled unknown data as sightseeing, which
+   then picked up the highest sightseeing affinity in the scorer below. */
 function category(v){
   const s=String(v||"").toLowerCase().replace(/[_-]+/g," ");
-  if(/hotel|resort|lodging|guest house|apartment/.test(s))return "Hotels";
-  if(/night ?club|nightlife|cocktail|pub|wine bar|beer|brewery/.test(s))return "Nightlife";
-  if(/restaurant|food|cafe|bar|dining|eat/.test(s))return "Restaurants";
-  if(/beach|coast/.test(s))return "Beaches";
-  if(/park|garden|nature|reserve/.test(s))return "Parks";
-  if(/day trip|excursion|tour/.test(s))return "Day trips";
-  if(/thing|activity|activities|attraction|museum|experience/.test(s))return "Things to do";
-  return "Places to see";
+  if(!s.trim())return "Other";
+  if(/hotel|resort|lodging|hostel|guest house|bed and breakfast|apartment|villa|campsite/.test(s))return "Hotels";
+  if(/night ?club|nightlife|cocktail|pub|wine bar|beer|brewery|casino|live music/.test(s))return "Nightlife";
+  if(/restaurant|food|cafe|café|coffee|bakery|bistro|dining|eat|steak|pizza|sushi|tapas/.test(s))return "Restaurants";
+  if(/beach|coast|seaside|lido|marina/.test(s))return "Beaches";
+  if(/park|garden|nature|reserve|forest|botanic/.test(s))return "Parks";
+  if(/day trip|excursion|tour operator|guided tour|boat trip/.test(s))return "Day trips";
+  if(/thing|activity|activities|attraction|museum|gallery|experience|aquarium|zoo|theme park|spa|sport|climbing|diving|surf|kayak/.test(s))return "Things to do";
+  if(/landmark|monument|viewpoint|lookout|church|cathedral|basilica|mosque|temple|castle|palace|fort|ruin|historic|old town|square|bridge|tower|lighthouse|cemetery|observation/.test(s))return "Places to see";
+  return "Other";
 }
 /* level "warn" holds the toast for longer and is not overwritten by routine messages */
 function toast(msg,level,undoLabel){
@@ -1188,18 +1113,27 @@ async function loadPhotos(){
     return;
   }
   if(Array.isArray(legacy)&&legacy.length){
-    let moved=0;
+    let moved=0,failed=0;
     for(const p of legacy){
       const blob=dataUrlToBlob(p&&p.data);
-      if(!blob)continue;
+      if(!blob){failed++;continue}
       const key=await photoStore.put({id:(p&&p.id)||uid(),name:(p&&p.name)||"Photo",blob,added:(p&&p.added)||Date.now()});
-      if(key!==null)moved++;
+      if(key!==null)moved++;else failed++;
     }
-    if(moved)store.del(K.photos);
     const after=await photoStore.all();
     state.photos=(after||[]).filter(usablePhoto).sort((x,y)=>(x.added||0)-(y.added||0));
+    if(failed){
+      /* keep the localStorage copy and show it alongside — dropping it here
+         would delete the only remaining copy of those photos */
+      const ids=new Set(state.photos.map(p=>p.id));
+      legacy.filter(p=>p&&p.data&&!ids.has(p.id)).forEach(p=>state.photos.push(p));
+      state.photos.sort((x,y)=>(x.added||0)-(y.added||0));
+      toast(failed+" photo"+(failed===1?"":"s")+" could not be moved and are still in the old store — export a backup","warn");
+    }else if(moved){
+      store.del(K.photos);
+      toast(moved+" photo"+(moved===1?"":"s")+" moved to proper storage");
+    }
     state.photosReady=true;
-    if(moved)toast(moved+" photo"+(moved===1?"":"s")+" moved to proper storage");
     return;
   }
   state.photos=rows.filter(usablePhoto).sort((x,y)=>(x.added||0)-(y.added||0));
@@ -1236,7 +1170,9 @@ function normIdea(x){
   return {
     id:x.id||uid(),name:String(x.name||"Saved place"),cat:category(x.cat||x.category),
     icon:x.icon||"📍",rating:num(x.rating),ratingCount:num(x.ratingCount)||0,
-    description:String(x.description||""),photoUrl:String(x.photoUrl||""),
+    description:String(x.description||""),
+    photoRef:photoRef(x),
+    photoUrl:/^https?:/i.test(String(x.photoUrl||""))&&!/\/api\/photo/i.test(String(x.photoUrl||""))?String(x.photoUrl):"",
     sourceUrl:String(x.sourceUrl||""),mapsUrl:String(x.mapsUrl||""),
     reviewSummary:String(x.reviewSummary||""),reviewsUrl:String(x.reviewsUrl||x.mapsUrl||""),
     placeId:String(x.placeId||""),savedAt:num(x.savedAt)||0,
@@ -1313,7 +1249,7 @@ function decisionEngine(h){
   if(!h)return {ready:false};
   const b=state.brief||{}, mine=tripIdeas(h.id), r=readiness(h), d=h.details||{}, t=h.travel||{};
   const ranked=mine.map(x=>({x,m:roamMatch(x),rating:num(x.rating)||0,reviews:num(x.ratingCount)||0}))
-    .sort((a,z)=>((z.m?z.m.pct:0)-(a.m?a.m.pct:0))||z.rating-a.rating||z.reviews-a.reviews);
+    .sort((a,z)=>(((z.m&&z.m.pct!=null)?z.m.pct:-1)-((a.m&&a.m.pct!=null)?a.m.pct:-1))||z.rating-a.rating||z.reviews-a.reviews);
   const picks={};
   CATS.forEach(cat=>{
     const hit=ranked.filter(v=>category(v.x.cat||v.x.category)===cat)[0];
@@ -1339,14 +1275,33 @@ function decisionEngine(h){
   else if(missing.length)headline='Your shortlist is missing some of your strongest priorities.';
   else if(!flights)headline='Your holiday is taking shape — add your flights before you commit.';
   else headline='This is the holiday Roam would choose from what you have built.';
-  const confidence=ranked.length?Math.min(100,Math.round(45+Math.min(25,ranked.length*5)+(covered.length*8)+(flights?8:0)+(budget?7:0))):0;
-  return {ready:!!(destination&&ranked.length),headline,destination,ranked,picks,priorities,strong,coverage,covered,missing,budget,spent,flights,r,confidence};
+  /* How much of the evidence Roam needs is actually present, 0-100, with no
+     floor. The old version started at 45% and called itself "recommendation
+     confidence" — it measured how many form fields had been filled in. */
+  const stay=picks["Hotels"]||null;
+  const evidenceParts=[
+    {w:2,have:!!destination},
+    {w:3,have:strong.length?covered.length/strong.length:(ranked.length?1:0)},
+    {w:2,have:Math.min(1,ranked.length/6)},
+    {w:2,have:!!stay},
+    {w:2,have:flights},
+    {w:1,have:!!budget},
+    {w:1,have:!!(d.start&&d.end)}
+  ];
+  const evW=evidenceParts.reduce((t,p)=>t+p.w,0);
+  const evidence=Math.round(evidenceParts.reduce((t,p)=>t+p.w*(p.have===true?1:p.have===false?0:p.have),0)/evW*100);
+  const missingEvidence=[];
+  if(!stay)missingEvidence.push("somewhere to stay");
+  if(!flights)missingEvidence.push("flights");
+  if(!budget)missingEvidence.push("a budget");
+  if(!(d.start&&d.end))missingEvidence.push("dates");
+  return {ready:!!(destination&&ranked.length),headline,destination,ranked,picks,stay,priorities,strong,coverage,covered,missing,budget,spent,flights,r,evidence,missingEvidence};
 }
 function decisionWhy(pick){
   if(!pick)return 'No suitable shortlisted option yet.';
-  if(pick.m&&pick.m.reason)return pick.m.reason.replace(/based on your Holiday DNA\.?/i,'based on your Holiday DNA.');
-  if(pick.rating)return 'Strongest available option in your shortlist, supported by its rating.';
-  return 'Best available fit from the information Roam has so far.';
+  if(pick.m&&pick.m.reason)return pick.m.reason;
+  if(pick.rating)return 'Ranked on its rating alone — fill in your Holiday Brief for a fuller comparison.';
+  return 'Roam has no rating or brief to judge this on yet.';
 }
 function buildHolidayPlan(h){
   if(!h)return [];
@@ -1354,7 +1309,10 @@ function buildHolidayPlan(h){
   const e=decisionEngine(h), ranked=e.ranked||[];
   const used=new Set((h.activities||[]).map(a=>String(a.name||'').trim().toLowerCase()));
   const pool=ranked.filter(v=>!used.has(String(v.x.name||'').trim().toLowerCase()));
-  const find=(cats,offset=0)=>pool.find(v=>cats.includes(category(v.x.cat||v.x.category)) && !planUsed.has(v.x.id))||pool.find(v=>!planUsed.has(v.x.id));
+  /* Only ever return something from the requested categories. The old
+     fallback would drop a restaurant into the morning sightseeing slot
+     because it took "any unused place" when the category was empty. */
+  const find=cats=>pool.find(v=>cats.includes(category(v.x.cat||v.x.category))&&!planUsed.has(v.x.id))||null;
   const plan=[],planUsed=new Set();
   for(let day=1;day<=span;day++){
     const isFirst=day===1,isLast=day===span;
@@ -1363,8 +1321,10 @@ function buildHolidayPlan(h){
     else if(!isLast){
       let v=find(['Places to see','Things to do','Day trips']);
       if(v){planUsed.add(v.x.id);rows.push({time:'Morning',name:v.x.name,type:v.x.cat||'Sightseeing'});}
+      else rows.push({time:'Morning',name:'Open — nothing shortlisted to see or do',type:'Free'});
       v=find(['Beaches','Things to do','Parks']);
       if(v){planUsed.add(v.x.id);rows.push({time:'Afternoon',name:v.x.name,type:v.x.cat||'Relax'});}
+      else rows.push({time:'Afternoon',name:'Open — nothing shortlisted for the afternoon',type:'Free'});
     }
     if(isLast) rows.push({time:'Departure',name:'Final morning and departure',type:'Departure'});
     else {
@@ -1393,24 +1353,34 @@ function renderDecision(){
   const box=$('#decisionContent'),h=holiday();
   if(!box)return;
   if(!h){box.innerHTML=`<div class="empty"><div class="gl">🧭</div><h3>No holiday selected</h3><p>Create a holiday first and Roam can turn your research into a recommendation.</p><button class="btn btn-primary" data-act="holiday-new">Create a holiday</button></div>`;return;}
-  const e=decisionEngine(h), top=e.ranked[0], b=state.brief||{};
+  const e=decisionEngine(h), b=state.brief||{};
   const destination=e.destination||'your destination';
   const priorityText=e.strong.length?e.strong.map(x=>x.label).join(', '):'your overall holiday style';
-  const shortlistHtml=top?`<div class="card card-pad" style="border-color:var(--brand)">
-      <div class="row" style="align-items:flex-start"><div class="grow"><p class="label">🏆 Roam's recommendation</p><h1 style="margin-top:4px">${esc(top.x.name)}</h1><p class="muted" style="margin-top:5px">${esc(category(top.x.cat||top.x.category))}${top.rating?` · ★ ${top.rating.toFixed(1)}`:''}${top.reviews?` · ${top.reviews.toLocaleString('en-GB')} reviews`:''}</p></div>${top.m?`<div class="ring" style="--pct:${top.m.pct}%"><b>${top.m.pct}%</b></div>`:''}</div>
-      <p style="margin-top:15px">${esc(decisionWhy(top))}</p>
-      <p class="small muted" style="margin-top:7px">Roam chose this from your shortlist, your Holiday DNA and available quality signals.</p>
-      <div class="row" style="margin-top:14px"><button class="btn btn-primary" data-act="place-view" data-id="${esc(top.x.id)}">View recommendation</button><button class="btn" data-act="go" data-view="saved">Review shortlist</button></div>
+  /* A holiday is not one place. The headline card is the base of the trip —
+     where you would stay — and everything else is a per-area pick below.
+     Previously this printed the single highest-scoring shortlist item, which
+     on a beach-led brief meant "Roam's recommendation: a beach". */
+  const stay=e.stay;
+  const shortlistHtml=stay?`<div class="card card-pad" style="border-color:var(--brand)">
+      <div class="row" style="align-items:flex-start"><div class="grow"><p class="label">Where Roam would base you</p><h1 style="margin-top:4px">${esc(stay.x.name)}</h1><p class="muted" style="margin-top:5px">${esc(category(stay.x.cat||stay.x.category))}${stay.rating?` · ★ ${stay.rating.toFixed(1)}`:''}${stay.reviews?` · ${stay.reviews.toLocaleString('en-GB')} reviews`:''}</p></div>${stay.m?(stay.m.pct==null?`<div class="ring ring-none"><b>&mdash;</b></div>`:`<div class="ring" style="--pct:${stay.m.pct}%"><b>${stay.m.pct}%</b></div>`):''}</div>
+      <p style="margin-top:15px">${esc(decisionWhy(stay))}</p>
+      <p class="small muted" style="margin-top:7px">Chosen from the ${e.ranked.filter(v=>category(v.x.cat||v.x.category)==='Hotels').length} place${e.ranked.filter(v=>category(v.x.cat||v.x.category)==='Hotels').length===1?'':'s'} to stay on your shortlist. Everything else is picked per area below.</p>
+      <div class="row" style="margin-top:14px"><button class="btn btn-primary" data-act="place-view" data-id="${esc(stay.x.id)}">View</button><button class="btn" data-act="go" data-view="saved">Review shortlist</button></div>
+    </div>`:e.ranked.length?`<div class="card card-pad">
+      <p class="label">No base yet</p>
+      <h2 style="margin-top:4px">You have ${e.ranked.length} place${e.ranked.length===1?'':'s'} shortlisted but nowhere to stay</h2>
+      <p class="muted" style="margin-top:7px">Roam will not nominate a beach or a restaurant as the recommendation for a whole holiday. Shortlist somewhere to stay and this becomes a decision rather than a list.</p>
+      <div class="row" style="margin-top:14px"><button class="btn btn-primary" data-act="go" data-view="explore">Find hotels in ${esc(destination)}</button></div>
     </div>`:`<div class="card card-pad"><h2>Build the evidence first</h2><p class="muted" style="margin-top:6px">${esc(e.headline)}</p><button class="btn btn-primary" style="margin-top:14px" data-act="go" data-view="explore">Explore ${esc(destination)}</button></div>`;
   const areaPicks=['Hotels','Restaurants','Beaches','Places to see','Things to do','Day trips','Nightlife'].filter(c=>e.picks[c]).slice(0,6);
   const pickCards=areaPicks.map(cat=>{const p=e.picks[cat];return `<article class="card card-pad"><p class="label">${esc(cat)}</p><h3 style="margin-top:4px">${esc(p.x.name)}</h3><p class="small muted" style="margin-top:5px">${p.m?p.m.pct+'% Roam Match':''}${p.rating?' · ★ '+p.rating.toFixed(1):''}</p><p class="tiny muted" style="margin-top:9px">${esc(decisionWhy(p))}</p><button class="btn btn-sm" style="margin-top:11px" data-act="place-view" data-id="${esc(p.x.id)}">View</button></article>`}).join('');
   const compromise=e.missing.length?`<div class="card card-pad"><p class="label">⚠️ Potential compromise</p><h3 style="margin-top:4px">${esc(e.missing.map(x=>x.label).join(' and '))}</h3><p class="muted" style="margin-top:7px">You marked ${esc(e.missing.map(x=>x.label.toLowerCase()).join(' and '))} as a strong priority, but your shortlist has nothing covering it yet. That could change the final recommendation.</p><button class="btn btn-sm" style="margin-top:12px" data-act="go" data-view="explore">Research more</button></div>`:`<div class="card card-pad"><p class="label">✓ Priorities covered</p><h3 style="margin-top:4px">Your shortlist reflects ${esc(priorityText)}</h3><p class="muted" style="margin-top:7px">Roam has evidence for the strongest priorities you entered.</p></div>`;
   const readinessText=e.r?`${e.r.done} of ${e.r.checks.length} essentials complete · ${e.r.pct}% ready`:'Readiness unavailable';
-  box.innerHTML=`<div class="hero"><p class="label">YOUR ROAM DECISION</p><h1>${esc(destination)}</h1><p>${esc(e.headline)}</p><div class="row" style="margin-top:14px"><span class="pill pill-line">${e.r.pct}% ready</span><span class="pill pill-line">${e.ranked.length} shortlisted</span><span class="pill pill-line">${e.confidence}% recommendation confidence</span></div></div>
+  box.innerHTML=`<div class="hero"><p class="label">Your Roam decision</p><h1>${esc(destination)}</h1><p>${esc(e.headline)}</p><div class="row" style="margin-top:14px"><span class="pill pill-line">${e.r.pct}% ready</span><span class="pill pill-line">${e.ranked.length} shortlisted</span><span class="pill pill-line">${e.evidence}% of the evidence in</span></div></div>
     ${shortlistHtml}
     ${pickCards?`<div class="head"><h2>Your strongest options</h2><span class="pill">Based on your current shortlist</span></div><div class="grid">${pickCards}</div>`:''}
     <div class="head"><h2>What could change the decision?</h2></div>${compromise}
-    <div class="head"><h2>Holiday evidence</h2></div><div class="card card-pad"><div class="chips"><div class="chip"><small>Budget</small><b>${e.budget?gbp(e.budget):'Not set'}</b></div><div class="chip"><small>Tracked</small><b>${gbp(e.spent)}</b></div><div class="chip"><small>Flights</small><b>${e.flights?'Added':'Missing'}</b></div><div class="chip"><small>Readiness</small><b>${e.r.pct}%</b></div></div><p class="small muted" style="margin-top:12px">${esc(readinessText)}. The recommendation will become stronger as you add better evidence — it does not pretend certainty where Roam has little information.</p></div>
+    <div class="head"><h2>Holiday evidence</h2></div><div class="card card-pad"><div class="chips"><div class="chip"><small>Budget</small><b>${e.budget?gbp(e.budget):'Not set'}</b></div><div class="chip"><small>Tracked</small><b>${gbp(e.spent)}</b></div><div class="chip"><small>Flights</small><b>${e.flights?'Added':'Missing'}</b></div><div class="chip"><small>Readiness</small><b>${e.r.pct}%</b></div></div><p class="small muted" style="margin-top:12px">${esc(readinessText)}. Roam has ${e.evidence}% of the evidence it wants${e.missingEvidence.length?`, and is still missing ${esc(e.missingEvidence.join(', '))}`:''}. That figure is a count of what you have supplied, not a confidence level.</p></div>
     <div id="planProposal"></div>
     <div class="row" style="margin-top:18px"><button class="btn btn-primary" data-act="go" data-view="saved">Review shortlist</button><button class="btn" data-act="go" data-view="itinerary">Open itinerary</button><button class="btn" data-act="go" data-view="overview">Holiday overview</button></div>`;;
   renderPlanProposal(h);
@@ -1812,13 +1782,31 @@ function endpointBase(){
   return (raw||"https://roam-research.unpickgames.workers.dev")
     .replace(/\/+$/,"").replace(/\/api\/research$/i,"").replace(/\/api$/i,"");
 }
-function photoUrl(x){
+/* The photo reference, never a resolved URL. Stored on saved ideas so a
+   change of endpoint does not orphan every photo on the shortlist. */
+function photoRef(x){
   if(!x)return "";
-  const raw=x.photoUrl||x.photoUri||"";
-  if(raw)return /^(https?:|data:)/i.test(raw)?raw:endpointBase()+"/"+String(raw).replace(/^\/+/,"");
+  if(x.photoRef)return String(x.photoRef);
+  /* repair ideas saved by v42 and earlier, which baked the endpoint in */
+  const baked=String(x.photoUrl||x.photoUri||"");
+  const m=/[?&]name=([^&]+)/.exec(baked);
+  if(m&&/\/api\/photo/i.test(baked)){try{return decodeURIComponent(m[1])}catch(e){return m[1]}}
   const p=Array.isArray(x.photos)&&x.photos.length?x.photos[0]:x.photo;
   const name=typeof p==="string"?p:(p&&(p.name||p.photoName||p.resourceName));
-  return name?endpointBase()+"/api/photo?name="+encodeURIComponent(name):"";
+  return name?String(name):"";
+}
+/* Resolved at render time against the endpoint configured right now. */
+function photoUrl(x){
+  if(!x)return "";
+  const ref=photoRef(x);
+  if(ref)return endpointBase()+"/api/photo?name="+encodeURIComponent(ref);
+  const raw=String(x.photoUrl||x.photoUri||"");
+  if(!raw)return "";
+  if(/^data:/i.test(raw))return raw;
+  /* an absolute third-party URL is fine; anything endpoint-relative is not,
+     because it would freeze against whichever host was set when it was saved */
+  if(/^https?:/i.test(raw))return /\/api\/photo/i.test(raw)?"":raw;
+  return endpointBase()+"/"+raw.replace(/^\/+/,"");
 }
 /* turn a fetch failure into something actionable */
 function diagnose(err){
@@ -1846,54 +1834,159 @@ function briefPreferences(){
   };
 }
 
+/* ============================================================
+   ROAM MATCH
+   Four weighted signals. Each one only contributes when there is
+   evidence for it, so a place Roam knows nothing about scores low
+   instead of being padded up to a flattering number. There is no
+   floor: a bad fit is allowed to read as a bad fit.
+
+   Signals:
+     fit      (3) category affinity against your Holiday DNA
+     quality  (2) rating, discounted by how few reviews back it
+     gap      (2) does this cover a strong priority the REST of this
+                  trip's shortlist has nothing for
+     evidence (1) did the source give us anything to judge
+
+   The gap signal is what makes two restaurants score differently.
+   Affinity alone cannot, because it is a property of the category,
+   not of the place — which is why the old version returned the same
+   number and the same sentence for everything in a tab.
+   ============================================================ */
+const MATCH_PROFILES={
+  "Hotels":       {beach:.70,food:.62,sight:.38,activity:.35,relax:.90,night:.45},
+  "Restaurants":  {beach:.18,food:1.00,sight:.32,activity:.18,relax:.42,night:.55},
+  "Nightlife":    {beach:.20,food:.48,sight:.20,activity:.42,relax:.12,night:1.00},
+  "Beaches":      {beach:1.00,food:.18,sight:.40,activity:.38,relax:.92,night:.18},
+  "Parks":        {beach:.30,food:.14,sight:.55,activity:.62,relax:.80,night:.10},
+  "Things to do": {beach:.30,food:.25,sight:.72,activity:1.00,relax:.25,night:.22},
+  "Places to see":{beach:.28,food:.22,sight:1.00,activity:.62,relax:.30,night:.14},
+  "Day trips":    {beach:.34,food:.30,sight:.92,activity:.88,relax:.22,night:.12}
+};
+function clamp(v,lo,hi){return v<lo?lo:v>hi?hi:v}
+
+/* Nouns for the category labels, so the reason lines read like English. */
+const CAT_NOUN={"Hotels":["place to stay","places to stay"],"Restaurants":["restaurant","restaurants"],
+  "Nightlife":["nightlife spot","nightlife spots"],"Beaches":["beach","beaches"],
+  "Parks":["park","parks"],"Places to see":["sight","sights"],
+  "Things to do":["thing to do","things to do"],"Day trips":["day trip","day trips"],
+  "Other":["place","places"]};
+function catNoun(cat,count){
+  const pair=CAT_NOUN[cat]||["place","places"];
+  return pair[count===1?0:1];
+}
+
 function roamMatch(x){
+  if(!x)return null;
   const b=state.brief||{};
-  const dna=Object.fromEntries(PRIORITIES.map(p=>[p[0],Math.max(0,Math.min(5,num(b[p[0]])||0))]));
-  const total=Object.values(dna).reduce((a,v)=>a+v,0);
-  if(!total)return null;
-
   const cat=category(x.cat||x.category);
-  const profiles={
-    "Hotels":      {beach:.70,food:.62,sight:.38,activity:.35,relax:.90,night:.45},
-    "Restaurants": {beach:.18,food:1.00,sight:.32,activity:.18,relax:.42,night:.55},
-    "Nightlife":   {beach:.20,food:.48,sight:.20,activity:.42,relax:.12,night:1.00},
-    "Beaches":     {beach:1.00,food:.18,sight:.40,activity:.38,relax:.92,night:.18},
-    "Things to do":{beach:.30,food:.25,sight:.72,activity:1.00,relax:.25,night:.22},
-    "Places to see":{beach:.28,food:.22,sight:1.00,activity:.62,relax:.30,night:.14},
-    "Day trips":   {beach:.34,food:.30,sight:.92,activity:.88,relax:.22,night:.12}
-  };
-  const prof=profiles[cat]||{beach:.45,food:.45,sight:.45,activity:.45,relax:.45,night:.45};
-  const fit=Object.keys(dna).reduce((sum,k)=>sum+dna[k]*(prof[k]||0),0)/total;
+  const dna=Object.fromEntries(PRIORITIES.map(pr=>[pr[0],clamp(num(b[pr[0]])||0,0,5)]));
+  const dnaTotal=Object.values(dna).reduce((a,v)=>a+v,0);
+  /* "Roam Match" means matched against YOUR brief. With no brief there is no
+     match, and a rating-only score of 95% would read as personalisation that
+     never happened. The no-brief path in the UI already prompts for one. */
+  if(!dnaTotal)return null;
+  const parts=[],lines=[],drivers=[];
 
-  const text=((x.name||'')+' '+(x.description||'')).toLowerCase();
-  const keywordBoost={
-    beach:/beach|coast|sea|ocean|waterfront|swim/,
-    food:/restaurant|food|dining|cuisine|market|bar|cafe|café/,
-    sight:/museum|historic|landmark|old town|view|scenic|culture|architecture/,
-    activity:/hike|walk|tour|sport|adventure|kayak|diving|surf|excursion|park/,
-    relax:/spa|quiet|peaceful|relax|resort|pool|garden|wellness/,
-    night:/nightlife|club|bar|music|cocktail|late night|evening/
-  };
-  let boost=0;
-  Object.keys(keywordBoost).forEach(k=>{if(dna[k]>0&&keywordBoost[k].test(text))boost+=(dna[k]/total)*.10});
-
-  const r=num(x.rating);
-  const quality=r==null?0:Math.max(-.03,Math.min(.06,(r-4.0)*.06));
-  const pct=Math.round(Math.max(35,Math.min(98,(fit+boost+quality)*100)));
-
-  const ranked=PRIORITIES
-    .map(p=>({key:p[0],label:p[1],glyph:p[2],v:dna[p[0]],aff:prof[p[0]]||0}))
-    .filter(q=>q.v>0)
-    .sort((a,b)=>(b.v*b.aff)-(a.v*a.aff));
-  const strengths=ranked.filter(q=>q.aff>=.55).slice(0,2);
-  const weak=ranked.slice().reverse().find(q=>q.v>=3&&q.aff<.4);
-  let reason='A balanced fit for the priorities in your Holiday DNA.';
-  if(strengths.length){
-    reason='Strong for '+strengths.map(q=>q.label.toLowerCase()).join(' and ')+' based on your Holiday DNA.';
+  /* ---- 1. fit: category affinity weighted by your DNA ---- */
+  const prof=MATCH_PROFILES[cat]||null;
+  if(dnaTotal&&prof){
+    const fit=Object.keys(dna).reduce((sum,k)=>sum+dna[k]*(prof[k]||0),0)/dnaTotal;
+    parts.push({w:3,score:clamp(fit,0,1)});
+    const ranked=PRIORITIES.map(pr=>({label:pr[1],v:dna[pr[0]],aff:prof[pr[0]]||0}))
+      .filter(q=>q.v>0).sort((a,z)=>(z.v*z.aff)-(a.v*a.aff));
+    const best=ranked.filter(q=>q.aff>=.55).slice(0,2);
+    /* Phrased as a fact about the CATEGORY, because that is all this signal
+       knows. "Suits your beach priority" read as if Roam had checked this
+       particular hotel's beach access. It had not. */
+    if(best.length){
+      lines.push({rank:3,text:catNoun(cat,2).replace(/^./,ch=>ch.toUpperCase())+
+        " score on your "+best.map(q=>q.label.toLowerCase()).join(" and ")+
+        " priorit"+(best.length>1?"ies":"y")});
+      best.forEach(q=>drivers.push(q.label));
+    }else{
+      const strongest=ranked[0];
+      lines.push({rank:3,text:catNoun(cat,2).replace(/^./,ch=>ch.toUpperCase())+
+        " are a weak fit for your "+(strongest?strongest.label.toLowerCase():"stated")+" priorities"});
+    }
+  }else if(dnaTotal&&!prof){
+    lines.push({rank:1,text:cat==="Other"
+      ? "The source did not say what kind of place this is, so Roam cannot score it against your Holiday DNA"
+      : "Uncategorised, so Roam cannot score it against your Holiday DNA"});
   }
-  if(weak&&pct<78)reason+=' Less aligned with your '+weak.label.toLowerCase()+' priority.';
-  const drivers=strengths.map(q=>q.label);
-  return {pct,reason,drivers};
+
+  /* ---- 2. quality: rating, discounted by review count ---- */
+  const r=num(x.rating),reviews=num(x.ratingCount)||0;
+  if(r!=null){
+    /* 3.4 stars reads as 0, 4.8 as 1 — the useful range for places data */
+    const norm=clamp((r-3.4)/1.4,0,1);
+    /* below ~120 reviews the rating is weak evidence, so it carries less weight
+       rather than being treated as gospel */
+    const conf=clamp(reviews/120,0,1);
+    parts.push({w:2*(.3+.7*conf),score:norm});
+    lines.push({rank:2,text:reviews>=120
+      ? "\u2605 "+r.toFixed(1)+" from "+reviews.toLocaleString("en-GB")+" reviews"
+      : reviews>0
+        ? "\u2605 "+r.toFixed(1)+" but only "+reviews.toLocaleString("en-GB")+" review"+(reviews===1?"":"s")+", so treat it lightly"
+        : "\u2605 "+r.toFixed(1)+" with no review count given"});
+  }else{
+    lines.push({rank:2,text:"No rating from the source"});
+  }
+
+  /* ---- 3. gap: does this cover a strong priority nothing else covers? ---- */
+  const strongPriorities=PRIORITIES.map(pr=>({key:pr[0],label:pr[1],v:dna[pr[0]]})).filter(q=>q.v>=4);
+  /* Skip it entirely for "Other": we do not know what the place is, so it
+     cannot be scored 0 for failing to cover anything. Not applicable is not
+     the same as failed, and counting it as failed dragged unknown places to
+     a confident-looking 0%. */
+  if(strongPriorities.length&&cat!=="Other"){
+    const rest=tripIdeas(state.current).filter(i=>
+      i.id!==x.id && !(x.placeId&&i.placeId&&i.placeId===x.placeId));
+    let score=0,filled=null,already=0;
+    strongPriorities.forEach(q=>{
+      const cats=PRIORITY_CATS[q.key]||[];
+      if(!cats.includes(cat))return;
+      const have=rest.filter(i=>cats.includes(category(i.cat||i.category))).length;
+      const s=have===0?1:have===1?.55:have===2?.25:0;
+      if(s>score){score=s;filled=q;already=have}
+    });
+    parts.push({w:2,score});
+    if(filled&&already===0){
+      lines.push({rank:0,text:"Nothing else on this trip covers "+filled.label.toLowerCase()+" yet"});
+      drivers.unshift("Fills a gap");
+    }else if(filled){
+      lines.push({rank:1,text:"You have already saved "+already+" "+catNoun(cat,already)+
+        " for your "+filled.label.toLowerCase()+" priority"});
+    }else{
+      lines.push({rank:4,text:"Does not cover any of the priorities you rated 4 or 5"});
+    }
+  }
+
+  /* ---- 4. evidence: did the source give us anything ---- */
+  const hasDesc=String(x.description||"").trim().length>25;
+  const hasPhoto=!!photoRef(x)||/^https?:|^data:/i.test(String(x.photoUrl||""));
+  const hasLink=!!(x.sourceUrl||x.mapsUrl);
+  const ev=(hasDesc?.5:0)+(hasPhoto?.3:0)+(hasLink?.2:0);
+  parts.push({w:1,score:ev});
+  if(ev<.5)lines.push({rank:1,text:"Little detail came back for this one"});
+
+  if(!parts.length)return null;
+  const w=parts.reduce((t,q)=>t+q.w,0);
+  if(w<=0)return null;
+  /* 8 is the total weight when every signal has evidence behind it. Under 2
+     there is essentially nothing to go on, and a number would be a lie
+     dressed as data — pct is null and the UI shows a dash. 0% would read as
+     "Roam assessed this and it is terrible". */
+  const assessable=w>=2;
+  const pct=assessable?Math.round(clamp(parts.reduce((t,q)=>t+q.score*q.w,0)/w,0,1)*100):null;
+  const thin=w<4;
+  /* Lead with whatever separates this place from its neighbours in the same
+     tab. The category-fit line is identical for everything in a category, so
+     it goes last — it was the whole reason every card used to read the same. */
+  const ordered=lines.slice().sort((a,z)=>(a.rank||0)-(z.rank||0));
+  const reason=ordered.slice(0,2).map(l=>l.text).join(". ")+".";
+  return {pct,reason,lines:ordered.map(l=>l.text),drivers:drivers.slice(0,3),
+          weight:w,thin,assessable,hasBrief:dnaTotal>0};
 }
 
 function placeCard(x,i){
@@ -1902,12 +1995,12 @@ function placeCard(x,i){
   const kept=i!=null&&state.ideas.some(k=>k.name===x.name);
   const badge=i==null&&x.holidayId?tripName(x.holidayId):"";
   return `<article class="card place">
-    <div class="thumb"><span>${esc(x.icon||"📍")}</span>${url?`<img src="${esc(url)}" alt="">`:""}</div>
+    <div class="thumb"><span>${esc(x.icon||"📍")}</span>${url?`<img src="${esc(url)}" alt="" loading="lazy" decoding="async">`:""}</div>
     <div class="place-body">
       <p class="tiny muted">${esc(cat)}${badge?" · "+esc(badge):(i==null?" · no trip yet":"")}</p>
       <h3>${esc(x.name)}</h3>
       <p class="score">${rate!=null?"★ "+rate.toFixed(1):"No rating"}${x.ratingCount?`<span>${Number(x.ratingCount).toLocaleString("en-GB")} reviews</span>`:""}</p>
-      ${match?`<div class="note" style="padding:9px 11px"><strong style="color:var(--brand-ink)">Roam Match ${match.pct}%</strong><br><span class="tiny">${esc(match.reason)}</span></div>`:""}
+      ${match?`<div class="note${match.thin?" note-warn":""}" style="padding:9px 11px"><strong>Roam Match ${match.pct==null?"—":match.pct+"%"}${match.pct!=null&&match.thin?" · limited evidence":""}</strong><br><span class="tiny">${esc(match.reason)}</span></div>`:""}
       <p class="desc">${esc(x.description||"No description available.")}</p>
       <div class="row">
         <button class="btn btn-primary btn-sm" data-act="place-view" ${ref}>View</button>
@@ -1920,36 +2013,49 @@ function placeCard(x,i){
       </div>
     </div></article>`;
 }
-function renderExploreRecommendation(list){
+/* Only worth showing when the scores actually separate. If the top and
+   bottom of the list are within a few points then every result is an
+   equally good guess, and a "best match" banner would be inventing a
+   winner — so say that instead, and point at the category tabs. */
+function renderMatchPanel(list){
   if(!Array.isArray(list)||list.length===0)return "";
-  const ranked=list.map(x=>({x,m:roamMatch(x)})).filter(r=>r.m).sort((a,b)=>b.m.pct-a.m.pct).slice(0,5);
+  const ranked=list.map(x=>({x,m:roamMatch(x)})).filter(r=>r.m&&r.m.pct!=null).sort((a,b)=>b.m.pct-a.m.pct);
   if(!ranked.length)return "";
-  const winner=ranked[0];
-  return `<section class="v434-recommend">
-    <div class="v434-recommend-head">
+  const hasBrief=ranked[0].m.hasBrief;
+  if(!hasBrief)return "";
+  const spread=ranked[0].m.pct-ranked[ranked.length-1].m.pct;
+  if(ranked.length>=4&&spread<10){
+    return `<section class="note" style="margin-bottom:14px">
+      <strong>No standout match.</strong> These ${ranked.length} results all score within
+      ${spread} point${spread===1?"":"s"} of each other against your Holiday DNA, so Roam has
+      no basis for picking a winner. Use the category tabs and the ratings below instead.</section>`;
+  }
+  const top=ranked.slice(0,3),winner=top[0];
+  return `<section class="match-panel">
+    <div class="match-head">
       <div>
-        <div class="recommend-title"><span class="recommend-star">★</span><div><div class="label">Roam recommends</div><h2>Your strongest matches</h2></div></div>
-        <p class="recommend-sub">Based on your preferences, budget and travel style, these places could be perfect for you.</p>
+        <div class="match-title"><span class="match-star">★</span><div><div class="label">Closest to your brief</div><h2>${top.length===1?"One result stands out":"Where your brief points"}</h2></div></div>
+        <p class="match-sub">Ranked on category fit against your Holiday DNA, rating weighted by review count, and whether the place covers a priority nothing else on this trip covers.</p>
       </div>
-      <div class="pill">Best match · ${winner.m.pct}%</div>
+      <div class="pill">Top score · ${winner.m.pct}%</div>
     </div>
-    <div class="v434-recommend-grid">${ranked.map((r,i)=>{
+    <div class="match-grid">${top.map((r,i)=>{
       const idx=state.research.indexOf(r.x),img=photoUrl(r.x),cat=category(r.x.cat||r.x.category),rating=num(r.x.rating);
-      const drivers=(r.m.drivers||[]).slice(0,2).map(d=>`<span>${esc(d)}</span>`).join('');
-      return `<article class="v434-recommend-item${i===0?' top':''}">
-        <div class="recommend-photo">
-          ${img?`<img src="${esc(img)}" alt="${esc(r.x.name||'Destination')}" loading="lazy">`:`<div class="recommend-photo-fallback">${esc(r.x.icon||'✈️')}</div>`}
-          <span class="recommend-badge">${i===0?'🏆 Best match':i===1?'♥ Great fit':'✦ Strong match'}</span>
-          <button class="recommend-heart" aria-label="Save ${esc(r.x.name||'place')}" data-act="place-save" data-i="${idx}">♡</button>
+      const drivers=(r.m.drivers||[]).slice(0,2).map(d=>`<span>${esc(d)}</span>`).join("");
+      return `<article class="match-item${i===0?" top":""}">
+        <div class="match-photo">
+          ${img?`<img src="${esc(img)}" alt="${esc(r.x.name||"Destination")}" loading="lazy" decoding="async">`:`<div class="match-photo-fallback">${esc(r.x.icon||"✈️")}</div>`}
+          <span class="match-badge">${i===0?"Top score":"#"+(i+1)}</span>
+          <button class="match-heart" aria-label="Save ${esc(r.x.name||"place")}" data-act="place-save" data-i="${idx}">♡</button>
         </div>
-        <div class="recommend-body">
-          <div class="recommend-name-row"><h3>${esc(r.x.name)}</h3>${rating!=null?`<span class="recommend-weather">★ ${rating.toFixed(1)}</span>`:''}</div>
-          <p class="recommend-description">${esc(r.x.description||r.m.reason||'A strong match for your holiday preferences.')}</p>
-          <div class="recommend-tags"><span>${esc(cat)}</span>${drivers}</div>
-          <div class="recommend-footer"><strong>${r.m.pct}%</strong><span>Roam Match</span><button class="btn btn-sm" data-act="place-view" data-i="${idx}">View →</button></div>
+        <div class="match-body">
+          <div class="match-name-row"><h3>${esc(r.x.name)}</h3>${rating!=null?`<span class="match-rating">★ ${rating.toFixed(1)}</span>`:""}</div>
+          <p class="match-reason">${esc(r.m.reason)}</p>
+          <div class="match-tags"><span>${esc(cat)}</span>${drivers}</div>
+          <div class="match-footer"><strong>${r.m.pct}%</strong><span>Roam Match${r.m.thin?" · limited evidence":""}</span><button class="btn btn-sm" data-act="place-view" data-i="${idx}">View →</button></div>
         </div>
       </article>`;
-    }).join('')}</div>
+    }).join("")}</div>
   </section>`;
 }
 function priceSignal(list){
@@ -1962,27 +2068,79 @@ function priceSignal(list){
   if(score<3.5)return {label:"Higher-priced",symbol:"££££"};
   return {label:"Premium-priced",symbol:"£££££"};
 }
+let intelSeq=0;
 async function loadDestinationIntel(destination,list){
   const q=String(destination||"").trim(); if(!q)return;
-  state.destinationInfoBusy=true;state.destinationInfoError="";renderExplore();
+  const seq=++intelSeq;
+  state.destinationInfoBusy=true;state.destinationInfoError="";state.destinationInfo=null;
+  renderDestinationIntelInto();
   try{
     const geoRes=await fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(q)+"&count=1&language=en&format=json");
-    if(!geoRes.ok)throw new Error("Weather location lookup failed");
+    if(!geoRes.ok)throw new Error("Weather location lookup failed (HTTP "+geoRes.status+")");
     const geo=await geoRes.json(),place=geo.results&&geo.results[0];
-    if(!place)throw new Error("Weather location not found for "+q);
+    if(!place)throw new Error("Open-Meteo does not recognise \u201c"+q+"\u201d as a place");
+    if(seq!==intelSeq)return;
+
+    /* Open-Meteo forecasts run about 16 days out. If the holiday falls inside
+       that window, ask for those exact dates; otherwise fall back to the
+       standard 7-day view and say plainly that the trip is out of range. */
     const hw=holidayWeatherDates();
-    let wxUrl="https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(place.latitude)+"&longitude="+encodeURIComponent(place.longitude)+"&current=temperature_2m,apparent_temperature,precipitation,rain,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=7&timezone=auto";
-    if(hw){const today=new Date();today.setHours(0,0,0,0);const diff=Math.ceil((hw.start-today)/86400000);const endDiff=Math.ceil((hw.end-today)/86400000);if(diff>=0&&endDiff<=16){wxUrl="https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(place.latitude)+"&longitude="+encodeURIComponent(place.longitude)+"&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&start_date="+isoDate(hw.start)+"&end_date="+isoDate(hw.end)+"&timezone=auto";}}
+    const today=new Date();today.setHours(0,0,0,0);
+    const startIn=hw?Math.round((hw.start-today)/86400000):null;
+    const endIn=hw?Math.round((hw.end-today)/86400000):null;
+    const inRange=!!(hw&&endIn>=0&&startIn<=16);
+    const base="https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(place.latitude)+
+                "&longitude="+encodeURIComponent(place.longitude)+"&timezone=auto";
+    const wxUrl=inRange
+      ? base+"&current=temperature_2m,apparent_temperature,weather_code"+
+             "&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code"+
+             "&start_date="+isoDate(startIn<0?today:hw.start)+"&end_date="+isoDate(endIn>16?new Date(today.getTime()+16*86400000):hw.end)
+      : base+"&current=temperature_2m,apparent_temperature,weather_code"+
+             "&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&forecast_days=7";
     const wxRes=await fetch(wxUrl);
-    if(!wxRes.ok)throw new Error("Weather forecast unavailable");
+    if(!wxRes.ok)throw new Error("Weather forecast unavailable (HTTP "+wxRes.status+")");
     const wx=await wxRes.json();
-    const days=wx.daily||{},max=(days.temperature_2m_max||[]).filter(Number.isFinite),min=(days.temperature_2m_min||[]).filter(Number.isFinite),rain=(days.precipitation_probability_max||[]).filter(Number.isFinite);
-    const avgMax=max.length?Math.round(max.reduce((a,b)=>a+b,0)/max.length):null;
-    const avgMin=min.length?Math.round(min.reduce((a,b)=>a+b,0)/min.length):null;
+    if(seq!==intelSeq)return;
+
+    const days=wx.daily||{};
+    const max=(days.temperature_2m_max||[]).filter(Number.isFinite);
+    const min=(days.temperature_2m_min||[]).filter(Number.isFinite);
+    const rain=(days.precipitation_probability_max||[]).filter(Number.isFinite);
+    const codes=(days.weather_code||[]).filter(Number.isFinite);
+    const avg=a=>a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):null;
+    const avgMax=avg(max),avgMin=avg(min);
     const rainMax=rain.length?Math.max(...rain):null;
-    state.destinationInfo={name:place.name||q,country:place.country||"",current:wx.current||{},avgMax,avgMin,rainMax,price:priceSignal(list)};
-  }catch(err){console.warn("Destination intelligence:",err);state.destinationInfoError=err.message||"Destination information unavailable";state.destinationInfo=null}
-  finally{state.destinationInfoBusy=false;renderExplore()}
+    const rainAvg=avg(rain);
+    /* the modal weather code across the window, so "mostly overcast" is honest */
+    let dominant=null;
+    if(codes.length){
+      const tally={};codes.forEach(c=>{tally[c]=(tally[c]||0)+1});
+      dominant=Number(Object.keys(tally).sort((a,b)=>tally[b]-tally[a])[0]);
+    }
+    let assessment="";
+    if(inRange&&avgMax!=null){
+      assessment=avgMax+"°C / "+avgMin+"°C"+(rainAvg!=null?", "+rainAvg+"% rain":"");
+    }
+    state.destinationInfo={
+      name:place.name||q,country:place.country||"",
+      current:wx.current||{},
+      avgMax,avgMin,rainMax,dominant,
+      days:max.length,
+      price:priceSignal(list),
+      tripDates:hw,
+      inTripForecast:inRange,
+      tripAssessment:assessment,
+      outOfRange:!!(hw&&!inRange),
+      startIn
+    };
+  }catch(err){
+    if(seq!==intelSeq)return;
+    console.warn("Destination snapshot:",err);
+    state.destinationInfoError=err.message||"Destination information unavailable";
+    state.destinationInfo=null;
+  }finally{
+    if(seq===intelSeq){state.destinationInfoBusy=false;renderDestinationIntelInto()}
+  }
 }
 function weatherLabel(code){
   const n=Number(code);
@@ -1999,13 +2157,60 @@ function weatherLabel(code){
   if([95,96,99].includes(n))return "Thunderstorms";
   return "Weather available";
 }
-function renderDestinationIntel(list){
+function renderDestinationIntel(){
   if(!state.researchTitle)return "";
-  if(state.destinationInfoBusy)return `<section class="dest-intel card card-pad"><div class="label">DESTINATION SNAPSHOT</div><h3 style="margin-top:4px">Checking ${esc(state.researchTitle)}…</h3><p class="dest-intel-note">Fetching current weather and building a local price signal from the places Roam researched.</p></section>`;
-  const d=state.destinationInfo;if(!d)return state.destinationInfoError?`<section class="dest-intel card card-pad"><div class="label">DESTINATION SNAPSHOT</div><p class="dest-intel-note">${esc(state.destinationInfoError)}. Roam can still show the researched places below.</p></section>`:"";
-  const c=d.current||{}, temp=Number.isFinite(c.temperature_2m)?Math.round(c.temperature_2m):null, feels=Number.isFinite(c.apparent_temperature)?Math.round(c.apparent_temperature):null;
-  const rain=d.rainMax!=null?d.rainMax+"%":"—", price=d.price, condition=weatherLabel(c.weather_code);
-  return `<section class="dest-intel card card-pad"><div class="head" style="margin-top:0"><div><div class="label">DESTINATION WEATHER</div><h2>${esc(d.name)}${d.country?`, ${esc(d.country)}`:""}</h2></div><span class="pill">Open-Meteo · Live</span></div><div style="margin-top:10px;font-weight:800;color:var(--brand-ink)">${esc(condition)}</div><div class="dest-intel-grid" style="margin-top:14px"><div class="dest-intel-item"><small>Now</small><strong>${temp!=null?temp+"°C":"—"}</strong><span class="tiny muted">${feels!=null?"Feels "+feels+"°C":"Current temperature"}</span></div><div class="dest-intel-item"><small>7-day high</small><strong>${d.avgMax!=null?d.avgMax+"°C":"—"}</strong><span class="tiny muted">Average forecast high</span></div><div class="dest-intel-item"><small>7-day low</small><strong>${d.avgMin!=null?d.avgMin+"°C":"—"}</strong><span class="tiny muted">Average forecast low</span></div><div class="dest-intel-item"><small>Rain chance</small><strong>${rain}</strong><span class="tiny muted">Highest daily probability</span></div></div>${d.inTripForecast?`<div class="dest-intel-item" style="margin-top:12px"><small>Your holiday</small><strong>${esc(d.tripAssessment||"Forecast available")}</strong><span class="tiny muted">${formatDateShort(d.tripDates.start)} – ${formatDateShort(d.tripDates.end)}</span></div>`:`<div class="dest-intel-note" style="margin-top:12px"><strong>No trip forecast yet.</strong> ${d.tripDates?`Your dates are ${formatDateShort(d.tripDates.start)} – ${formatDateShort(d.tripDates.end)}. Open-Meteo forecasts cover the near term; for dates further away Roam will show typical climate data in a later weather layer.`:"Add your holiday dates to assess weather for the trip."}</div>`}<p class="dest-intel-note">Live weather supplied by Open-Meteo. Forecasts are useful for current planning; they are not a guarantee of conditions for a future holiday.</p><p class="dest-intel-note" style="margin-top:5px">Weather data: Open-Meteo, CC BY 4.0.</p></section>`;
+  if(state.destinationInfoBusy)return `<section class="dest-intel card card-pad">
+    <div class="label">Destination snapshot</div>
+    <h3 style="margin-top:4px">Checking ${esc(state.researchTitle)}…</h3>
+    <p class="dest-intel-note">Fetching weather from Open-Meteo and reading a price signal off the places Roam found.</p></section>`;
+  const d=state.destinationInfo;
+  if(!d)return state.destinationInfoError?`<section class="dest-intel card card-pad">
+    <div class="label">Destination snapshot</div>
+    <p class="dest-intel-note" style="margin-top:6px">No weather for this search: ${esc(state.destinationInfoError)}. The researched places below are unaffected.</p></section>`:"";
+
+  const c=d.current||{};
+  const temp=Number.isFinite(c.temperature_2m)?Math.round(c.temperature_2m):null;
+  const feels=Number.isFinite(c.apparent_temperature)?Math.round(c.apparent_temperature):null;
+  const condition=weatherLabel(d.inTripForecast&&d.dominant!=null?d.dominant:c.weather_code);
+  const span=d.inTripForecast?"Holiday":(d.days||7)+"-day";
+  const price=d.price;
+
+  const tripRow=d.inTripForecast
+    ? `<div class="dest-intel-item dest-intel-trip" style="margin-top:12px">
+         <small>Your holiday</small>
+         <strong>${esc(d.tripAssessment||"Forecast available")}</strong>
+         <span class="tiny">${esc(formatDateShort(d.tripDates.start))} – ${esc(formatDateShort(d.tripDates.end))} · ${esc(condition.toLowerCase())}</span>
+       </div>`
+    : `<div class="dest-intel-note" style="margin-top:12px"><strong>${d.tripDates?"Your dates are out of forecast range.":"No trip dates set."}</strong> ${
+        d.tripDates
+          ? "Open-Meteo forecasts reach about 16 days ahead and your trip starts in "+d.startIn+" days ("+esc(formatDateShort(d.tripDates.start))+" – "+esc(formatDateShort(d.tripDates.end))+"), so the figures above are current conditions, not your holiday."
+          : "Add start and end dates to this holiday and Roam will forecast those exact days once they are within about 16 days."
+      }</div>`;
+
+  return `<section class="dest-intel card card-pad">
+    <div class="head" style="margin-top:0">
+      <div><div class="label">Destination weather</div>
+      <h2>${esc(d.name)}${d.country?", "+esc(d.country):""}</h2></div>
+      <span class="pill">Open-Meteo</span>
+    </div>
+    <div style="margin-top:10px;font-weight:800;color:var(--brand-ink)">${esc(condition)}</div>
+    <div class="dest-intel-grid" style="margin-top:14px">
+      <div class="dest-intel-item"><small>Now</small><strong>${temp!=null?temp+"°C":"—"}</strong><span class="tiny muted">${feels!=null?"Feels "+feels+"°C":"Current temperature"}</span></div>
+      <div class="dest-intel-item"><small>${esc(span)} high</small><strong>${d.avgMax!=null?d.avgMax+"°C":"—"}</strong><span class="tiny muted">Average daily high</span></div>
+      <div class="dest-intel-item"><small>${esc(span)} low</small><strong>${d.avgMin!=null?d.avgMin+"°C":"—"}</strong><span class="tiny muted">Average daily low</span></div>
+      <div class="dest-intel-item"><small>${price?"Price signal":"Rain chance"}</small><strong>${price?esc(price.symbol):(d.rainMax!=null?d.rainMax+"%":"—")}</strong><span class="tiny muted">${price?esc(price.label):"Highest daily probability"}</span></div>
+    </div>
+    ${tripRow}
+    <p class="dest-intel-note">A forecast is not a guarantee, and nothing beyond about 16 days is a forecast at all.${price?" The price signal is read from the results below, not from a market source.":""}</p>
+    <p class="dest-intel-note" style="margin-top:5px">Weather data: Open-Meteo, CC BY 4.0.</p>
+  </section>`;
+}
+/* Patch the snapshot in place. Re-rendering the whole Explore view for a
+   weather update threw away the result grid and the reader's scroll
+   position twice per search. */
+function renderDestinationIntelInto(){
+  const slot=$("#destIntel");
+  if(slot)slot.innerHTML=renderDestinationIntel();
 }
 function renderExplore(){
   const area=$("#researchArea");
@@ -2051,8 +2256,8 @@ function renderExplore(){
     <div class="head" style="margin-top:0"><h2>Ideas for ${esc(state.researchTitle)}</h2>
       <span class="pill">${state.research.length} result${state.research.length===1?"":"s"}</span></div>
     ${Object.keys(state.brief||{}).length?`<p class="note" style="margin-bottom:14px">🧠 Roam Match uses your saved Holiday DNA to show how closely each result fits the trip you described. It is Roam's score, not a Google rating.</p>`:`<p class="note" style="margin-bottom:14px">Fill in your Holiday Brief to add personalised Roam Match scores. <button class="btn btn-sm" data-act="go" data-view="brief" style="margin-left:8px">Set Holiday DNA</button></p>`}
-    ${renderDestinationIntel(list)}
-    ${renderExploreRecommendation(list)}
+    <div id="destIntel">${renderDestinationIntel()}</div>
+    ${renderMatchPanel(list)}
     <div class="tabs">${tabs.map(t=>
       `<button data-act="research-tab" data-tab="${esc(t)}" aria-pressed="${t===state.researchTab}">${esc(t)}</button>`).join("")}</div>
     <div class="grid">${list.length?list.map((x,i)=>placeCard(x,state.research.indexOf(x))).join("")
@@ -2075,7 +2280,9 @@ async function research(){
       body:JSON.stringify({
         destination:q,
         categories:["hotels","restaurants","beaches","things_to_do","places_to_see","day_trips"],
-        limit:140,
+        /* 60, not 140. Every card carries a photo request that is billed on
+           the endpoint side, and nobody reads past the third screen. */
+        limit:60,
         preferences:briefPreferences()
       })
     });
@@ -2097,18 +2304,26 @@ async function research(){
       description:x.description||(x.editorialSummary&&x.editorialSummary.text)||"",
       sourceUrl:x.sourceUrl||x.websiteUri||x.googleMapsUri||"",
       mapsUrl:x.mapsUrl||x.googleMapsUri||"",
-      photoUrl:x.photoUrl||(x.photo&&x.photo.photoUri)||"",
+      /* keep the photo REFERENCE, not a resolved URL — the mapper used to
+         drop x.photo entirely, so photo:{name:...} responses showed nothing */
+      photoRef:photoRef(x),
+      photoUrl:/^https?:/i.test(String(x.photoUrl||""))?String(x.photoUrl):"",
       photos:x.photos,
       reviewSummary:(x.reviewSummary&&x.reviewSummary.text)||x.reviewSummary||"",
       reviewsUrl:x.reviewsUrl||x.mapsUrl||x.googleMapsUri||""
     }));
-    loadDestinationIntel(q,state.research);
   }catch(err){
     if(err.name==="AbortError"||seq!==researchSeq)return;
     console.error("Roam research failed:",err);
     state.researchError=diagnose(err);
   }finally{
-    if(seq===researchSeq){state.busy=false;state.abort=null;renderExplore()}
+    if(seq===researchSeq){
+      state.busy=false;state.abort=null;
+      renderExplore();
+      /* after the grid exists, so the snapshot lands in #destIntel
+         instead of forcing a second rebuild of every card */
+      if(state.research.length)loadDestinationIntel(q,state.research);
+    }
   }
 }
 async function testEndpoint(){
@@ -2189,19 +2404,25 @@ async function loadOpinions(x){
   }
 }
 function saveIdea(x){
-  const dupe=state.ideas.find(i=>i.name===x.name);
-  if(dupe){
-    if(state.current&&dupe.holidayId!==state.current){
-      dupe.holidayId=state.current;
-      persist();toast(dupe.name+" moved to "+tripName(state.current));render();
-    }else toast("Already on your shortlist");
+  /* identity is the place id where we have one — two towns can both have a
+     "Mercado Central", and the same place can legitimately sit on two trips */
+  const pid=String(x.placeId||x.id||"");
+  const dupe=state.ideas.find(i=>
+    (pid&&String(i.placeId||"")===pid&&(i.holidayId||"")===(state.current||"")) ||
+    (!pid&&i.name===x.name&&(i.holidayId||"")===(state.current||"")));
+  if(dupe){toast("Already on this trip's shortlist");return}
+  const elsewhere=pid?state.ideas.find(i=>String(i.placeId||"")===pid&&!i.holidayId):null;
+  if(elsewhere&&state.current){
+    elsewhere.holidayId=state.current;
+    persist();toast(elsewhere.name+" moved to "+tripName(state.current));render();
     return;
   }
   state.ideas.unshift(normIdea({
     id:uid(),name:x.name,cat:category(x.cat||x.category),icon:x.icon,rating:x.rating,
-    ratingCount:x.ratingCount,description:x.description,photoUrl:photoUrl(x),
+    ratingCount:x.ratingCount,description:x.description,
+    photoRef:photoRef(x),photoUrl:x.photoUrl,photos:x.photos,photo:x.photo,
     sourceUrl:x.sourceUrl,mapsUrl:x.mapsUrl,reviewSummary:x.reviewSummary,
-    reviewsUrl:x.reviewsUrl,placeId:x.placeId||x.id,savedAt:Date.now(),
+    reviewsUrl:x.reviewsUrl,placeId:pid,savedAt:Date.now(),
     holidayId:state.current||""
   }));
   persist();toast("Saved to your shortlist");render();
@@ -2218,7 +2439,7 @@ function shortlistPick(src){
     const reviews=num(x.ratingCount)||0;
     const quality=rating?Math.min(1,rating/5):0;
     const reviewConfidence=reviews?Math.min(1,Math.log10(reviews+1)/4):0;
-    const score=match ? match.pct*.78 + quality*14 + reviewConfidence*8
+    const score=(match&&match.pct!=null) ? match.pct*.78 + quality*14 + reviewConfidence*8
                        : quality*78 + reviewConfidence*22;
     return {x,match,score};
   }).sort((a,b)=>b.score-a.score);
@@ -2230,9 +2451,8 @@ function renderShortlistPick(src){
   if(!pick)return "";
   const x=pick.x,match=pick.match;
   const cat=category(x.cat||x.category),rate=num(x.rating);
-  const why=match
-    ? match.reason.replace(/based on your Holiday DNA\.?/i,"based on your Holiday DNA.")
-    : "The strongest rated option in your shortlist, with review confidence taken into account.";
+  const why=match?match.reason
+    :"The strongest rated option in your shortlist, with review confidence taken into account.";
   return `<div class="card card-pad" style="margin-bottom:18px;border-color:var(--brand)">
     <div class="row" style="align-items:flex-start">
       <div class="grow">
@@ -2240,7 +2460,7 @@ function renderShortlistPick(src){
         <h2 style="margin-top:4px">${esc(x.name)}</h2>
         <p class="small muted" style="margin-top:4px">${esc(cat)}${rate!=null?` · ★ ${rate.toFixed(1)}`:""}</p>
       </div>
-      ${match?`<div class="ring" style="--pct:${match.pct}%"><b>${match.pct}%</b></div>`:""}
+      ${match?(match.pct==null?`<div class="ring ring-none"><b>—</b></div>`:`<div class="ring" style="--pct:${match.pct}%"><b>${match.pct}%</b></div>`):""}
     </div>
     <p style="margin-top:13px">${esc(why)}</p>
     <p class="small muted" style="margin-top:6px">Roam's pick is based on your saved shortlist and Holiday DNA. It is a recommendation, not a booking decision.</p>
@@ -2253,7 +2473,7 @@ function renderShortlistPick(src){
 function renderOneShortlistComparison(list,label){
   if(!Array.isArray(list)||list.length<2)return "";
   const ranked=list.map(x=>({x,m:roamMatch(x)})).sort((a,b)=>{
-    const am=a.m?a.m.pct:0,bm=b.m?b.m.pct:0;
+    const am=(a.m&&a.m.pct!=null)?a.m.pct:-1,bm=(b.m&&b.m.pct!=null)?b.m.pct:-1;
     return (bm-am)||((num(b.x.rating)||0)-(num(a.x.rating)||0));
   }).slice(0,3);
   const winner=ranked[0];
@@ -2268,7 +2488,7 @@ function renderOneShortlistComparison(list,label){
       return `<article class="short-compare-item${i===0?' winner':''}">
         ${i===0?'<span class="pill">🏆 Roam\'s pick</span>':'<span class="tiny muted">Alternative '+(i+1)+'</span>'}
         <h3>${esc(r.x.name)}</h3>
-        <div class="short-compare-score">${r.m?r.m.pct+'%':'—'}</div>
+        <div class="short-compare-score">${(r.m&&r.m.pct!=null)?r.m.pct+'%':'—'}</div>
         <div class="small"><strong>Roam Match</strong></div>
         <div class="short-compare-meta">${rate!=null?'★ '+rate.toFixed(1):'No rating'}${reviews?' · '+reviews.toLocaleString('en-GB')+' reviews':''}</div>
         <p class="tiny muted" style="margin-top:9px">${esc(r.m?r.m.reason:'No personalised score yet.')}</p>
@@ -2623,11 +2843,16 @@ function saveBrief(){
   renderHolidayDna();
   toast("Brief saved — searches will use it");
 }
+/* This reports whether the APP opens without a connection. It is not a claim
+   that Roam works offline: Explore needs the research endpoint and the
+   Destination snapshot needs Open-Meteo. Everything you have already saved —
+   holidays, shortlist, itinerary, photos, brief — is local and works offline. */
+const ROAM_CACHE="roam-v43";
 const OFFLINE_TEXT={
-  file:["ok","Fully offline. Roam is running from a local file, so nothing is fetched to start it."],
-  ready:["ok","Offline ready. This copy is cached, so it opens with no connection."],
+  file:["ok","Opens offline. Running from a local file, so nothing is fetched to start it. Explore and weather still need a connection."],
+  ready:["ok","Opens offline. This copy is cached. Your saved holidays and shortlist work with no connection; Explore and weather do not."],
   pending:["","Cached. Close the tab and reopen it once, then it will open offline."],
-  missing:["bad","Not offline yet. Put the companion sw.js file next to this page on the server."],
+  missing:["bad","Will not open offline yet. Put the companion sw.js file next to this page on the server."],
   unsupported:["bad","This browser will not cache the page. Save the file locally, or add it to your home screen."],
   checking:["","Checking…"]
 };
@@ -2646,9 +2871,13 @@ function checkOffline(){
   navigator.serviceWorker.register("sw.js").then(async ()=>{
     state.offline=navigator.serviceWorker.controller?"ready":"pending";
     renderOffline();
-    /* make sure the page itself is cached on the very first visit */
+    /* Cache the page on the first visit. The key MUST change every release:
+       it sat on "roam-v42" across every version, so a browser that cached an
+       older build kept serving it and never saw the new one. */
     try{
-      const c=await caches.open("roam-v42");
+      const keys=await caches.keys();
+      await Promise.all(keys.filter(k=>k.startsWith("roam-v")&&k!==ROAM_CACHE).map(k=>caches.delete(k)));
+      const c=await caches.open(ROAM_CACHE);
       await c.add(new Request(location.href,{cache:"reload"}));
     }catch(e){}
   }).catch(()=>{state.offline="missing";renderOffline()});
@@ -2683,7 +2912,8 @@ async function exportData(){
     else skipped++;
   }
   const blob=new Blob([JSON.stringify({
-    app:"roam",version:42,exported:new Date().toISOString(),
+    app:"roam",version:43,exported:new Date().toISOString(),
+    endpoint:(store.get(K.endpoint)||"").trim(),
     holidays:state.holidays,ideas:state.ideas,photos,brief:state.brief
   },null,2)],{type:"application/json"});
   const a=document.createElement("a");
@@ -2707,6 +2937,7 @@ function importData(file){
         state.ideas=(Array.isArray(data.ideas)?data.ideas:[]).map(normIdea);
         state.brief=data.brief&&typeof data.brief==="object"?data.brief:{};
         state.current=state.holidays.length?state.holidays[0].id:null;
+        if(typeof data.endpoint==="string"&&data.endpoint.trim())store.set(K.endpoint,data.endpoint.trim());
         store.set(K.brief,JSON.stringify(state.brief));
         persist();
         state.photos.forEach(p=>forgetPhotoUrl(p.id));
@@ -3026,7 +3257,7 @@ const ACT={
     const open=span?[...Array(span)].map((_,i)=>i+1).find(d=>!planned.has(d)):null;
     const day=open||((h.activities.length?Math.max.apply(null,h.activities.map(a=>a.day)):0)+1);
     const used=new Set(h.activities.map(a=>String(a.name||'').trim().toLowerCase()).filter(Boolean));
-    const shortlist=tripIdeas(h.id).filter(x=>!used.has(String(x.name||'').trim().toLowerCase())).slice().sort((a,b)=>(roamMatch(b)?.pct||0)-(roamMatch(a)?.pct||0));
+    const shortlist=tripIdeas(h.id).filter(x=>!used.has(String(x.name||'').trim().toLowerCase())).slice().sort((a,b)=>((roamMatch(b)||{}).pct??-1)-((roamMatch(a)||{}).pct??-1));
     const picks=shortlist.slice(0,3);
     const morning=picks.find(x=>/place|see|sight|museum|park|landmark|attraction/i.test((x.cat||"")+" "+(x.description||"")))||picks[0];
     const afternoon=picks.find(x=>x!==morning&&/beach|pool|activity|thing|day trip/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning);
@@ -3049,7 +3280,7 @@ const ACT={
     const h=holiday();if(!h)return;
     const target=Math.max(1,num(el.dataset.day)||1);
     const used=new Set(h.activities.map(a=>String(a.name||'').trim().toLowerCase()).filter(Boolean));
-    const shortlist=tripIdeas(h.id).filter(x=>!used.has(String(x.name||'').trim().toLowerCase())).slice().sort((a,b)=>(roamMatch(b)?.pct||0)-(roamMatch(a)?.pct||0));
+    const shortlist=tripIdeas(h.id).filter(x=>!used.has(String(x.name||'').trim().toLowerCase())).slice().sort((a,b)=>((roamMatch(b)||{}).pct??-1)-((roamMatch(a)||{}).pct??-1));
     const picks=shortlist.slice(0,3);
     const morning=picks.find(x=>/place|see|sight|museum|park|landmark|attraction/i.test((x.cat||"")+" "+(x.description||"")))||picks[0];
     const afternoon=picks.find(x=>x!==morning&&/beach|pool|activity|thing|day trip/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning);
