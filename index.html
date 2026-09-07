@@ -1,0 +1,3137 @@
+<!DOCTYPE html>
+<!-- ROAM v42.3 — Open-Meteo destination weather. -->
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f3ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1412" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Roam">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<title>Roam — holiday planner</title>
+<style>
+/* ============================================================
+   1. TOKENS
+   Theme is resolved in JS and written to <html data-theme>.
+   Light theme is high-contrast for direct sunlight; dark theme
+   is low-glare for night use.
+   To bundle a webfont, paste a base64 woff2 @font-face here and
+   prepend the family to --font-display / --font-body. Nothing
+   else in this file makes a network request.
+   ============================================================ */
+:root{
+  --font-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --font-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --r-sm:10px; --r-md:14px; --r-lg:20px; --r-pill:999px;
+  --pad:clamp(16px,4vw,40px);
+  --tap:44px;
+}
+:root[data-theme="light"]{
+  --bg:#f4f3ee; --surface:#fff; --surface-2:#ebeee7; --sunk:#f7f8f4;
+  --line:#d5d8ce; --line-soft:#e6e8e0;
+  --ink:#111a16; --ink-2:#4b5751; --ink-3:#6d7973;
+  --brand:#0f5645; --brand-soft:#d6e7df; --brand-ink:#0b4034; --on-brand:#fff;
+  --accent:#a94c19; --gold:#7a5210;
+  --ok:#1c6b52; --ok-bg:#e2f0e9; --bad:#9a3a3a; --bad-bg:#fbeceb;
+  --hero-a:#dfeae4; --hero-b:#f0e5d0;
+  --shadow:0 6px 18px rgba(14,30,24,.08);
+  --scrim:rgba(12,24,20,.55);
+}
+:root[data-theme="dark"]{
+  --bg:#0e1412; --surface:#18211e; --surface-2:#212c28; --sunk:#131b19;
+  --line:#2e3b36; --line-soft:#26322e;
+  --ink:#eef3f0; --ink-2:#a7b4ae; --ink-3:#8b9892;
+  --brand:#6cc3a6; --brand-soft:#1b2f28; --brand-ink:#8fd4bb; --on-brand:#08201a;
+  --accent:#e28b57; --gold:#d3b06a;
+  --ok:#7fcfaf; --ok-bg:#162a23; --bad:#e79a9a; --bad-bg:#2c1c1c;
+  --hero-a:#1d2c27; --hero-b:#2a2820;
+  --shadow:0 10px 28px rgba(0,0,0,.5);
+  --scrim:rgba(0,0,0,.66);
+}
+
+/* ============================================================
+   2. BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:400 16px/1.55 var(--font-body);
+  min-height:100dvh;
+}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.12;margin:0}
+h1{font-size:clamp(30px,5vw,46px);letter-spacing:-.01em}
+h2{font-size:clamp(22px,3vw,28px)}
+h3{font-size:19px}
+p{margin:0}
+a{color:var(--brand-ink);text-underline-offset:2px}
+img{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--brand);outline-offset:2px;border-radius:4px}
+.muted{color:var(--ink-2)}
+.small{font-size:13px}
+.tiny{font-size:12px}
+.stack{display:grid;gap:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grow{flex:1;min-width:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+
+/* v41.0 — dark-mode readability fix carried forward */
+:root[data-theme="dark"] .v434-recommend-item,
+:root[data-theme="dark"] .v435-decision,
+:root[data-theme="dark"] .btn,
+:root[data-theme="dark"] .field,
+:root[data-theme="dark"] .tabs button,
+:root[data-theme="dark"] .short-compare,
+:root[data-theme="dark"] .final-decision,
+:root[data-theme="dark"] .dna-card,
+:root[data-theme="dark"] .dna-panel,
+:root[data-theme="dark"] .brief-card,
+:root[data-theme="dark"] .modal-card,
+:root[data-theme="dark"] .stat,
+:root[data-theme="dark"] .empty,
+:root[data-theme="dark"] .setup,
+:root[data-theme="dark"] .research-source,
+:root[data-theme="dark"] .shot {
+  background:var(--surface) !important;
+  color:var(--ink);
+  border-color:var(--line) !important;
+}
+:root[data-theme="dark"] .short-compare-top,
+:root[data-theme="dark"] .final-decision-stat,
+:root[data-theme="dark"] .v435-driver {
+  background:var(--surface-2) !important;
+  color:var(--ink);
+  border-color:var(--line) !important;
+}
+:root[data-theme="dark"] .final-decision-next {
+  background:#302a1b !important;
+  color:#f4e6bd;
+  border-color:#65552e !important;
+}
+:root[data-theme="dark"] .short-compare-item.winner {background:#193329 !important}
+:root[data-theme="dark"] .v434-recommend-score,
+:root[data-theme="dark"] .short-compare-score,
+:root[data-theme="dark"] .act-time,
+:root[data-theme="dark"] .v435-driver {color:#8fdac3}
+:root[data-theme="dark"] .v434-recommend-item h3,
+:root[data-theme="dark"] .v434-recommend-item p,
+:root[data-theme="dark"] .v435-decision h3,
+:root[data-theme="dark"] .short-compare-item h3,
+:root[data-theme="dark"] .final-decision h3,
+:root[data-theme="dark"] .stat b,
+:root[data-theme="dark"] .head h2,
+:root[data-theme="dark"] .place-body h3,
+:root[data-theme="dark"] #v-brief h3 {color:var(--ink) !important}
+:root[data-theme="dark"] .v434-recommend-item .muted,
+:root[data-theme="dark"] .v435-decision .muted,
+:root[data-theme="dark"] .stat .muted,
+:root[data-theme="dark"] #v-brief .small.muted,
+:root[data-theme="dark"] .view-head .muted {color:var(--ink-2) !important}
+:root[data-theme="dark"] #v-brief>.card.card-pad:first-of-type {
+  background:linear-gradient(135deg,#182f2b 0%,#1c2927 100%);
+  border-color:#31534c;
+}
+:root[data-theme="dark"] #v-brief>.card.card-pad:first-of-type:before {background:#23463f;color:#9fe1d5}
+:root[data-theme="dark"] #v-brief .fld>span {color:#b7ddd5}
+:root[data-theme="dark"] #v-brief .field {background:#18211e;border-color:#38504a;color:var(--ink)}
+:root[data-theme="dark"] #v-brief .field:focus {border-color:#6cc3a6}
+:root[data-theme="dark"] #v-brief>.dna-card {background:linear-gradient(135deg,#0b3935 0%,#0e5b57 100%)}
+:root[data-theme="dark"] .note,
+:root[data-theme="dark"] .chip {background:var(--surface-2);color:var(--ink-2);border-color:var(--line)}
+:root[data-theme="dark"] .empty {background:linear-gradient(135deg,#182a28,#29261e) !important}
+:root[data-theme="dark"] .day-top {background:var(--surface-2);border-bottom-color:var(--line)}
+:root[data-theme="dark"] .bar {background:#2b3b36}
+:root[data-theme="dark"] .ring::after {background:var(--surface)}
+:root[data-theme="dark"] .explore-tools .btn-quiet {background:var(--surface-2);color:#a9dfd1;border-color:var(--line)}
+
+/* ============================================================
+   3. CONTROLS
+   ============================================================ */
+button{cursor:pointer;border:1px solid transparent;background:none;border-radius:var(--r-sm);
+  -webkit-tap-highlight-color:transparent}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  min-height:var(--tap);padding:10px 16px;border-radius:var(--r-sm);
+  font-weight:600;font-size:15px;text-decoration:none;
+  background:var(--surface-2);border:1px solid var(--line);color:var(--ink);
+  transition:background .15s ease,border-color .15s ease;
+}
+.btn:hover{background:var(--line-soft)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.42;cursor:not-allowed;transform:none}
+.btn-primary{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.btn-primary:hover{filter:brightness(1.08);background:var(--brand)}
+.btn-quiet{background:none;border-color:transparent;color:var(--ink-2)}
+.btn-quiet:hover{background:var(--surface-2);color:var(--ink)}
+.btn-danger{color:var(--bad)}
+.btn-sm{min-height:40px;padding:7px 12px;font-size:13px}
+.act-tools .btn,.mnav button,.tabs button{-webkit-user-select:none;user-select:none}
+@media(pointer:coarse){.act-tools .btn,.tabs button,.line-row .btn{min-height:var(--tap)}}
+.btn-icon{min-width:var(--tap);padding:8px}
+.field{
+  width:100%;min-height:var(--tap);padding:10px 13px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);
+  color:var(--ink);
+}
+.field::placeholder{color:var(--ink-3)}
+textarea.field{min-height:84px;resize:vertical;line-height:1.5}
+select.field{appearance:none;padding-right:34px;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 18px) 50%,calc(100% - 12px) 50%;
+  background-size:6px 6px,6px 6px;background-repeat:no-repeat}
+.fld{display:block}
+.fld>span{display:block;margin-bottom:5px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.form-grid .wide{grid-column:1/-1}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow)}
+.card-pad{padding:clamp(16px,2.5vw,22px)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:var(--r-pill);
+  background:var(--brand-soft);color:var(--brand-ink);font-size:12px;font-weight:700}
+.pill-line{background:none;border:1px solid var(--line);color:var(--ink-2)}
+.label{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.02em}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:26px 0 13px;flex-wrap:wrap}
+.head :where(h2,h3){margin:0}
+.divide{border:0;border-top:1px solid var(--line-soft);margin:16px 0}
+
+
+/* ============================================================
+   v40.0 BUDGET REALITY
+   ============================================================ */
+.budget-reality-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.budget-reality-stat{padding:13px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--sunk)}
+.budget-reality-stat small{display:block;color:var(--ink-2);font-size:12px;margin-bottom:4px}
+.budget-reality-stat strong{font-size:20px}
+.budget-reality-warn{margin-top:12px;padding:12px 14px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--sunk);font-size:13.5px}
+@media(max-width:640px){.budget-reality-grid{grid-template-columns:1fr}}
+
+/* ============================================================
+   4. SHELL
+   ============================================================ */
+.top{
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;gap:22px;
+  padding:11px var(--pad);
+  background:var(--surface);border-bottom:1px solid var(--line);
+}
+.brand{font-family:var(--font-display);font-size:27px;color:var(--brand-ink);line-height:1}
+.brand small{display:block;font-family:var(--font-body);font-size:11px;color:var(--ink-3);letter-spacing:.06em;margin-top:2px}
+.nav{display:flex;gap:2px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button{min-height:38px;padding:8px 12px;border-radius:var(--r-sm);color:var(--ink-2);font-size:14px;font-weight:600}
+.nav button:hover{background:var(--surface-2);color:var(--ink)}
+.nav button[aria-current="page"]{background:var(--brand-soft);color:var(--brand-ink)}
+.top-end{margin-left:auto;display:flex;gap:8px;align-items:center}
+.shell{max-width:1180px;margin:0 auto;padding:26px var(--pad) 80px}
+.view{display:none}
+.view.on{display:block}
+.view>.intro{max-width:62ch;margin-bottom:6px}
+
+/* mobile navigation */
+.mnav,.mmore{display:none}
+@media(max-width:1024px){
+  .nav{display:none}
+  .top{gap:12px;padding:9px 16px}
+  .brand{font-size:23px}
+  .shell{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  .mnav{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:2px;
+    position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:30;
+    padding:6px;background:var(--surface);border:1px solid var(--line);
+    border-radius:18px;box-shadow:var(--shadow);
+  }
+  .mnav button{min-height:54px;border-radius:13px;font-size:10px;font-weight:700;color:var(--ink-2);display:grid;gap:2px;place-items:center;padding:4px 2px}
+  .mnav button[aria-current="page"]{background:var(--brand-soft);color:var(--brand-ink)}
+  .mnav .gl{font-size:18px;line-height:1}
+  .mnav button{white-space:nowrap;overflow:hidden}
+  .mmore{
+    display:none;position:fixed;left:8px;right:8px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:30;
+    padding:8px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
+    grid-template-columns:repeat(2,1fr);gap:6px;
+  }
+  .mmore.open{display:grid}
+  .mmore button{min-height:var(--tap);border-radius:11px;font-weight:600;background:var(--sunk);border:1px solid var(--line-soft)}
+}
+
+@media(max-width:380px){
+  .mnav{gap:0;padding:5px}
+  .mnav button{font-size:9px;letter-spacing:-.02em}
+  .mnav .gl{font-size:17px}
+}
+
+/* ============================================================
+   5. PATTERNS
+   ============================================================ */
+.hero{
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:clamp(20px,3.5vw,34px);
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-b));
+}
+.hero h1{margin:6px 0 12px;max-width:22ch}
+.hero p{max-width:56ch;color:var(--ink-2)}
+.hero .row{margin-top:20px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 16px}
+.stat b{display:block;font-size:26px;font-weight:700;line-height:1.2}
+.stat span{font-size:12.5px;color:var(--ink-2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:16px}
+.tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 12px;-webkit-overflow-scrolling:touch}
+.tabs button{white-space:nowrap;min-height:38px;padding:8px 14px;border-radius:var(--r-pill);
+  background:var(--surface);border:1px solid var(--line);color:var(--ink-2);font-size:13.5px;font-weight:600}
+.tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.empty{
+  grid-column:1/-1;text-align:center;padding:44px 22px;
+  border:1px dashed var(--line);border-radius:var(--r-lg);background:var(--sunk);
+}
+.empty .gl{font-size:38px;line-height:1;margin-bottom:8px}
+.empty h3{margin-bottom:6px}
+.empty p{max-width:46ch;margin:0 auto;color:var(--ink-2)}
+.empty .btn{margin-top:16px}
+.note{padding:12px 14px;border-radius:var(--r-sm);background:var(--sunk);border:1px solid var(--line-soft);font-size:13.5px;color:var(--ink-2)}
+.note-bad{background:var(--bad-bg);border-color:var(--bad);color:var(--bad)}
+.note-ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.bar{height:9px;background:var(--surface-2);border-radius:var(--r-pill);overflow:hidden}
+.bar>span{display:block;height:100%;background:var(--brand);border-radius:var(--r-pill)}
+
+/* thumbnail with glyph fallback behind the image — no inline onerror */
+.thumb{position:relative;height:148px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-b));font-size:42px}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+img.img-failed{display:none!important}
+
+.place{overflow:hidden;display:flex;flex-direction:column}
+.place-body{padding:15px;display:flex;flex-direction:column;flex:1;gap:7px}
+.place-body h3{font-size:19px}
+.place-body .desc{font-size:13.5px;color:var(--ink-2);flex:1}
+.place-body .row{margin-top:auto}
+.score{font-weight:700;color:var(--gold);font-size:14px}
+.score span{font-weight:400;color:var(--ink-3);font-size:12px;margin-left:5px}
+
+.dna-card{max-width:860px;margin-top:18px}
+.dna-intro{max-width:62ch;color:var(--ink-2);margin-top:5px}
+.dna-list{display:grid;gap:11px;margin-top:18px}
+.dna-row{display:grid;grid-template-columns:minmax(150px,180px) 1fr 42px;gap:12px;align-items:center}
+.dna-name{font-size:13.5px;font-weight:700}
+.dna-bar{height:10px;background:var(--surface-2);border-radius:var(--r-pill);overflow:hidden}
+.dna-bar span{display:block;height:100%;background:var(--brand);border-radius:var(--r-pill)}
+.dna-value{text-align:right;font-size:13px;font-weight:700;color:var(--brand-ink)}
+.dna-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid var(--line);border-radius:var(--r-pill);background:var(--sunk);font-size:12px;font-weight:700}
+@media(max-width:640px){.dna-row{grid-template-columns:1fr 42px;gap:6px 10px}.dna-name{grid-column:1/-1}.dna-bar{grid-column:1}.dna-value{grid-column:2;grid-row:2}}
+.ring{width:60px;height:60px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;position:relative;
+  background:conic-gradient(var(--brand) var(--pct,0%),var(--surface-2) 0)}
+.ring::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--surface)}
+.ring b{position:relative;font-size:13px}
+.checks{display:grid;gap:4px;margin-top:12px}
+.check{display:flex;align-items:center;gap:9px;padding:7px 0;font-size:14px;border-bottom:1px solid var(--line-soft)}
+.check:last-child{border-bottom:0}
+.check .gl{width:19px;text-align:center}
+.check.done{color:var(--ok)}
+.check .txt{flex:1}
+
+.line-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.line-row:last-child{border-bottom:0}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.chip{padding:11px 13px;border:1px solid var(--line-soft);border-radius:var(--r-sm);background:var(--sunk)}
+.chip small{display:block;color:var(--ink-3);font-size:12px;margin-bottom:2px}
+.chip b{font-size:14.5px;font-weight:600}
+
+.day{border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);overflow:hidden}
+.day-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 16px;background:var(--sunk);border-bottom:1px solid var(--line-soft)}
+.act{display:grid;grid-template-columns:88px 1fr auto;gap:12px;align-items:center;padding:13px 16px;border-bottom:1px solid var(--line-soft)}
+.act:last-child{border-bottom:0}
+.act-time{font-size:13px;font-weight:700;color:var(--ink-2)}
+.act-name{font-weight:600}
+.act-meta{font-size:12.5px;color:var(--ink-3)}
+.act-tools{display:flex;gap:4px}
+@media(max-width:640px){
+  .act{grid-template-columns:1fr;gap:8px}
+  .act-tools{justify-content:flex-start}
+}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:11px}
+.shot{position:relative;aspect-ratio:1;border-radius:var(--r-md);overflow:hidden;background:var(--surface-2)}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.shot button{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;
+  background:var(--scrim);color:#fff;font-size:15px;line-height:1}
+.drop{padding:32px 20px;text-align:center;border:2px dashed var(--line);border-radius:var(--r-lg);background:var(--sunk)}
+.drop.over{border-color:var(--brand);background:var(--brand-soft)}
+pre.api{white-space:pre-wrap;word-break:break-word;background:var(--sunk);border:1px solid var(--line-soft);
+  border-radius:var(--r-sm);padding:13px;font-size:12px;line-height:1.5;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--ink-3);flex:0 0 auto}
+.dot.ok{background:var(--ok)}
+.dot.bad{background:var(--bad)}
+
+/* ============================================================
+   6. MODAL (one implementation) + TOAST
+   ============================================================ */
+.modal{
+  display:none;position:fixed;inset:0;z-index:60;
+  background:var(--scrim);overflow-y:auto;
+  padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));
+}
+.modal.open{display:block}
+body.locked{position:fixed;left:0;right:0;width:100%;overflow:hidden}
+.modal-card{
+  width:min(680px,100%);margin:0 auto;background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);
+  padding:clamp(16px,3vw,24px);
+}
+.modal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px}
+.modal-foot{display:flex;gap:9px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+.modal-foot .btn{flex:1 1 auto;min-width:130px}
+@media(min-width:560px){.modal-foot .btn{flex:0 0 auto}}
+.detail-hero{height:250px;border-radius:var(--r-md);overflow:hidden;margin-bottom:16px;
+  background:linear-gradient(135deg,var(--hero-a),var(--hero-b));display:grid;place-items:center;font-size:44px;position:relative}
+.detail-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media(max-width:600px){.detail-hero{height:180px}}
+.review{padding:12px 0;border-top:1px solid var(--line-soft)}
+.review-top{display:flex;justify-content:space-between;gap:12px;font-size:13.5px}
+.review-text{margin-top:5px;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+#toast{
+  position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translate(-50%,12px);
+  z-index:90;max-width:min(420px,92vw);padding:12px 16px;border-radius:var(--r-sm);
+  background:var(--ink);color:var(--bg);font-size:14px;font-weight:600;
+  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;
+  display:flex;align-items:center;gap:14px;
+}
+#toast.has-action{pointer-events:auto}
+.toast-act{border:1px solid currentColor;color:inherit;background:none;
+  padding:5px 11px;border-radius:8px;font-size:13px;font-weight:700;min-height:34px;flex:0 0 auto}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:1025px){#toast{bottom:24px}}
+
+/* v40.0 shortlist comparison */
+.short-compare{margin:0 0 18px;border:1px solid var(--brand);background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
+.short-compare-top{padding:16px 18px;background:var(--brand-soft);border-bottom:1px solid var(--line-soft)}
+.short-compare-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.short-compare-item{padding:16px;border-right:1px solid var(--line-soft)}
+.short-compare-item:last-child{border-right:0}
+.short-compare-item.winner{background:var(--sunk)}
+.short-compare-item h3{font-size:17px;margin:7px 0}
+.short-compare-score{font-size:26px;font-weight:700;color:var(--brand-ink)}
+.short-compare-meta{font-size:12.5px;color:var(--ink-2);margin-top:5px}
+@media(max-width:720px){.short-compare-grid{grid-template-columns:1fr}.short-compare-item{border-right:0;border-bottom:1px solid var(--line-soft)}.short-compare-item:last-child{border-bottom:0}}
+
+/* ================= V43.4 ROAM RECOMMENDATION ================= */
+.v434-recommend{position:relative;z-index:1;margin:22px 0 18px;border:1px solid var(--brand);border-radius:18px;padding:18px;background:linear-gradient(135deg,#fbfdfc,#f7faf8);overflow:visible}
+.v434-recommend-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.v434-recommend-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.v434-recommend-item{border:1px solid var(--line-soft);border-radius:14px;padding:13px;background:#fff}
+.v434-recommend-item.top{border-color:var(--brand)}
+.v434-recommend-score{font-size:25px;font-weight:900;margin-top:8px}
+.v435-decision{margin-top:14px;padding:14px;border-radius:14px;background:#fff;border:1px solid var(--line-soft)}
+.v435-drivers{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.v435-driver{padding:6px 9px;border-radius:999px;background:var(--soft);font-size:12px;font-weight:700}
+@media(max-width:800px){.v434-recommend-grid{grid-template-columns:1fr}.v434-recommend-head{display:block}}
+
+/* v40.0 — Clean Baseline */
+.final-decision{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.final-decision h3{margin:0 0 6px}.final-decision-intro{margin:0 0 14px;color:var(--muted)}
+.final-decision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.final-decision-stat{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.final-decision-stat strong{display:block;font-size:20px}.final-decision-stat span{font-size:12px;color:var(--muted)}
+.final-decision-next{margin-top:14px;padding:12px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.final-decision-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+
+
+/* ============================================================
+   ROAM v41.0 — WHOLE-SITE VISUAL RESKIN
+   Extends the approved Explore palette across every view.
+   Layout, data, navigation behaviour and backend are unchanged.
+   ============================================================ */
+:root{
+  --bg:#f4fbfc;
+  --surface:#ffffff;
+  --surface-2:#e5f5f8;
+  --sunk:#eef8fa;
+  --line:#c8e1e7;
+  --line-soft:#dcecef;
+  --ink:#08364a;
+  --ink-2:#315b6b;
+  --ink-3:#6c8792;
+  --brand:#087e96;
+  --brand-soft:#d8f1f5;
+  --brand-ink:#07556b;
+  --on-brand:#ffffff;
+  --accent:#e85d75;
+  --gold:#f4b51f;
+  --ok:#07866f;
+  --ok-bg:#dff5ef;
+  --bad:#a74355;
+  --bad-bg:#fce8ed;
+  --hero-a:#d5f2f7;
+  --hero-b:#fff2d8;
+  --shadow:0 10px 28px rgba(5,65,82,.10);
+  --scrim:rgba(4,35,46,.58);
+}
+
+body{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(31,173,196,.09),transparent 28%),
+    linear-gradient(180deg,#f8fdfe 0%,#eef8fa 100%);
+  color:var(--ink);
+}
+
+/* Header */
+.top{
+  background:#064b5f;
+  border-bottom:0;
+  box-shadow:0 4px 18px rgba(3,48,61,.18);
+  color:#fff;
+  padding:10px max(var(--pad),24px);
+}
+.brand{color:#fff;letter-spacing:.04em;font-size:30px}
+.brand small{color:rgba(255,255,255,.72);letter-spacing:.18em}
+.nav{gap:5px}
+.nav button{color:rgba(255,255,255,.88);border-radius:11px}
+.nav button:hover{background:rgba(255,255,255,.10);color:#fff}
+.nav button[aria-current="page"]{background:#1595ad;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.top-end .btn-quiet{color:#fff;background:transparent;border-color:rgba(255,255,255,.24)}
+.top-end .btn-primary{background:#fff;color:#07556b;border-color:#fff}
+.top-end .btn-primary:hover{background:#e9fbfd}
+
+.shell{max-width:1240px;padding-top:28px}
+.view>.intro{color:var(--ink-2)}
+
+/* Global cards and controls */
+.card,.stat,.day,.place,.short-compare,.final-decision,.note,.drop,.v434-recommend{
+  border-color:var(--line);
+  box-shadow:var(--shadow);
+}
+.card,.stat,.day,.place{background:var(--surface)}
+.btn{border-color:#a9ced6;background:#fff;color:var(--brand-ink);border-radius:12px;font-weight:700}
+.btn:hover{background:#eaf8fa;border-color:#79b8c6}
+.btn-primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn-primary:hover{background:#066b80;border-color:#066b80}
+.btn-quiet{background:var(--surface-2);color:var(--brand-ink);border-color:var(--line)}
+.field,.select,.textarea,select,input,textarea{
+  border-color:#b9d7de!important;background:#fff!important;color:var(--ink)!important;border-radius:12px;
+}
+.field:focus,.select:focus,input:focus,select:focus,textarea:focus{border-color:var(--brand)!important;box-shadow:0 0 0 3px rgba(8,126,150,.12)}
+.tabs button{background:#fff;border-color:var(--line);color:var(--ink-2)}
+.tabs button[aria-pressed="true"]{background:#07556b;border-color:#07556b;color:#fff}
+.chip{background:#edf9fb;border-color:#c5e3e9}
+.chip small{color:var(--ink-3)}
+.empty{background:linear-gradient(135deg,#edf9fb,#fff8ed);border-color:#b9dce3}
+.note{background:#edf9fb;color:var(--ink-2)}
+.note-ok{background:var(--ok-bg);border-color:#9dd9ca;color:#08705f}
+
+/* Home / landing */
+.hero{
+  position:relative;overflow:hidden;border:0;border-radius:24px;padding:clamp(28px,5vw,52px);
+  background:linear-gradient(120deg,#d5f3f7 0%,#eefafd 48%,#fff1d8 100%);
+  box-shadow:var(--shadow);
+}
+.hero::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;right:-120px;top:-170px;background:rgba(20,154,177,.16)}
+.hero>*{position:relative;z-index:1}
+.hero h1{color:#073e52;max-width:18ch;font-size:clamp(36px,5vw,58px)}
+.hero p{color:#315d6e}
+.hero .label{color:#087e96;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.stats{gap:14px}
+.stat{border-radius:18px;padding:16px 18px}
+.stat b{color:#07556b}
+
+/* Section headings */
+.head{margin-top:28px;margin-bottom:12px}
+.head h2{color:#08364a}
+
+/* Place cards */
+.place{border-radius:18px}
+.place .thumb{height:170px;background:linear-gradient(135deg,#d5f3f7,#ffeccf)}
+.place-body h3{color:#08364a}
+.place-body .meta,.place-body .muted{color:var(--ink-2)}
+
+/* Travel / itinerary / overview panels */
+.day{border-radius:18px;overflow:hidden}
+.day-top{background:#e7f7fa;border-bottom-color:#cbe4e9}
+.line-row{border-bottom-color:var(--line-soft)}
+.act{border-bottom-color:var(--line-soft)}
+.act-time{color:#087e96}
+.bar{background:#dceef2}.bar>span{background:linear-gradient(90deg,#087e96,#20a9b9)}
+.ring{background:conic-gradient(#087e96 var(--pct,0%),#dceef2 0)}
+.ring::after{background:#fff}
+
+
+/* Holiday plan proposal */
+.plan-proposal{margin:18px 0;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.plan-proposal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:14px}
+.plan-day{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--bg)}
+.plan-day strong{display:block}.plan-day span{display:block;margin-top:5px;font-size:13px;color:var(--muted)}
+
+/* Compare / decision */
+.short-compare{border-color:#80bdc9;background:#fff}
+.short-compare-top{background:linear-gradient(90deg,#d9f2f6,#fff2da);border-bottom-color:#c6e1e6}
+.short-compare-item.winner{background:#effaf8}
+.short-compare-score{color:#087e96}
+.final-decision{background:#fff;border-color:#a9d1d9}
+.final-decision-stat{background:#eff9fb;border-color:#c5e2e8}
+.final-decision-next{background:#fff8e9;border-color:#efd9a3}
+
+/* Brief / Holiday DNA */
+.dna-card,.dna-panel,.brief-card{background:#fff;border-color:var(--line)}
+.dna-bar{background:#dceef2}
+.dna-bar>span{background:linear-gradient(90deg,#087e96,#e9a926)}
+
+/* Research / settings / technical panels */
+pre.api{background:#073b4b;color:#dff8fb;border-color:#1a6676}
+.setup,.research-source{background:#eef9fb!important;border-color:#bddde4!important}
+
+/* Photos */
+.shot{background:#dff3f6;border:1px solid var(--line)}
+
+/* Modal and overlays */
+.modal-card{background:#fff;border-color:#b9d8df;box-shadow:0 24px 70px rgba(3,48,61,.24)}
+.detail-hero{background:linear-gradient(135deg,#d5f3f7,#fff0d5)}
+#toast{background:#064b5f;color:#fff;box-shadow:0 10px 28px rgba(3,48,61,.24)}
+
+/* Existing recommendation components — make them match Explore */
+.v434-recommend{background:linear-gradient(135deg,#07566a,#087e96);border-color:#087e96;color:#fff;box-shadow:0 14px 34px rgba(4,75,95,.18)}
+.v434-recommend h3,.v434-recommend p,.v434-recommend .muted{color:#fff}
+.v434-recommend-item{background:#fff;border-color:#c4e0e6;color:var(--ink)}
+.v434-recommend-item.top{border-color:#f4b51f;box-shadow:0 0 0 2px rgba(244,181,31,.15)}
+.v434-recommend-score{color:#087e96}
+.v435-decision{background:#eff9fb;border-color:#c4e0e6}
+.v435-driver{background:#d9f1f5;color:#07556b}
+
+/* Mobile navigation retains its structure, just adopts the new palette */
+@media(max-width:1024px){
+  .top{background:#064b5f;padding:9px 16px}
+  .mnav,.mmore{background:#fff;border-color:#b9d9df;box-shadow:0 10px 28px rgba(3,48,61,.18)}
+  .mnav button{color:#315b6b}
+  .mnav button[aria-current="page"]{background:#d8f1f5;color:#07556b}
+  .mmore button{background:#eef9fb;border-color:#c6e2e8}
+}
+
+/* Keep the Explore page's approved styling dominant while harmonising shared elements */
+.explore-tools .btn-quiet{background:#e6f7fa;color:#07556b;border-color:#b8dce4}
+
+@media(max-width:700px){
+  .shell{padding-top:18px}
+  .hero{border-radius:18px}
+  .head{margin-top:22px}
+}
+
+
+/* ============================================================
+   v40.4 HOLIDAY BRIEF RESKIN
+   ============================================================ */
+#v-brief{position:relative}
+#v-brief>.intro{max-width:720px}
+#v-brief>.card.card-pad:first-of-type{max-width:100%;margin-top:24px;background:linear-gradient(135deg,#ffffff 0%,#f3fbfa 100%);border-color:#c8e8e4;box-shadow:0 12px 32px rgba(9,75,73,.10);border-radius:24px;padding:clamp(20px,3vw,32px)}
+#v-brief>.card.card-pad:first-of-type:before{content:"YOUR HOLIDAY, YOUR WAY";display:inline-flex;padding:7px 12px;border-radius:999px;background:#dff5f1;color:#075e5b;font-size:11px;font-weight:800;letter-spacing:.08em;margin-bottom:14px}
+#v-brief .form-grid{gap:16px}
+#v-brief .fld{padding:13px 14px 12px;background:rgba(255,255,255,.78);border:1px solid #d7ebe9;border-radius:15px}
+#v-brief .fld>span{color:#245d5b;font-weight:750;margin-bottom:7px}
+#v-brief .field{background:#fff;border-color:#cfe3e1;border-radius:11px;min-height:44px}
+#v-brief .field:focus{border-color:#169c96;box-shadow:0 0 0 3px rgba(22,156,150,.12)}
+#v-brief .divide{margin:25px 0;border-top-color:#d7ebe9}
+#v-brief h3{font-size:19px;color:#123f40}
+#v-brief .small.muted{color:#607776}
+#v-brief #briefSliders{gap:11px;margin-top:16px!important}
+#v-brief #briefSliders .fld{display:grid;grid-template-columns:minmax(130px,1fr) 1fr 42px;align-items:center;gap:12px;padding:12px 14px}
+#v-brief #briefSliders .fld>span{margin:0;font-size:13px}
+#v-brief #briefSliders input[type=range]{accent-color:#159c96;width:100%}
+#v-brief #briefSliders output{font-weight:800;color:#075e5b;text-align:center;background:#e4f7f4;border-radius:999px;padding:6px 7px}
+#v-brief>.dna-card{max-width:100%;margin-top:20px;background:linear-gradient(135deg,#063f40 0%,#0a6c69 100%);border:0;color:#fff;border-radius:24px;box-shadow:0 14px 34px rgba(6,63,64,.18);padding:clamp(20px,3vw,30px)}
+#v-brief>.dna-card .label{color:#8fe0d6}
+#v-brief>.dna-card h2{color:#fff}
+#v-brief>.dna-card .dna-intro{color:#d7eeeb;max-width:760px}
+#v-brief>.dna-card .dna-bar{background:rgba(255,255,255,.18)}
+#v-brief>.dna-card .dna-bar span{background:#f5c86a}
+#v-brief>.dna-card .dna-name{color:#fff}
+#v-brief>.dna-card .dna-value{color:#f5d27d}
+#v-brief>.dna-card .dna-tag{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);color:#fff}
+@media(max-width:700px){#v-brief #briefSliders .fld{grid-template-columns:1fr 44px}#v-brief #briefSliders input[type=range]{grid-column:1/-1;grid-row:2}}
+
+/* ROAM v40.5 — Saved / shortlist visual reskin */
+#v-saved .view-head{margin-bottom:22px}
+#v-saved .view-head h1{color:#0d4f4b}
+#v-saved .view-head .muted{color:#52706d}
+#v-saved .stat{background:#fff;border:1px solid #cfe8e3;border-radius:18px;box-shadow:0 8px 24px rgba(13,79,75,.07);padding:16px 18px}
+#v-saved .stat b{color:#0d4f4b;font-size:24px}
+#v-saved .stat span{color:#64817e}
+#v-saved #savedFilters button{border:1px solid #bfe0da;background:#fff;color:#175b57;border-radius:999px;padding:9px 14px;font-weight:700}
+#v-saved #savedFilters button[aria-pressed="true"]{background:#0d5f5a;color:#fff;border-color:#0d5f5a;box-shadow:0 5px 14px rgba(13,95,90,.18)}
+#v-saved .short-compare,#v-saved .short-compare-top{background:linear-gradient(135deg,#0d5f5a,#174a63);border-radius:24px;border:0;box-shadow:0 14px 34px rgba(13,79,75,.16);color:#fff}
+#v-saved .short-compare-item{background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.45);border-radius:18px;color:#183b39;box-shadow:0 7px 18px rgba(0,0,0,.08)}
+#v-saved .short-compare-score{color:#0d5f5a}
+#v-saved .card{border-color:#cfe8e3;box-shadow:0 9px 25px rgba(13,79,75,.07)}
+#v-saved .place-card{border-radius:20px;overflow:hidden}
+#v-saved .btn-primary{background:#0d5f5a;border-color:#0d5f5a}
+#v-saved .note{background:#fff8df;border-color:#eadb9a;color:#5c4d16;border-radius:18px}
+#v-saved .empty{background:linear-gradient(135deg,#eefaf8,#fff);border:1px solid #cfe8e3;border-radius:24px}
+#v-saved select.field,#v-saved input.field{border-color:#cfe8e3;border-radius:14px}
+@media(max-width:700px){#v-saved .stat{padding:13px}.short-compare-grid{grid-template-columns:1fr!important}}
+
+/* V42.2 destination intelligence */
+.dest-intel{margin:16px 0 18px}.dest-intel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.dest-intel-item{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.dest-intel-item small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}.dest-intel-item strong{display:block;font-size:18px;margin-top:5px}.dest-intel-note{margin-top:10px;font-size:12px;color:var(--muted)}@media(max-width:760px){.dest-intel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<style>
+.roam-overview{margin:18px 0;padding:18px;border:1px solid #dfe5ec;border-radius:18px;background:linear-gradient(180deg,#fff,#f7f9fc)}
+.roam-overview h3{margin:0 0 6px;font-size:18px}.roam-overview-sub{color:#667085;font-size:13px;margin-bottom:14px}
+.roam-overview-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.roam-overview-card{padding:13px;border:1px solid #e5e7eb;border-radius:14px;background:#fff}.roam-overview-card .k{font-size:12px;color:#667085}.roam-overview-card .v{font-size:18px;font-weight:700;margin-top:4px}.roam-overview-next{margin-top:12px;padding:12px 14px;border-radius:12px;background:#f1f5f9;font-size:13px}.roam-overview-next strong{display:block;margin-bottom:3px}
+@media(max-width:800px){.roam-overview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+
+<style>
+
+/* v40.2 EXPLORE RESKIN */
+.explore-view{max-width:1500px;margin:0 auto;padding-bottom:34px}
+.explore-hero{position:relative;margin:-2px calc(var(--pad) * -1) 0;min-height:330px;overflow:hidden;background:radial-gradient(circle at 78% 28%,rgba(255,255,255,.55),transparent 24%),linear-gradient(120deg,#dff5f3 0%,#bfe6ef 36%,#76c7d5 67%,#08788b 100%)}
+.explore-hero:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 78% 82%,rgba(255,255,255,.62),transparent 38%),linear-gradient(160deg,transparent 46%,rgba(0,76,91,.18) 100%)}
+.explore-hero:after{content:"";position:absolute;right:-90px;bottom:-150px;width:560px;height:360px;border-radius:50%;background:rgba(255,255,255,.2);transform:rotate(-8deg)}
+.explore-hero-copy{position:relative;z-index:1;max-width:880px;padding:54px var(--pad) 34px}
+.explore-eyebrow{font-size:12px;letter-spacing:.24em;font-weight:800;color:#083f50;margin-bottom:8px}
+.explore-hero h1{font-size:clamp(40px,6vw,68px);max-width:720px;color:#073a4b;letter-spacing:-.035em}
+.explore-lead{font-size:18px;color:#124e61;margin-top:12px;max-width:680px;font-weight:500}
+.explore-search{display:flex;align-items:center;gap:8px;margin-top:24px;max-width:760px;padding:5px 6px 5px 15px;background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.8);border-radius:999px;box-shadow:0 12px 32px rgba(4,62,77,.18)}
+.explore-search-icon{font-size:30px;line-height:1;color:#174f61;transform:rotate(-20deg)}
+.explore-search .field{border:0;background:transparent;box-shadow:none;min-height:46px;padding-left:3px}.explore-search .field:focus{outline:0}
+.explore-search-btn{border-radius:999px;min-width:112px;background:#087589;border-color:#087589;color:#fff}
+.explore-quick{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.explore-chip{border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.88);color:#0a4355;border-radius:999px;padding:9px 14px;font-size:13px;font-weight:700;box-shadow:0 3px 12px rgba(4,62,77,.08)}.explore-chip:hover{background:#fff;transform:translateY(-1px)}
+.explore-tools{justify-content:flex-end;margin:10px 0 0}.explore-tools .btn{font-size:12px}
+.v434-recommend{position:relative;z-index:2;margin:0 0 24px;border:0;border-radius:22px;padding:20px;background:linear-gradient(135deg,#064d5d,#075f6e 58%,#0b7180);box-shadow:0 14px 32px rgba(3,57,68,.18);overflow:hidden}.v434-recommend:after{content:"";position:absolute;right:-100px;top:-130px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.06)}
+.v434-recommend-head{position:relative;z-index:1;display:flex;justify-content:space-between;gap:20px;align-items:flex-start;padding:0 2px;color:#fff}.recommend-title{display:flex;gap:11px;align-items:flex-start}.recommend-title .label{color:#bceff0;margin-top:1px}.recommend-title h2{color:#fff;margin-top:2px;font-size:30px}.recommend-star{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#f5c542;color:#fff;font-size:21px;flex:0 0 auto}.recommend-sub{color:rgba(255,255,255,.84);font-size:13px;margin-top:7px}.v434-recommend-head>.pill{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.1);color:#fff;margin-top:5px}
+.v434-recommend-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin-top:16px}.v434-recommend-item{border:1px solid rgba(255,255,255,.65);border-radius:16px;padding:0;background:#fff;overflow:hidden;box-shadow:0 5px 18px rgba(0,0,0,.12)}.v434-recommend-item.top{border-color:#fff}
+.recommend-photo{height:132px;position:relative;background:#d9eef0;overflow:hidden}.recommend-photo img{width:100%;height:100%;object-fit:cover;display:block}.recommend-photo-fallback{height:100%;display:grid;place-items:center;font-size:42px;background:linear-gradient(135deg,#bfe9ed,#70c1cc);color:#075268}.recommend-badge{position:absolute;left:9px;top:9px;padding:6px 9px;border-radius:999px;background:rgba(2,57,70,.92);color:#fff;font-size:11px;font-weight:800;white-space:nowrap}.recommend-heart{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:50%;background:rgba(2,57,70,.78);border:1px solid rgba(255,255,255,.7);color:#fff;font-size:20px;line-height:1}
+.recommend-body{padding:12px}.recommend-name-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.recommend-name-row h3{font-family:var(--font-body);font-size:18px;font-weight:800;color:#103d4d}.recommend-weather{font-size:12px;color:#087b53;font-weight:800;white-space:nowrap}.recommend-description{font-size:12.5px;line-height:1.38;color:#355764;margin-top:5px;min-height:35px}.recommend-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.recommend-tags span{font-size:10.5px;padding:5px 8px;border-radius:999px;background:#e2f2f7;color:#16556a;font-weight:700}.recommend-footer{display:flex;align-items:center;gap:5px;border-top:1px solid #e3eaeb;margin-top:10px;padding-top:9px}.recommend-footer strong{font-size:21px;color:#087b53}.recommend-footer>span{font-size:10px;color:#667d84;flex:1}.recommend-footer .btn{min-height:32px;padding:5px 9px;border-radius:999px;background:#075d6e;color:#fff;border-color:#075d6e;font-size:11px}
+.explore-view #researchArea>.head{margin-top:10px}.explore-view #researchArea>.note{border-radius:14px}.explore-view #researchArea>.tabs{margin-top:14px}.explore-view #researchArea>.grid{margin-top:14px}
+@media(max-width:1150px){.v434-recommend-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.recommend-photo{height:145px}}
+@media(max-width:800px){.explore-hero{margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);min-height:360px}.explore-hero-copy{padding-top:38px}.explore-hero h1{font-size:42px}.explore-search{border-radius:18px;flex-wrap:wrap;padding:7px}.explore-search-icon{display:none}.explore-search .field{flex:1 1 100%}.explore-search-btn{width:100%}.v434-recommend-head{display:block}.v434-recommend-head>.pill{display:inline-flex;margin-top:12px}.v434-recommend-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.v434-recommend-grid{grid-template-columns:1fr}.recommend-photo{height:170px}.explore-hero h1{font-size:38px}.explore-lead{font-size:16px}}
+
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">roam<small>holiday planner</small></div>
+  <nav class="nav" id="deskNav" aria-label="Sections"></nav>
+  <div class="top-end">
+    <button class="btn btn-quiet btn-icon" data-act="theme" id="themeBtn" title="Switch theme" aria-label="Switch theme">◐</button>
+    <button class="btn btn-primary" data-act="holiday-new">New holiday</button>
+  </div>
+</header>
+
+<main class="shell" id="shell">
+
+  <!-- HOME -->
+  <section id="v-home" class="view" aria-labelledby="h-home">
+    <div class="hero">
+      <p class="label">Plan something worth remembering</p>
+      <h1 id="h-home">Where are you going next?</h1>
+      <p>Collect ideas, compare places, build an itinerary, and keep everything for the trip in one place. Your data stays in this browser.</p>
+      <div class="row">
+        <button class="btn btn-primary" data-act="holiday-new">Create a holiday</button>
+        <button class="btn" data-act="go" data-view="explore">Explore a destination</button>
+      </div>
+    </div>
+    <div class="stats" id="homeStats" style="margin-top:18px"></div>
+    <div class="head"><h2>Your holidays</h2><button class="btn btn-sm" data-act="go" data-view="compare">Compare them</button></div>
+    <div class="grid" id="holidayGrid"></div>
+  </section>
+
+  <!-- EXPLORE -->
+  <section id="v-explore" class="view explore-view" aria-labelledby="h-explore">
+    <div class="explore-hero">
+      <div class="explore-hero-copy">
+        <p class="explore-eyebrow">EXPLORE</p>
+        <h1 id="h-explore">Discover your next adventure</h1>
+        <p class="explore-lead">Personalised ideas. Real travel data. Extraordinary places.</p>
+        <div class="explore-search">
+          <span class="explore-search-icon" aria-hidden="true">⌕</span>
+          <input class="field" id="destination" placeholder="Search destinations, hotels or experiences…" autocomplete="off">
+          <button class="btn btn-primary explore-search-btn" data-act="research" id="researchBtn">Search</button>
+        </div>
+        <div class="explore-quick">
+          <button class="explore-chip" data-act="quick-destination" data-value="Beach holidays">🏝️ Beach</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="City breaks">🏙️ City breaks</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="Adventure">⛰️ Adventure</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="All-inclusive holidays">☀️ All-inclusive</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="Family holidays">👨‍👩‍👧 Family</button>
+          <button class="explore-chip" data-act="quick-destination" data-value="Romantic escapes">♥ Couples</button>
+        </div>
+      </div>
+    </div>
+    <div class="explore-tools row">
+      <button class="btn btn-quiet" data-act="setup-toggle">⚙ Research source</button>
+    </div>
+    <div class="card card-pad" id="setup" hidden style="margin-bottom:18px">
+      <h3>Research source</h3>
+      <p class="small muted" style="margin:6px 0 12px">Roam posts to <code>/api/research</code> on this endpoint. Keep provider API keys on that server, never in this file.</p>
+      <input class="field" id="endpointField" placeholder="https://roam-research.unpickgames.workers.dev" autocomplete="off">
+      <div class="row note" style="margin-top:11px"><span class="dot" id="testDot"></span><span id="testMsg">Not tested</span></div>
+      <div class="row" style="margin-top:13px">
+        <button class="btn btn-primary" data-act="endpoint-save">Save endpoint</button>
+        <button class="btn" data-act="endpoint-test">Test connection</button>
+        <button class="btn btn-quiet" data-act="setup-toggle">Close</button>
+      </div>
+    </div>
+    <div id="researchArea"></div>
+  </section>
+
+  <!-- BRIEF -->
+  <section id="v-brief" class="view" aria-labelledby="h-brief">
+    <h1 id="h-brief">Holiday brief</h1>
+    <p class="intro muted">Set what matters to you once. Roam sends it with every destination search so results come back ranked for the trip you actually want.</p>
+    <div class="card card-pad" style="max-width:860px;margin-top:18px">
+      <div class="form-grid">
+        <label class="fld"><span>Budget</span><input class="field" id="bBudget" placeholder="£1,500"></label>
+        <label class="fld"><span>Nights</span><input class="field" id="bNights" type="number" min="1" inputmode="numeric" placeholder="7"></label>
+        <label class="fld"><span>Adults</span><input class="field" id="bAdults" type="number" min="1" inputmode="numeric" placeholder="2"></label>
+        <label class="fld"><span>Departure airport</span><input class="field" id="bAirport" placeholder="Manchester"></label>
+        <label class="fld"><span>Warmth</span><select class="field" id="bWarmth"><option>Any temperature</option><option>20°C and up</option><option>24°C and up</option><option>27°C and up</option></select></label>
+        <label class="fld"><span>Holiday style</span><select class="field" id="bStyle"><option>Relaxed mix</option><option>Beach and relax</option><option>Food and drink</option><option>Sightseeing</option><option>Adventure</option></select></label>
+      </div>
+      <hr class="divide">
+      <h3>What matters most?</h3>
+      <p class="small muted" style="margin-top:4px">Zero means skip it entirely, five means build the trip around it.</p>
+      <div class="form-grid" style="margin-top:14px" id="briefSliders"></div>
+      <div class="row" style="margin-top:20px">
+        <button class="btn btn-primary" data-act="brief-save">Save brief</button>
+        <button class="btn" data-act="go" data-view="explore">Use it in Explore</button>
+      </div>
+    </div>
+    <div class="card card-pad dna-card" id="holidayDna">
+      <p class="label">Your holiday DNA</p>
+      <h2 style="margin-top:5px">What matters to you</h2>
+      <p class="dna-intro">Roam turns your priorities into a simple profile. This is based only on the choices in your Holiday Brief and will be used to personalise recommendations later.</p>
+      <div class="dna-list" id="dnaList"></div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section id="v-overview" class="view" aria-label="Holiday">
+    <div id="overviewContent"></div>
+  </section>
+
+  <!-- COMPARE -->
+  <section id="v-compare" class="view" aria-labelledby="h-compare">
+    <h1 id="h-compare">Compare holidays</h1>
+    <p class="intro muted">Your trips side by side, so you can see which one is actually ready.</p>
+    <div id="compareContent" style="margin-top:18px"></div>
+  </section>
+
+  <!-- ITINERARY -->
+  <section id="v-itinerary" class="view" aria-labelledby="h-itin">
+    <div class="head" style="margin-top:0">
+      <div><h1 id="h-itin">Itinerary</h1></div>
+      <div class="row">
+        <button class="btn btn-primary" data-act="act-add">Add activity</button>
+        <button class="btn" data-act="day-suggest">Suggest a day</button>
+      </div>
+    </div>
+    <label class="fld" style="max-width:420px;margin-bottom:18px"><span>Holiday</span><select class="field" id="tripSelect"></select></label>
+    <div id="tripCoverage" style="margin-bottom:18px"></div>
+    <div class="stack" id="timeline"></div>
+  </section>
+
+  <!-- SAVED -->
+  <section id="v-saved" class="view" aria-labelledby="h-saved">
+    <h1 id="h-saved">Your shortlist</h1>
+    <p class="intro muted">Places worth keeping. Search them, sort them, or drop anything that no longer makes the cut.</p>
+    <div class="stats" id="savedStats" style="margin:18px 0"></div>
+    <div class="row" style="margin-bottom:12px">
+      <input class="field grow" id="savedSearch" type="search" placeholder="Search your shortlist…" autocomplete="off" style="min-width:200px">
+      <select class="field" id="savedTrip" aria-label="Show places for" style="max-width:210px"></select>
+      <select class="field" id="savedSort" aria-label="Sort shortlist" style="max-width:210px">
+        <option value="saved">Recently saved</option>
+        <option value="rating">Highest rated</option>
+        <option value="az">Name A–Z</option>
+        <option value="za">Name Z–A</option>
+      </select>
+      <button class="btn" data-act="saved-clear">Clear all</button>
+    </div>
+    <div class="tabs" id="savedFilters"></div>
+    <div id="savedBulk"></div>
+    <div class="grid" id="savedGrid"></div>
+  </section>
+
+  <!-- DECISION -->
+  <section id="v-decision" class="view" aria-labelledby="h-decision">
+    <div id="decisionContent"></div>
+  </section>
+
+  <!-- FLIGHTS -->
+  <section id="v-flights" class="view" aria-labelledby="h-flights">
+    <div class="head" style="margin-top:0">
+      <div><h1 id="h-flights">Flights</h1><p class="intro muted">Your outbound and return flight details.</p></div>
+      <button class="btn btn-primary" data-act="flight-edit">Edit flights</button>
+    </div>
+    <div id="flightsContent"></div>
+  </section>
+
+  <!-- PHOTOS -->
+  <section id="v-photos" class="view" aria-labelledby="h-photos">
+    <h1 id="h-photos">Photos</h1>
+    <p class="intro muted">Inspiration before you go, memories after. Photos are resized and stored in this browser only.</p>
+    <div class="drop" id="drop" style="margin:18px 0">
+      <p><strong>Drop photos here</strong></p>
+      <p class="small muted" style="margin-top:4px">or pick them from your phone or computer</p>
+      <label class="btn btn-primary" style="margin-top:14px">Add photos<input id="photoInput" type="file" accept="image/*" multiple class="sr"></label>
+    </div>
+    <p class="small muted" id="photoUsage"></p>
+    <div class="photos" id="photosGrid" style="margin-top:14px"></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="v-settings" class="view" aria-labelledby="h-settings">
+    <h1 id="h-settings">Settings</h1>
+    <div class="stack" style="max-width:820px;margin-top:18px">
+      <div class="card card-pad">
+        <h3>Appearance</h3>
+        <p class="small muted" style="margin:6px 0 12px">Light is built for bright sunlight, dark for night. Auto follows your device.</p>
+        <div class="row" id="themeChoice"></div>
+      </div>
+      <div class="card card-pad">
+        <h3>Offline</h3>
+        <p class="small muted" style="margin:6px 0 12px">Roam holds everything locally, so it only needs the network when you search a destination.</p>
+        <div class="row note" id="offlineInfo"><span class="dot"></span><span>Checking…</span></div>
+        <div class="row" style="margin-top:13px"><button class="btn btn-sm" data-act="offline-check">Check again</button></div>
+      </div>
+      <div class="card card-pad">
+        <h3>Your data</h3>
+        <p class="small muted" style="margin:6px 0 12px">Everything lives in this browser. Clearing site data removes it, so export a backup before you do.</p>
+        <p class="small" id="storageInfo"></p>
+        <div class="row" style="margin-top:13px">
+          <button class="btn btn-primary" data-act="data-export">Export backup</button>
+          <label class="btn">Restore backup<input id="importInput" type="file" accept="application/json,.json" class="sr"></label>
+          <button class="btn btn-danger" data-act="data-reset">Delete everything</button>
+        </div>
+      </div>
+      <div class="card card-pad">
+        <h3>Research endpoint</h3>
+        <p class="small muted" style="margin:6px 0 12px">Roam talks to one small server you control. That server holds the provider keys and returns normalised results.</p>
+        <p class="small"><strong>Now pointing at:</strong> <span id="endpointNow"></span></p>
+        <p class="small muted" style="margin-top:10px">Browser → your endpoint → places provider → normalised results → Roam.</p>
+        <pre class="api">POST /api/research
+{"destination":"Tenerife",
+ "categories":["hotels","restaurants","beaches","things_to_do","places_to_see","day_trips"],
+ "limit":60,
+ "preferences":{ ...holiday brief... }}
+
+200 {"results":[
+ {"id":"place-id","name":"…","category":"Beaches","rating":4.6,
+  "ratingCount":1204,"description":"…","photoUrl":"…","icon":"🏖️",
+  "sourceUrl":"https://…","mapsUrl":"https://…"}
+]}
+
+GET /api/place?id=place-id
+200 {"rating":4.6,"ratingCount":1204,"reviewSummary":"…",
+     "reviews":[{"author":"…","rating":5,"relativeTime":"…","text":"…"}],
+     "reviewsUrl":"https://…"}</pre>
+        <div class="row" style="margin-top:13px"><button class="btn" data-act="go" data-view="explore">Configure it</button></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="mnav" id="mobNav" aria-label="Sections"></nav>
+<div class="mmore" id="mobMore"></div>
+
+<!-- one generic modal for every form and confirmation -->
+<div class="modal" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="modal-card">
+    <div class="modal-top">
+      <div><p class="label" id="sheetLabel"></p><h2 id="sheetTitle"></h2></div>
+      <button class="btn btn-quiet btn-icon" data-act="sheet-close" aria-label="Close">✕</button>
+    </div>
+    <div id="sheetBody"></div>
+    <div class="modal-foot">
+      <button class="btn" data-act="sheet-close">Cancel</button>
+      <button class="btn btn-primary" data-act="sheet-submit" id="sheetSubmit">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- place detail -->
+<div class="modal" id="detail" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="modal-card">
+    <div class="modal-top">
+      <div><p class="label" id="detailCat"></p><h2 id="detailTitle"></h2></div>
+      <button class="btn btn-quiet btn-icon" data-act="detail-close" aria-label="Close">✕</button>
+    </div>
+    <div class="detail-hero" id="detailHero"></div>
+    <div id="detailBody"></div>
+    <div class="modal-foot">
+      <button class="btn" data-act="detail-close">Close</button>
+      <button class="btn btn-primary" data-act="detail-save" id="detailSave">Save to shortlist</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ============================================================
+   1. STORAGE — never throws, falls back to memory for the session
+   ============================================================ */
+const K={holidays:"roam-holidays",ideas:"roam-ideas",photos:"roam-photos",
+         brief:"roamBrief",endpoint:"roamResearchEndpoint",theme:"roam-theme"};
+const mem=Object.create(null);
+const store={
+  get(k){try{const v=localStorage.getItem(k);return v!==null?v:(k in mem?mem[k]:null)}catch(e){return k in mem?mem[k]:null}},
+  set(k,v){try{localStorage.setItem(k,v);delete mem[k];return true}catch(e){mem[k]=v;return false}},
+  del(k){delete mem[k];try{localStorage.removeItem(k)}catch(e){}}
+};
+function loadJSON(key,fallback){
+  try{const v=JSON.parse(store.get(key)||"null");return v==null?fallback:v}
+  catch(e){console.warn("Roam: discarding unreadable",key,e);return fallback}
+}
+
+/* ============================================================
+   2. STATE
+   ============================================================ */
+const state={
+  view:"home", current:null,
+  holidays:[], ideas:[], photos:[], brief:{},
+  research:[], researchTitle:"", researchTab:"All", researchError:"", busy:false, abort:null, destinationInfo:null, destinationInfoBusy:false, destinationInfoError:"",
+  savedQuery:"", savedFilter:"All", savedSort:"saved", savedTrip:"all",
+  photosReady:false, photoFallback:false, offline:"",
+  detail:null, sheet:null, lastFocus:null, undo:null, scrollY:0
+};
+const VIEWS=[
+  {id:"home",     label:"Holidays", glyph:"🏠", primary:true},
+  {id:"explore",  label:"Explore",  glyph:"🔎", primary:true},
+  {id:"overview", label:"Holiday",  glyph:"🧳", primary:true},
+  {id:"itinerary",label:"Plan",     glyph:"🗓️", primary:true},
+  {id:"saved",    label:"Saved",    glyph:"♡",  primary:true},
+  {id:"decision", label:"Decision", glyph:"🧭"},
+  {id:"flights",  label:"Flights",  glyph:"✈️"},
+  {id:"brief",    label:"Brief",    glyph:"✎"},
+  {id:"compare",  label:"Compare",  glyph:"⇄"},
+  {id:"photos",   label:"Photos",   glyph:"📷"},
+  {id:"settings", label:"Settings", glyph:"⚙"}
+];
+const CATS=["Hotels","Restaurants","Nightlife","Beaches","Parks","Places to see","Things to do","Day trips"];
+const PRIORITIES=[["beach","Beach","🏖️"],["food","Food","🍴"],["sight","Sightseeing","🏛️"],
+                  ["activity","Activities","🎯"],["relax","Relaxation","🧘"],["night","Nightlife","🌙"]];
+
+/* ============================================================
+   3. UTILITIES — one escaper, one id, one money parser
+   ============================================================ */
+const $=s=>document.querySelector(s);
+const ESC={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"};
+function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>ESC[c])}
+function uid(){
+  try{if(crypto&&crypto.randomUUID)return crypto.randomUUID()}catch(e){}
+  return "id-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,10);
+}
+function money(v){const n=Number(String(v==null?"":v).replace(/[^0-9.-]/g,""));return Number.isFinite(n)?n:0}
+function gbp(n){return "£"+money(n).toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function num(v){const n=Number(v);return Number.isFinite(n)?n:null}
+function fmtDate(iso){
+  if(!iso)return "";
+  const d=new Date(iso+"T00:00:00");
+  return isNaN(d)?iso:d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+}
+function dateRange(h){
+  const d=h.details||{};
+  if(d.start&&d.end)return fmtDate(d.start)+" – "+fmtDate(d.end);
+  if(d.start||d.end)return fmtDate(d.start||d.end);
+  return h.dates||"Dates not set";
+}
+/* Day 1 is the start date, so Day n is start + (n-1) */
+function dayDate(h,day){
+  const start=h&&h.details&&h.details.start;
+  if(!start)return null;
+  const d=new Date(start+"T00:00:00");
+  if(isNaN(d))return null;
+  d.setDate(d.getDate()+(Math.max(1,day)-1));
+  return d;
+}
+function dayLabel(h,day){
+  const d=dayDate(h,day);
+  return d?d.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}):"";
+}
+function tripLength(h){const n=nights(h);return n?n+1:null}
+function nights(h){
+  const d=h.details||{};
+  if(!d.start||!d.end)return null;
+  const a=new Date(d.start),b=new Date(d.end);
+  if(isNaN(a)||isNaN(b))return null;
+  const n=Math.round((b-a)/86400000);
+  return n>0?n:null;
+}
+/* the single category normaliser, used by Explore and the shortlist */
+function category(v){
+  const s=String(v||"").toLowerCase().replace(/[_-]+/g," ");
+  if(/hotel|resort|lodging|guest house|apartment/.test(s))return "Hotels";
+  if(/night ?club|nightlife|cocktail|pub|wine bar|beer|brewery/.test(s))return "Nightlife";
+  if(/restaurant|food|cafe|bar|dining|eat/.test(s))return "Restaurants";
+  if(/beach|coast/.test(s))return "Beaches";
+  if(/park|garden|nature|reserve/.test(s))return "Parks";
+  if(/day trip|excursion|tour/.test(s))return "Day trips";
+  if(/thing|activity|activities|attraction|museum|experience/.test(s))return "Things to do";
+  return "Places to see";
+}
+/* level "warn" holds the toast for longer and is not overwritten by routine messages */
+function toast(msg,level,undoLabel){
+  const now=Date.now();
+  if(level!=="warn"&&toast._hold>now)return;
+  const el=$("#toast");
+  el.innerHTML=`<span>${esc(msg)}</span>`+
+    (undoLabel?`<button class="toast-act" type="button" data-act="undo">${esc(undoLabel)}</button>`:"");
+  el.classList.toggle("has-action",!!undoLabel);
+  el.classList.add("show");
+  const life=undoLabel?6500:(level==="warn"?5000:2600);
+  toast._hold=level==="warn"?now+life:0;
+  clearTimeout(toast._t);
+  toast._t=setTimeout(()=>{el.classList.remove("show","has-action");state.undo=null},life);
+}
+function hideToast(){
+  const el=$("#toast");
+  el.classList.remove("show","has-action");
+  clearTimeout(toast._t);toast._hold=0;
+}
+
+/* ============================================================
+   3b. PHOTO STORE — IndexedDB, because base64 in localStorage
+       hits the 5MB wall at about a dozen photos
+   ============================================================ */
+const photoStore={
+  db:null,broken:false,
+  open(){
+    if(this.db)return Promise.resolve(this.db);
+    if(this.broken)return Promise.resolve(null);
+    return new Promise(res=>{
+      let req;
+      try{req=indexedDB.open("roam",1)}catch(e){this.broken=true;return res(null)}
+      req.onupgradeneeded=()=>{
+        const db=req.result;
+        if(!db.objectStoreNames.contains("photos"))db.createObjectStore("photos",{keyPath:"id"});
+      };
+      req.onsuccess=()=>{this.db=req.result;res(this.db)};
+      req.onerror=req.onblocked=()=>{this.broken=true;res(null)};
+    });
+  },
+  run(mode,fn){
+    return this.open().then(db=>{
+      if(!db)return null;
+      return new Promise(res=>{
+        let tx;
+        try{tx=db.transaction("photos",mode)}catch(e){return res(null)}
+        let req=null;
+        try{req=fn(tx.objectStore("photos"))}catch(e){return res(null)}
+        tx.oncomplete=()=>res(req&&"result" in req?req.result:true);
+        tx.onerror=tx.onabort=()=>res(null);
+      });
+    });
+  },
+  all(){return this.run("readonly",st=>st.getAll())},
+  put(rec){return this.run("readwrite",st=>st.put(rec))},
+  remove(id){return this.run("readwrite",st=>st.delete(id))},
+  clear(){return this.run("readwrite",st=>st.clear())}
+};
+const photoUrls=new Map();
+function photoSrc(p){
+  if(!photoUrls.has(p.id)){
+    let url="";
+    try{
+      if(p.blob&&typeof URL!=="undefined"&&URL.createObjectURL)url=URL.createObjectURL(p.blob);
+    }catch(e){console.warn("Roam: unreadable photo",p.id,e)}
+    photoUrls.set(p.id,url||p.data||"");
+  }
+  return photoUrls.get(p.id);
+}
+function usablePhoto(p){return !!(p&&p.id&&(p.blob||p.data))}
+function forgetPhotoUrl(id){
+  const u=photoUrls.get(id);
+  if(u&&u.indexOf("blob:")===0)URL.revokeObjectURL(u);
+  photoUrls.delete(id);
+}
+function dataUrlToBlob(url){
+  const m=/^data:([^;,]*)(;base64)?,([\s\S]*)$/.exec(url||"");
+  if(!m)return null;
+  const type=m[1]||"image/jpeg";
+  try{
+    if(m[2]){
+      const bin=atob(m[3]),arr=new Uint8Array(bin.length);
+      for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
+      return new Blob([arr],{type});
+    }
+    return new Blob([decodeURIComponent(m[3])],{type});
+  }catch(e){return null}
+}
+function blobToDataUrl(blob){
+  return new Promise(res=>{
+    try{
+      const r=new FileReader();
+      r.onload=()=>res(String(r.result||""));
+      r.onerror=()=>res("");
+      r.readAsDataURL(blob);
+    }catch(e){console.warn("Roam: could not read a photo for export",e);res("")}
+  });
+}
+function photoBytes(p){return p.blob?p.blob.size:Math.round((p.data||"").length*0.75)}
+/* one-time move of v41 photos out of localStorage, then load from IndexedDB */
+async function loadPhotos(){
+  const legacy=loadJSON(K.photos,null);
+  const rows=await photoStore.all();
+  if(rows===null){
+    /* no IndexedDB in this browser — carry on with the old localStorage behaviour */
+    state.photoFallback=true;
+    state.photos=Array.isArray(legacy)?legacy.filter(p=>p&&p.data):[];
+    state.photosReady=true;
+    return;
+  }
+  if(Array.isArray(legacy)&&legacy.length){
+    let moved=0;
+    for(const p of legacy){
+      const blob=dataUrlToBlob(p&&p.data);
+      if(!blob)continue;
+      const key=await photoStore.put({id:(p&&p.id)||uid(),name:(p&&p.name)||"Photo",blob,added:(p&&p.added)||Date.now()});
+      if(key!==null)moved++;
+    }
+    if(moved)store.del(K.photos);
+    const after=await photoStore.all();
+    state.photos=(after||[]).filter(usablePhoto).sort((x,y)=>(x.added||0)-(y.added||0));
+    state.photosReady=true;
+    if(moved)toast(moved+" photo"+(moved===1?"":"s")+" moved to proper storage");
+    return;
+  }
+  state.photos=rows.filter(usablePhoto).sort((x,y)=>(x.added||0)-(y.added||0));
+  state.photosReady=true;
+}
+
+/* ============================================================
+   4. LOAD + MIGRATE
+   ============================================================ */
+function normActivity(a){
+  return {id:a.id||uid(),day:Math.max(1,num(a.day)||1),name:String(a.name||"Activity"),
+          time:String(a.time||""),type:String(a.type||"Activity"),note:String(a.note||"")};
+}
+function normHoliday(h){
+  h=h&&typeof h==="object"?h:{};
+  const d=h.details&&typeof h.details==="object"?h.details:{};
+  if(d.budget==null&&h.budget!=null)d.budget=money(h.budget);
+  const raw=Array.isArray(h.activities)?h.activities:(Array.isArray(h.itinerary)?h.itinerary:[]);
+  return {
+    id:h.id||uid(),
+    name:String(h.name||h.title||"Untitled holiday"),
+    dates:String(h.dates||""),
+    notes:String(h.notes||d.notes||""),
+    details:{start:d.start||"",end:d.end||"",budget:money(d.budget),
+             status:d.status||"Considering",notes:String(d.notes||h.notes||"")},
+    travel:h.travel&&typeof h.travel==="object"?h.travel:{},
+    expenses:(Array.isArray(h.expenses)?h.expenses:[]).map(e=>({
+      description:String(e.description||"Expense"),amount:money(e.amount),
+      category:String(e.category||"Other"),date:String(e.date||"")})),
+    activities:raw.filter(a=>a&&a.name).map(normActivity)
+  };
+}
+function normIdea(x){
+  return {
+    id:x.id||uid(),name:String(x.name||"Saved place"),cat:category(x.cat||x.category),
+    icon:x.icon||"📍",rating:num(x.rating),ratingCount:num(x.ratingCount)||0,
+    description:String(x.description||""),photoUrl:String(x.photoUrl||""),
+    sourceUrl:String(x.sourceUrl||""),mapsUrl:String(x.mapsUrl||""),
+    reviewSummary:String(x.reviewSummary||""),reviewsUrl:String(x.reviewsUrl||x.mapsUrl||""),
+    placeId:String(x.placeId||""),savedAt:num(x.savedAt)||0,
+    holidayId:String(x.holidayId||"")
+  };
+}
+function loadAll(){
+  state.holidays=(loadJSON(K.holidays,[])||[]).filter(Boolean).map(normHoliday);
+  state.ideas=(loadJSON(K.ideas,[])||[]).filter(Boolean).map(normIdea);
+  state.brief=loadJSON(K.brief,{})||{};
+  if(state.holidays.length)state.current=state.holidays[0].id;
+}
+function persist(){
+  const ok=store.set(K.holidays,JSON.stringify(state.holidays))
+        && store.set(K.ideas,JSON.stringify(state.ideas))
+        && (!state.photoFallback||store.set(K.photos,JSON.stringify(state.photos)));
+  if(!ok){
+    /* trips and shortlist are small and matter most — retry them on their own */
+    store.set(K.holidays,JSON.stringify(state.holidays));
+    store.set(K.ideas,JSON.stringify(state.ideas));
+    toast("This browser is out of storage — the last change may not have saved","warn");
+  }
+  return ok;
+}
+function tripName(id){
+  const h=state.holidays.find(x=>x.id===id);
+  return h?h.name:"";
+}
+/* the shortlist is per trip now; ideas saved before trips existed have no id */
+function tripIdeas(id){
+  return state.ideas.filter(x=>x.holidayId===id);
+}
+function holiday(){
+  const h=state.holidays.find(x=>x.id===state.current);
+  if(h)return h;
+  if(state.holidays.length){state.current=state.holidays[0].id;return state.holidays[0]}
+  return null;
+}
+
+/* ============================================================
+   5. THEME
+   ============================================================ */
+const media=window.matchMedia?window.matchMedia("(prefers-color-scheme: dark)"):null;
+function applyTheme(){
+  const pref=store.get(K.theme)||"auto";
+  const dark=pref==="dark"||(pref==="auto"&&media&&media.matches);
+  document.documentElement.dataset.theme=dark?"dark":"light";
+  const b=$("#themeBtn");if(b)b.textContent=dark?"☾":"☀";
+  const box=$("#themeChoice");
+  if(box)box.innerHTML=["light","dark","auto"].map(t=>
+    `<button class="btn btn-sm" data-act="theme-set" data-theme="${t}" aria-pressed="${t===pref}"
+      ${t===pref?'style="background:var(--brand);border-color:var(--brand);color:var(--on-brand)"':""}>${t[0].toUpperCase()+t.slice(1)}</button>`).join("");
+}
+if(media&&media.addEventListener)media.addEventListener("change",applyTheme);
+
+/* ============================================================
+   6. ROUTER — one render pass, only for the visible view
+   ============================================================ */
+const RENDER={home:renderHome,explore:renderExplore,brief:fillBrief,overview:renderOverview,
+              compare:renderCompare,itinerary:renderItinerary,saved:renderSaved,decision:renderDecision,
+              photos:renderPhotos,settings:renderSettings,flights:renderFlights};
+function show(view){
+  if(!VIEWS.some(v=>v.id===view))view="home";
+  state.view=view;
+  VIEWS.forEach(v=>{
+    const el=document.getElementById("v-"+v.id);
+    if(el)el.classList.toggle("on",v.id===view);
+  });
+  $("#mobMore").classList.remove("open");
+  render();
+  window.scrollTo({top:0,behavior:"auto"});
+}
+function decisionEngine(h){
+  if(!h)return {ready:false};
+  const b=state.brief||{}, mine=tripIdeas(h.id), r=readiness(h), d=h.details||{}, t=h.travel||{};
+  const ranked=mine.map(x=>({x,m:roamMatch(x),rating:num(x.rating)||0,reviews:num(x.ratingCount)||0}))
+    .sort((a,z)=>((z.m?z.m.pct:0)-(a.m?a.m.pct:0))||z.rating-a.rating||z.reviews-a.reviews);
+  const picks={};
+  CATS.forEach(cat=>{
+    const hit=ranked.filter(v=>category(v.x.cat||v.x.category)===cat)[0];
+    if(hit)picks[cat]=hit;
+  });
+  const priorityLabels={beach:'beach',food:'food',sight:'sightseeing',activity:'activities',relax:'relaxation',night:'nightlife'};
+  const priorities=PRIORITIES.map(p=>({key:p[0],label:p[1],value:num(b[p[0]])||0})).filter(x=>x.value>0).sort((a,z)=>z.value-a.value);
+  const strong=priorities.filter(p=>p.value>=4);
+  const coverage=strong.map(p=>{
+    const cats=PRIORITY_CATS[p.key]||[];
+    const count=mine.filter(x=>cats.includes(category(x.cat||x.category))).length;
+    return {...p,count};
+  });
+  const covered=coverage.filter(x=>x.count>0), missing=coverage.filter(x=>x.count===0);
+  const budget=money(d.budget), spent=(h.expenses||[]).reduce((sum,e)=>sum+money(e.amount),0);
+  const out=t.outboundFlight||{}, ret=t.returnFlightDetails||{};
+  const flights=!!(t.outbound&&t.returnFlight)||(!!out.number&&!!ret.number)||(!!out.from&&!!out.to&&!!ret.from&&!!ret.to);
+  const destination=d.destination||b.destination||h.destination||h.name||'';
+  let headline='Your holiday is not ready to call yet.';
+  if(!destination)headline='Set your destination first.';
+  else if(!mine.length)headline='Research '+destination+' and build your shortlist.';
+  else if(!ranked.length)headline='Save places from Explore so Roam can make a recommendation.';
+  else if(missing.length)headline='Your shortlist is missing some of your strongest priorities.';
+  else if(!flights)headline='Your holiday is taking shape — add your flights before you commit.';
+  else headline='This is the holiday Roam would choose from what you have built.';
+  const confidence=ranked.length?Math.min(100,Math.round(45+Math.min(25,ranked.length*5)+(covered.length*8)+(flights?8:0)+(budget?7:0))):0;
+  return {ready:!!(destination&&ranked.length),headline,destination,ranked,picks,priorities,strong,coverage,covered,missing,budget,spent,flights,r,confidence};
+}
+function decisionWhy(pick){
+  if(!pick)return 'No suitable shortlisted option yet.';
+  if(pick.m&&pick.m.reason)return pick.m.reason.replace(/based on your Holiday DNA\.?/i,'based on your Holiday DNA.');
+  if(pick.rating)return 'Strongest available option in your shortlist, supported by its rating.';
+  return 'Best available fit from the information Roam has so far.';
+}
+function buildHolidayPlan(h){
+  if(!h)return [];
+  const span=Math.max(1,tripLength(h)||Math.min(7,Math.max(3,Math.ceil((h.activities||[]).length/2)+2)));
+  const e=decisionEngine(h), ranked=e.ranked||[];
+  const used=new Set((h.activities||[]).map(a=>String(a.name||'').trim().toLowerCase()));
+  const pool=ranked.filter(v=>!used.has(String(v.x.name||'').trim().toLowerCase()));
+  const find=(cats,offset=0)=>pool.find(v=>cats.includes(category(v.x.cat||v.x.category)) && !planUsed.has(v.x.id))||pool.find(v=>!planUsed.has(v.x.id));
+  const plan=[],planUsed=new Set();
+  for(let day=1;day<=span;day++){
+    const isFirst=day===1,isLast=day===span;
+    const rows=[];
+    if(isFirst) rows.push({time:'Arrival',name:'Arrive and settle in',type:'Arrival'});
+    else if(!isLast){
+      let v=find(['Places to see','Things to do','Day trips']);
+      if(v){planUsed.add(v.x.id);rows.push({time:'Morning',name:v.x.name,type:v.x.cat||'Sightseeing'});}
+      v=find(['Beaches','Things to do','Parks']);
+      if(v){planUsed.add(v.x.id);rows.push({time:'Afternoon',name:v.x.name,type:v.x.cat||'Relax'});}
+    }
+    if(isLast) rows.push({time:'Departure',name:'Final morning and departure',type:'Departure'});
+    else {
+      let v=find(['Restaurants','Nightlife']);
+      if(v){planUsed.add(v.x.id);rows.push({time:'Evening',name:v.x.name,type:v.x.cat||'Food and drink'});}
+      else rows.push({time:'Evening',name:'Dinner and a relaxed evening',type:'Food and drink'});
+    }
+    if(!rows.length) rows.push({time:'Flexible',name:'Free time to explore',type:'Flexible'});
+    plan.push({day,rows});
+  }
+  return plan;
+}
+function renderPlanProposal(h){
+  const box=$('#planProposal'); if(!box||!h)return;
+  const plan=buildHolidayPlan(h);
+  if(!plan.length){box.innerHTML='';return}
+  const source=tripIdeas(h.id).length;
+  box.innerHTML=`<div class="plan-proposal"><div class="head" style="margin:0"><div><p class="label">ROAM PROPOSED PLAN</p><h2 style="margin-top:4px">Turn your decision into a holiday plan</h2></div><span class="pill">${plan.length} days</span></div>
+    <p class="muted" style="margin-top:7px">Roam has built a draft from your recommendation, shortlist and Holiday DNA. Nothing will be added to your itinerary until you approve it.</p>
+    <div class="plan-proposal-grid">${plan.map(d=>`<div class="plan-day"><strong>Day ${d.day}${dayLabel(h,d.day)?' · '+esc(dayLabel(h,d.day)):''}</strong>${d.rows.map(r=>`<span>${esc(r.time)} — ${esc(r.name)}</span>`).join('')}</div>`).join('')}</div>
+    <div class="row" style="margin-top:14px"><button class="btn btn-primary" data-act="plan-build">Use this plan</button><button class="btn" data-act="go" data-view="itinerary">View current itinerary</button></div>
+    <p class="tiny muted" style="margin-top:9px">${source} shortlisted place${source===1?'':'s'} available to Roam. The draft avoids places already in your itinerary.</p></div>`;
+}
+
+function renderDecision(){
+  const box=$('#decisionContent'),h=holiday();
+  if(!box)return;
+  if(!h){box.innerHTML=`<div class="empty"><div class="gl">🧭</div><h3>No holiday selected</h3><p>Create a holiday first and Roam can turn your research into a recommendation.</p><button class="btn btn-primary" data-act="holiday-new">Create a holiday</button></div>`;return;}
+  const e=decisionEngine(h), top=e.ranked[0], b=state.brief||{};
+  const destination=e.destination||'your destination';
+  const priorityText=e.strong.length?e.strong.map(x=>x.label).join(', '):'your overall holiday style';
+  const shortlistHtml=top?`<div class="card card-pad" style="border-color:var(--brand)">
+      <div class="row" style="align-items:flex-start"><div class="grow"><p class="label">🏆 Roam's recommendation</p><h1 style="margin-top:4px">${esc(top.x.name)}</h1><p class="muted" style="margin-top:5px">${esc(category(top.x.cat||top.x.category))}${top.rating?` · ★ ${top.rating.toFixed(1)}`:''}${top.reviews?` · ${top.reviews.toLocaleString('en-GB')} reviews`:''}</p></div>${top.m?`<div class="ring" style="--pct:${top.m.pct}%"><b>${top.m.pct}%</b></div>`:''}</div>
+      <p style="margin-top:15px">${esc(decisionWhy(top))}</p>
+      <p class="small muted" style="margin-top:7px">Roam chose this from your shortlist, your Holiday DNA and available quality signals.</p>
+      <div class="row" style="margin-top:14px"><button class="btn btn-primary" data-act="place-view" data-id="${esc(top.x.id)}">View recommendation</button><button class="btn" data-act="go" data-view="saved">Review shortlist</button></div>
+    </div>`:`<div class="card card-pad"><h2>Build the evidence first</h2><p class="muted" style="margin-top:6px">${esc(e.headline)}</p><button class="btn btn-primary" style="margin-top:14px" data-act="go" data-view="explore">Explore ${esc(destination)}</button></div>`;
+  const areaPicks=['Hotels','Restaurants','Beaches','Places to see','Things to do','Day trips','Nightlife'].filter(c=>e.picks[c]).slice(0,6);
+  const pickCards=areaPicks.map(cat=>{const p=e.picks[cat];return `<article class="card card-pad"><p class="label">${esc(cat)}</p><h3 style="margin-top:4px">${esc(p.x.name)}</h3><p class="small muted" style="margin-top:5px">${p.m?p.m.pct+'% Roam Match':''}${p.rating?' · ★ '+p.rating.toFixed(1):''}</p><p class="tiny muted" style="margin-top:9px">${esc(decisionWhy(p))}</p><button class="btn btn-sm" style="margin-top:11px" data-act="place-view" data-id="${esc(p.x.id)}">View</button></article>`}).join('');
+  const compromise=e.missing.length?`<div class="card card-pad"><p class="label">⚠️ Potential compromise</p><h3 style="margin-top:4px">${esc(e.missing.map(x=>x.label).join(' and '))}</h3><p class="muted" style="margin-top:7px">You marked ${esc(e.missing.map(x=>x.label.toLowerCase()).join(' and '))} as a strong priority, but your shortlist has nothing covering it yet. That could change the final recommendation.</p><button class="btn btn-sm" style="margin-top:12px" data-act="go" data-view="explore">Research more</button></div>`:`<div class="card card-pad"><p class="label">✓ Priorities covered</p><h3 style="margin-top:4px">Your shortlist reflects ${esc(priorityText)}</h3><p class="muted" style="margin-top:7px">Roam has evidence for the strongest priorities you entered.</p></div>`;
+  const readinessText=e.r?`${e.r.done} of ${e.r.checks.length} essentials complete · ${e.r.pct}% ready`:'Readiness unavailable';
+  box.innerHTML=`<div class="hero"><p class="label">YOUR ROAM DECISION</p><h1>${esc(destination)}</h1><p>${esc(e.headline)}</p><div class="row" style="margin-top:14px"><span class="pill pill-line">${e.r.pct}% ready</span><span class="pill pill-line">${e.ranked.length} shortlisted</span><span class="pill pill-line">${e.confidence}% recommendation confidence</span></div></div>
+    ${shortlistHtml}
+    ${pickCards?`<div class="head"><h2>Your strongest options</h2><span class="pill">Based on your current shortlist</span></div><div class="grid">${pickCards}</div>`:''}
+    <div class="head"><h2>What could change the decision?</h2></div>${compromise}
+    <div class="head"><h2>Holiday evidence</h2></div><div class="card card-pad"><div class="chips"><div class="chip"><small>Budget</small><b>${e.budget?gbp(e.budget):'Not set'}</b></div><div class="chip"><small>Tracked</small><b>${gbp(e.spent)}</b></div><div class="chip"><small>Flights</small><b>${e.flights?'Added':'Missing'}</b></div><div class="chip"><small>Readiness</small><b>${e.r.pct}%</b></div></div><p class="small muted" style="margin-top:12px">${esc(readinessText)}. The recommendation will become stronger as you add better evidence — it does not pretend certainty where Roam has little information.</p></div>
+    <div id="planProposal"></div>
+    <div class="row" style="margin-top:18px"><button class="btn btn-primary" data-act="go" data-view="saved">Review shortlist</button><button class="btn" data-act="go" data-view="itinerary">Open itinerary</button><button class="btn" data-act="go" data-view="overview">Holiday overview</button></div>`;;
+  renderPlanProposal(h);
+}
+
+function renderFlights(){
+  const el=$("#flightsContent");
+  if(!el)return;
+  const h=holiday();
+  if(!h){
+    el.innerHTML=`<div class="card card-pad"><h3>No holiday selected</h3><p class="muted">Create or open a holiday first, then add your flight details here.</p><button class="btn btn-primary" data-act="nav" data-view="home">Go to Holidays</button></div>`;
+    return;
+  }
+  const t=h.travel||{};
+  const out=t.outboundFlight||{};
+  const ret=t.returnFlightDetails||{};
+  const card=(title,icon,obj,legacy)=>{
+    const airline=obj.airline||"", number=obj.number||"", from=obj.from||"", to=obj.to||"", date=obj.date||"", dep=obj.departure||"", arr=obj.arrival||"";
+    const route=(from||to)?`${esc(from||"?")} → ${esc(to||"?")}`:(legacy?esc(legacy):"Not added");
+    return `<div class="card card-pad"><div class="head"><div><h2 style="margin:0">${icon} ${title}</h2><p class="muted" style="margin:4px 0 0">${route}</p></div><span class="pill">${airline||number?esc([airline,number].filter(Boolean).join(" · ")):"Not added"}</span></div><div class="chips" style="margin-top:14px"><div class="chip"><small>Date</small><b>${esc(date||"Not added")}</b></div><div class="chip"><small>Departure</small><b>${esc(dep||"Not added")}</b></div><div class="chip"><small>Arrival</small><b>${esc(arr||"Not added")}</b></div></div></div>`;
+  };
+  el.innerHTML=`<div class="stack">${card("Outbound","✈️",out,t.outbound)}${card("Return","↩️",ret,t.returnFlight)}</div>`;
+}
+
+function render(){
+  renderNav();
+  const fn=RENDER[state.view];
+  if(fn)fn();
+}
+function renderNav(){
+  const desk=$("#deskNav"),mob=$("#mobNav"),more=$("#mobMore");
+  if(!desk.childElementCount){
+    desk.innerHTML=VIEWS.map(v=>
+      `<button data-act="nav" data-view="${v.id}">${esc(v.label)}</button>`).join("");
+    mob.innerHTML=VIEWS.filter(v=>v.primary).map(v=>
+      `<button data-act="nav" data-view="${v.id}"><span class="gl">${v.glyph}</span>${esc(v.label)}</button>`).join("")
+      +`<button data-act="more"><span class="gl">⋯</span>More</button>`;
+    more.innerHTML=VIEWS.filter(v=>!v.primary).map(v=>
+      `<button data-act="nav" data-view="${v.id}">${v.glyph} ${esc(v.label)}</button>`).join("");
+  }
+  document.querySelectorAll('[data-act="nav"]').forEach(b=>
+    b.setAttribute("aria-current",b.dataset.view===state.view?"page":"false"));
+}
+
+/* ============================================================
+   7. MODALS — one implementation, focus restored, focus trapped
+   ============================================================ */
+/* iOS discards the page scroll position unless it is pinned and restored by hand */
+function lockScroll(on){
+  const b=document.body;
+  if(on){
+    state.scrollY=window.scrollY||window.pageYOffset||0;
+    b.style.top=(-state.scrollY)+"px";
+    b.classList.add("locked");
+  }else{
+    b.classList.remove("locked");
+    b.style.top="";
+    window.scrollTo(0,state.scrollY||0);
+  }
+}
+function openModal(sel){
+  const el=$(sel);
+  state.lastFocus=document.activeElement;
+  el.classList.add("open");
+  if(!document.body.classList.contains("locked"))lockScroll(true);
+  const first=el.querySelector("[data-autofocus],input:not([type=hidden]),select,textarea,button");
+  if(first)first.focus();
+}
+function closeModal(sel){
+  $(sel).classList.remove("open");
+  if(!document.querySelector(".modal.open"))lockScroll(false);
+  const f=state.lastFocus;
+  if(f&&f.focus&&document.contains(f))f.focus();
+}
+function openSheet(opt){
+  state.sheet=opt.onSubmit||null;
+  $("#sheetLabel").textContent=opt.label||"";
+  $("#sheetTitle").textContent=opt.title||"";
+  $("#sheetBody").innerHTML=opt.body||"";
+  $("#sheetSubmit").textContent=opt.submit||"Save";
+  $("#sheetSubmit").className="btn "+(opt.danger?"btn-danger":"btn-primary");
+  openModal("#sheet");
+}
+function closeSheet(){state.sheet=null;closeModal("#sheet")}
+function submitSheet(){
+  const fn=state.sheet;
+  if(!fn){closeSheet();return}
+  if(fn()!==false)closeSheet();
+}
+function confirmSheet(title,message,label,fn){
+  openSheet({label:"Confirm",title,body:`<p class="muted">${esc(message)}</p>`,
+             submit:label,danger:true,onSubmit:()=>{fn();return true}});
+}
+document.addEventListener("keydown",e=>{
+  const open=document.querySelector(".modal.open");
+  if(!open)return;
+  if(e.key==="Escape"){e.preventDefault();open.id==="sheet"?closeSheet():closeModal("#"+open.id);return}
+  if(e.key!=="Tab")return;
+  const f=[...open.querySelectorAll('button,[href],input:not([type=hidden]),select,textarea')]
+          .filter(el=>!el.disabled&&el.offsetParent!==null);
+  if(!f.length)return;
+  const first=f[0],last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+});
+document.querySelectorAll(".modal").forEach(m=>{
+  m.addEventListener("mousedown",e=>{
+    if(e.target===m)m.id==="sheet"?closeSheet():closeModal("#"+m.id);
+  });
+});
+
+/* ============================================================
+   8. HOME
+   ============================================================ */
+function readiness(h){
+  const d=h.details||{},t=h.travel||{};
+  const checks=[
+    ["Dates set",!!(d.start&&d.end),"holiday-edit"],
+    ["Budget set",money(d.budget)>0,"holiday-edit"],
+    ["Flights added",!!(t.outbound&&t.returnFlight),"travel-edit"],
+    ["Hotel added",!!t.hotel,"travel-edit"],
+    ["Itinerary started",h.activities.length>0,"act-add"],
+    ["Spending tracked",h.expenses.length>0,"expense-add"]
+  ];
+  const done=checks.filter(c=>c[1]).length;
+  return {checks,done,pct:Math.round(done/checks.length*100)};
+}
+function renderHome(){
+  $("#homeStats").innerHTML=[
+    ["Holidays",state.holidays.length],["Saved places",state.ideas.length],["Photos",state.photos.length]
+  ].map(s=>`<div class="stat"><b>${s[1]}</b><span>${s[0]}</span></div>`).join("");
+  const g=$("#holidayGrid");
+  if(!state.holidays.length){
+    g.innerHTML=`<div class="empty"><div class="gl">🧳</div><h3>No holidays yet</h3>
+      <p>Create one and Roam builds a planning workspace around it — budget, flights, itinerary and shortlist.</p>
+      <button class="btn btn-primary" data-act="holiday-new">Create a holiday</button></div>`;
+    return;
+  }
+  g.innerHTML=state.holidays.map(h=>{
+    const r=readiness(h),sp=h.expenses.reduce((s,e)=>s+money(e.amount),0);
+    return `<article class="card place">
+      <div class="thumb" style="height:96px;font-size:20px;align-items:flex-end;justify-items:start;padding:14px">
+        <strong style="font-family:var(--font-display);font-size:23px">${esc(h.name)}</strong>
+      </div>
+      <div class="place-body">
+        <div class="row" style="margin:0">
+          <span class="pill">${esc(h.details.status||"Considering")}</span>
+          <span class="pill pill-line">${r.pct}% ready</span>
+        </div>
+        <p class="small muted">${esc(dateRange(h))}</p>
+        <p class="small muted">${h.activities.length} itinerary item${h.activities.length===1?"":"s"}${money(h.details.budget)?" · "+gbp(sp)+" of "+gbp(h.details.budget)+" spent":""}</p>
+        <div class="row">
+          <button class="btn btn-primary btn-sm" data-act="holiday-open" data-id="${esc(h.id)}">Open</button>
+          <button class="btn btn-sm btn-danger" data-act="holiday-delete" data-id="${esc(h.id)}">Delete</button>
+        </div>
+      </div></article>`;
+  }).join("");
+}
+
+/* ============================================================
+   9. HOLIDAY OVERVIEW
+   ============================================================ */
+function holidayNextSteps(h){
+  const r=readiness(h), d=h.details||{}, t=h.travel||{};
+  const steps=[];
+  if(!d.start||!d.end) steps.push({icon:"📅",title:"Set your dates",text:"Add your travel dates so Roam can build the trip around the time you are away.",act:"holiday-edit",label:"Set dates"});
+  else if(!t.outbound||!t.returnFlight) steps.push({icon:"✈️",title:"Add your flights",text:"Keep your outbound and return details together with the rest of the holiday.",act:"travel-edit",label:"Add flights"});
+  if(!t.hotel) steps.push({icon:"🏨",title:"Add your hotel",text:"Record where you are staying so your holiday workspace has the essentials.",act:"travel-edit",label:"Add hotel"});
+  const mine=tripIdeas(h.id);
+  if(mine.length<2) steps.push({icon:"🔎",title:"Build your shortlist",text:"Research the destination and save a couple of places. Roam can then help you decide between them.",act:"go",view:"explore",label:"Explore"});
+  if(!h.activities.length) steps.push({icon:"🗓️",title:"Start the itinerary",text:"Add your first activity and turn the shortlist into an actual holiday plan.",act:"act-add",label:"Plan a day"});
+  if(!steps.length) steps.push({icon:"✓",title:"You're in good shape",text:"The essentials are in place. Keep refining your itinerary, spending and shortlist before you book.",act:"go",view:"itinerary",label:"Open itinerary"});
+  return steps.slice(0,3);
+}
+function renderNextSteps(h){
+  return holidayNextSteps(h).map(x=>`<article class="card card-pad" style="flex:1;min-width:220px">
+    <div class="gl" style="font-size:25px">${x.icon}</div><h3 style="margin-top:7px">${esc(x.title)}</h3>
+    <p class="small muted" style="margin-top:6px;min-height:42px">${esc(x.text)}</p>
+    <button class="btn btn-sm btn-primary" style="margin-top:12px" data-act="${x.act}"${x.view?` data-view="${x.view}"`:""}>${esc(x.label)}</button>
+  </article>`).join("");
+}
+
+
+function renderBudgetReality(h){
+  const d=h.details||{}, budget=money(d.budget), spent=(h.expenses||[]).reduce((sum,e)=>sum+money(e.amount),0);
+  if(!budget){
+    return `<div class="card card-pad"><p class="note">No budget set yet. Add a budget in your holiday details and Roam will show what is committed, what is left and whether the plan is getting expensive.</p></div>`;
+  }
+  const left=budget-spent, pct=Math.min(100,Math.round(spent/budget*100));
+  const categories={};
+  (h.expenses||[]).forEach(e=>{const c=e.category||"Other";categories[c]=(categories[c]||0)+money(e.amount)});
+  const top=Object.entries(categories).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  let title="Budget looks healthy", text=`You have ${gbp(Math.max(0,left))} left from your ${gbp(budget)} budget.`;
+  if(left<0){title="You're over budget";text=`Your tracked spending is ${gbp(Math.abs(left))} above the ${gbp(budget)} budget.`;}
+  else if(pct>=80){title="You're getting close to the limit";text=`You've used ${pct}% of the budget, leaving ${gbp(left)}.`;}
+  else if(pct>=50){title="More than half of the budget is committed";text=`You've used ${pct}% so far, with ${gbp(left)} remaining.`;}
+  return `<div class="card card-pad">
+    <div class="row" style="justify-content:space-between;align-items:flex-start;gap:14px">
+      <div><p class="label">Budget reality</p><h3 style="margin-top:4px">${esc(title)}</h3><p class="small muted" style="margin-top:5px">${esc(text)}</p></div>
+      <strong style="font-size:22px">${pct}%</strong>
+    </div>
+    <div class="bar" style="margin-top:13px"><span style="width:${pct}%"></span></div>
+    <div class="budget-reality-grid">
+      <div class="budget-reality-stat"><small>Budget</small><strong>${gbp(budget)}</strong></div>
+      <div class="budget-reality-stat"><small>Tracked</small><strong>${gbp(spent)}</strong></div>
+      <div class="budget-reality-stat"><small>${left<0?'Over':'Remaining'}</small><strong>${gbp(Math.abs(left))}</strong></div>
+    </div>
+    ${top.length?`<div style="margin-top:14px"><strong class="small">Biggest spending areas</strong>${top.map(([c,v])=>`<div class="row" style="justify-content:space-between;margin-top:8px"><span class="small">${esc(c)}</span><strong class="small">${gbp(v)}</strong></div>`).join('')}</div>`:''}
+    <div class="budget-reality-warn">${left<0?'⚠️ Roam is tracking you above budget. Consider trimming planned spending before booking.':pct>=80?'⚠️ Your tracked spending is getting close to the limit.':'✓ There is still room in the budget for the rest of the holiday.'}</div>
+  </div>`;
+}
+
+function renderOverview(){
+  const box=$("#overviewContent"),h=holiday();
+  if(!h){
+    box.innerHTML=`<div class="empty"><div class="gl">🧳</div><h3>No holiday selected</h3>
+      <p>Create a holiday first and this becomes your planning workspace.</p>
+      <button class="btn btn-primary" data-act="holiday-new">Create a holiday</button></div>`;
+    return;
+  }
+  const d=h.details,t=h.travel,r=readiness(h);
+  const spent=h.expenses.reduce((s,e)=>s+money(e.amount),0);
+  const budget=money(d.budget),left=budget-spent;
+  const n=nights(h),adults=state.brief.adults;
+  const facts=[
+    budget?"💷 "+gbp(budget)+" budget":"",
+    n?"🌙 "+n+" night"+(n===1?"":"s"):"",
+    adults?"👥 "+esc(adults)+" travelling":"",
+    "● "+esc(d.status||"Considering")
+  ].filter(Boolean);
+  const mine=tripIdeas(h.id),loose=state.ideas.filter(x=>!x.holidayId);
+  const shortlist=(mine.length?mine:loose).slice(0,6);
+
+  box.innerHTML=`
+  <div class="hero">
+    <p class="label">Your holiday</p>
+    <h1>${esc(h.name)}</h1>
+    <p>${esc(dateRange(h))}</p>
+    <div class="row" style="margin-top:14px">${facts.map(f=>`<span class="pill pill-line">${f}</span>`).join("")}</div>
+    <div class="row">
+      <button class="btn btn-primary" data-act="holiday-edit">Edit holiday</button>
+      <button class="btn" data-act="go" data-view="decision">Roam’s decision</button>
+      <button class="btn" data-act="travel-edit">Travel details</button>
+      <button class="btn" data-act="expense-add">Add spending</button>
+    </div>
+  </div>
+
+  <div class="head"><h2>Roam's next steps</h2><span class="pill">What to do next</span></div>
+  <div class="row" style="align-items:stretch;flex-wrap:wrap;margin-bottom:8px">${renderNextSteps(h)}</div>
+
+  <div class="head"><h2>Trip readiness</h2><span class="pill">${r.done} of ${r.checks.length} done</span></div>
+  <div class="card card-pad">
+    <div class="row" style="gap:16px;align-items:flex-start;flex-wrap:nowrap">
+      <div class="ring" style="--pct:${r.pct}%"><b>${r.pct}%</b></div>
+      <div class="grow">
+        <div class="bar"><span style="width:${r.pct}%"></span></div>
+        <div class="checks">${r.checks.map(c=>`
+          <div class="check ${c[1]?"done":""}">
+            <span class="gl">${c[1]?"✓":"○"}</span><span class="txt">${esc(c[0])}</span>
+            ${c[1]?"":`<button class="btn btn-sm" data-act="${c[2]}">Add</button>`}
+          </div>`).join("")}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="head"><h2>Budget reality</h2><button class="btn btn-sm" data-act="expense-add">Add spending</button></div>
+  ${renderBudgetReality(h)}
+
+  <div class="head"><h2>Travel and bookings</h2><button class="btn btn-sm" data-act="travel-edit">Edit</button></div>
+  <div class="card card-pad">
+    <div class="chips">
+      <div class="chip"><small>Outbound</small><b>${esc(t.outbound||"Not added")}</b></div>
+      <div class="chip"><small>Return</small><b>${esc(t.returnFlight||"Not added")}</b></div>
+      <div class="chip"><small>Hotel</small><b>${esc(t.hotel||"Not added")}</b></div>
+      <div class="chip"><small>Booking reference</small><b>${esc(t.reference||"Not added")}</b></div>
+      <div class="chip"><small>Check in</small><b>${esc(fmtDate(t.checkin)||"Not added")}</b></div>
+      <div class="chip"><small>Check out</small><b>${esc(fmtDate(t.checkout)||"Not added")}</b></div>
+    </div>
+    ${t.link?`<p style="margin-top:13px"><a href="${esc(t.link)}" target="_blank" rel="noopener noreferrer">Open booking</a></p>`:""}
+    ${t.notes?`<p class="small muted" style="margin-top:11px">${esc(t.notes)}</p>`:""}
+  </div>
+
+  ${d.notes?`<div class="head"><h2>Notes</h2></div><div class="card card-pad"><p>${esc(d.notes)}</p></div>`:""}
+
+  <div class="head"><h2>Shortlist</h2>
+    <button class="btn btn-sm" data-act="go" data-view="saved">${mine.length?"See all "+mine.length:"Open shortlist"}</button></div>
+  ${!mine.length&&loose.length?`<p class="note" style="margin-bottom:12px">These ${loose.length} places are not on a trip yet.
+    <button class="btn btn-sm" data-act="saved-assign-all" style="margin-left:8px">Add them to ${esc(h.name)}</button></p>`:""}
+  <div class="grid">${shortlist.length?shortlist.map(x=>placeCard(x)).join("")
+    :`<div class="empty"><div class="gl">♡</div><h3>Nothing saved for ${esc(h.name)} yet</h3>
+       <p>Search the destination in Explore and save the places you like.</p>
+       <button class="btn btn-primary" data-act="go" data-view="explore">Explore ${esc(h.name)}</button></div>`}</div>`;
+}
+
+/* ============================================================
+   10. COMPARE — scored against the holiday brief.
+   Deliberately transparent: three named parts, each explained in
+   the UI, so a low score always says why.
+   ============================================================ */
+const PRIORITY_CATS={
+  beach:["Beaches"], food:["Restaurants"], sight:["Places to see"],
+  activity:["Things to do","Day trips"], relax:["Hotels","Parks"], night:["Nightlife"]
+};
+function matchScore(h){
+  const b=state.brief||{},parts=[],lines=[];
+  /* budget: under the brief is full marks, over is penalised proportionally */
+  const want=money(b.budget),got=money(h.details.budget);
+  if(want>0&&got>0){
+    const score=got<=want?1:Math.max(0,1-(got-want)/want);
+    parts.push({w:2,score});
+    lines.push(got<=want?"Budget fits, "+gbp(want-got)+" under":"Budget is "+gbp(got-want)+" over the brief");
+  }
+  /* nights: exact match is full marks, one night out costs a fifth */
+  const wantN=num(b.nights),gotN=nights(h);
+  if(wantN&&gotN){
+    const score=Math.max(0,1-Math.abs(gotN-wantN)/5);
+    parts.push({w:1.5,score});
+    lines.push(gotN===wantN?gotN+" nights, exactly as asked"
+      :gotN+" nights against "+wantN+" wanted");
+  }
+  /* priorities: does the shortlist actually cover what you said matters? */
+  const mine=tripIdeas(h.id);
+  const weights=PRIORITIES.map(p=>[p[0],p[1],num(b[p[0]])]).filter(p=>p[2]>0);
+  if(weights.length){
+    let sum=0,total=0;const strong=[],missing=[];
+    weights.forEach(([key,label,weight])=>{
+      const target=Math.max(1,Math.round(weight*0.6));
+      const have=mine.filter(x=>PRIORITY_CATS[key].indexOf(category(x.cat))>=0).length;
+      const hit=Math.min(1,have/target);
+      sum+=hit*weight;total+=weight;
+      if(weight>=4&&hit>=1)strong.push(label.toLowerCase());
+      if(weight>=4&&have===0)missing.push(label.toLowerCase());
+    });
+    parts.push({w:3,score:total?sum/total:0});
+    if(!mine.length)lines.push("Nothing shortlisted for this trip yet");
+    else{
+      if(strong.length)lines.push("Well covered for "+strong.join(" and "));
+      if(missing.length)lines.push("Nothing saved for "+missing.join(" or "));
+      if(!strong.length&&!missing.length)lines.push(mine.length+" places shortlisted");
+    }
+  }
+  if(!parts.length)return {pct:null,lines:["Fill in your brief and this becomes a real comparison"]};
+  const w=parts.reduce((t,p)=>t+p.w,0);
+  return {pct:Math.round(parts.reduce((t,p)=>t+p.score*p.w,0)/w*100),lines};
+}
+function renderCompare(){
+  const box=$("#compareContent");
+  if(!state.holidays.length){
+    box.innerHTML=`<div class="empty"><div class="gl">⇄</div><h3>Nothing to compare</h3>
+      <p>Create a couple of holidays and they will line up here side by side.</p>
+      <button class="btn btn-primary" data-act="holiday-new">Create a holiday</button></div>`;
+    return;
+  }
+  const scored=state.holidays.map(h=>({h,m:matchScore(h)}))
+    .sort((a,b)=>(b.m.pct==null?-1:b.m.pct)-(a.m.pct==null?-1:a.m.pct));
+  const best=scored.length>1&&scored[0].m.pct!=null?scored[0].h.id:null;
+  const briefSet=Object.keys(state.brief||{}).length>0;
+  box.innerHTML=`
+  ${state.holidays.length===1?'<p class="note" style="margin-bottom:14px">Only one trip so far. Add another to compare them properly.</p>':""}
+  ${briefSet?"":`<p class="note" style="margin-bottom:14px">Scores come from your holiday brief, which is empty.
+    <button class="btn btn-sm" data-act="go" data-view="brief" style="margin-left:8px">Fill in the brief</button></p>`}
+  <div class="grid">${scored.map(({h,m})=>{
+    const r=readiness(h),spent=h.expenses.reduce((s,e)=>s+money(e.amount),0),n=nights(h);
+    return `<article class="card card-pad"${h.id===best?' style="border-color:var(--brand)"':""}>
+      <div class="row" style="justify-content:space-between">
+        <span class="pill">${esc(h.details.status||"Considering")}</span>
+        ${h.id===best?`<span class="pill">Best match</span>`:""}
+      </div>
+      <h2 style="margin:10px 0 4px">${esc(h.name)}</h2>
+      <p class="small muted">${esc(dateRange(h))}</p>
+      <div class="row" style="gap:16px;align-items:center;flex-wrap:nowrap;margin-top:16px">
+        <div class="ring" style="--pct:${m.pct==null?0:m.pct}%"><b>${m.pct==null?"—":m.pct+"%"}</b></div>
+        <div class="grow">
+          <strong class="small">${m.pct==null?"Not scored":"Matches your brief"}</strong>
+          <ul style="margin:6px 0 0;padding-left:17px" class="tiny muted">
+            ${m.lines.map(l=>`<li>${esc(l)}</li>`).join("")}</ul>
+        </div>
+      </div>
+      <div class="chips" style="margin-top:16px">
+        <div class="chip"><small>Budget</small><b>${money(h.details.budget)?gbp(h.details.budget):"Not set"}</b></div>
+        <div class="chip"><small>Spent</small><b>${gbp(spent)}</b></div>
+        <div class="chip"><small>Nights</small><b>${n||"—"}</b></div>
+        <div class="chip"><small>Shortlisted</small><b>${tripIdeas(h.id).length}</b></div>
+        <div class="chip"><small>Itinerary</small><b>${h.activities.length} item${h.activities.length===1?"":"s"}</b></div>
+        <div class="chip"><small>Ready</small><b>${r.pct}%</b></div>
+      </div>
+      <div class="row" style="margin-top:16px">
+        <button class="btn btn-primary btn-sm" data-act="holiday-open" data-id="${esc(h.id)}">Open</button>
+        <button class="btn btn-sm" data-act="holiday-edit" data-id="${esc(h.id)}">Edit</button>
+      </div></article>`;
+  }).join("")}</div>`;
+}
+
+/* ============================================================
+   11. EXPLORE / RESEARCH
+   ============================================================ */
+function endpointBase(){
+  const raw=(store.get(K.endpoint)||"").trim();
+  return (raw||"https://roam-research.unpickgames.workers.dev")
+    .replace(/\/+$/,"").replace(/\/api\/research$/i,"").replace(/\/api$/i,"");
+}
+function photoUrl(x){
+  if(!x)return "";
+  const raw=x.photoUrl||x.photoUri||"";
+  if(raw)return /^(https?:|data:)/i.test(raw)?raw:endpointBase()+"/"+String(raw).replace(/^\/+/,"");
+  const p=Array.isArray(x.photos)&&x.photos.length?x.photos[0]:x.photo;
+  const name=typeof p==="string"?p:(p&&(p.name||p.photoName||p.resourceName));
+  return name?endpointBase()+"/api/photo?name="+encodeURIComponent(name):"";
+}
+/* turn a fetch failure into something actionable */
+function diagnose(err){
+  const base=endpointBase(),page=location.protocol;
+  const network=(err instanceof TypeError)||/failed to fetch|networkerror|load failed/i.test(err.message||"");
+  if(!network)return err.message||"The research request failed.";
+  if(page==="file:")
+    return "Could not reach "+base+". Roam is open as a local file, so the browser sends Origin: null — your server has to allow that origin explicitly.";
+  if(page==="https:"&&/^http:\/\//i.test(base))
+    return "Blocked before it left the browser: this page is on https and the endpoint is on http ("+base+"). Browsers refuse that mix. Put the endpoint behind https, or open Roam over http.";
+  return "Could not reach "+base+". Check the server is running and that it allows requests from "+location.origin+".";
+}
+function briefPreferences(){
+  const b=state.brief||{};
+  const priorities={};PRIORITIES.forEach(p=>{if(b[p[0]]!=null)priorities[p[0]]=num(b[p[0]])});
+  return {
+    budget:b.budget||"Any budget",
+    style:b.style||"Relaxed mix",
+    travellers:(b.adults?b.adults:"2")+" adults",
+    nights:b.nights||"",
+    warmth:b.warmth||"",
+    airport:b.airport||"",
+    priorities,
+    brief:b
+  };
+}
+
+function roamMatch(x){
+  const b=state.brief||{};
+  const dna=Object.fromEntries(PRIORITIES.map(p=>[p[0],Math.max(0,Math.min(5,num(b[p[0]])||0))]));
+  const total=Object.values(dna).reduce((a,v)=>a+v,0);
+  if(!total)return null;
+
+  const cat=category(x.cat||x.category);
+  const profiles={
+    "Hotels":      {beach:.70,food:.62,sight:.38,activity:.35,relax:.90,night:.45},
+    "Restaurants": {beach:.18,food:1.00,sight:.32,activity:.18,relax:.42,night:.55},
+    "Nightlife":   {beach:.20,food:.48,sight:.20,activity:.42,relax:.12,night:1.00},
+    "Beaches":     {beach:1.00,food:.18,sight:.40,activity:.38,relax:.92,night:.18},
+    "Things to do":{beach:.30,food:.25,sight:.72,activity:1.00,relax:.25,night:.22},
+    "Places to see":{beach:.28,food:.22,sight:1.00,activity:.62,relax:.30,night:.14},
+    "Day trips":   {beach:.34,food:.30,sight:.92,activity:.88,relax:.22,night:.12}
+  };
+  const prof=profiles[cat]||{beach:.45,food:.45,sight:.45,activity:.45,relax:.45,night:.45};
+  const fit=Object.keys(dna).reduce((sum,k)=>sum+dna[k]*(prof[k]||0),0)/total;
+
+  const text=((x.name||'')+' '+(x.description||'')).toLowerCase();
+  const keywordBoost={
+    beach:/beach|coast|sea|ocean|waterfront|swim/,
+    food:/restaurant|food|dining|cuisine|market|bar|cafe|café/,
+    sight:/museum|historic|landmark|old town|view|scenic|culture|architecture/,
+    activity:/hike|walk|tour|sport|adventure|kayak|diving|surf|excursion|park/,
+    relax:/spa|quiet|peaceful|relax|resort|pool|garden|wellness/,
+    night:/nightlife|club|bar|music|cocktail|late night|evening/
+  };
+  let boost=0;
+  Object.keys(keywordBoost).forEach(k=>{if(dna[k]>0&&keywordBoost[k].test(text))boost+=(dna[k]/total)*.10});
+
+  const r=num(x.rating);
+  const quality=r==null?0:Math.max(-.03,Math.min(.06,(r-4.0)*.06));
+  const pct=Math.round(Math.max(35,Math.min(98,(fit+boost+quality)*100)));
+
+  const ranked=PRIORITIES
+    .map(p=>({key:p[0],label:p[1],glyph:p[2],v:dna[p[0]],aff:prof[p[0]]||0}))
+    .filter(q=>q.v>0)
+    .sort((a,b)=>(b.v*b.aff)-(a.v*a.aff));
+  const strengths=ranked.filter(q=>q.aff>=.55).slice(0,2);
+  const weak=ranked.slice().reverse().find(q=>q.v>=3&&q.aff<.4);
+  let reason='A balanced fit for the priorities in your Holiday DNA.';
+  if(strengths.length){
+    reason='Strong for '+strengths.map(q=>q.label.toLowerCase()).join(' and ')+' based on your Holiday DNA.';
+  }
+  if(weak&&pct<78)reason+=' Less aligned with your '+weak.label.toLowerCase()+' priority.';
+  const drivers=strengths.map(q=>q.label);
+  return {pct,reason,drivers};
+}
+
+function placeCard(x,i){
+  const url=photoUrl(x),cat=category(x.cat||x.category),rate=num(x.rating),match=roamMatch(x);
+  const ref=i==null?`data-id="${esc(x.id)}"`:`data-i="${i}"`;
+  const kept=i!=null&&state.ideas.some(k=>k.name===x.name);
+  const badge=i==null&&x.holidayId?tripName(x.holidayId):"";
+  return `<article class="card place">
+    <div class="thumb"><span>${esc(x.icon||"📍")}</span>${url?`<img src="${esc(url)}" alt="">`:""}</div>
+    <div class="place-body">
+      <p class="tiny muted">${esc(cat)}${badge?" · "+esc(badge):(i==null?" · no trip yet":"")}</p>
+      <h3>${esc(x.name)}</h3>
+      <p class="score">${rate!=null?"★ "+rate.toFixed(1):"No rating"}${x.ratingCount?`<span>${Number(x.ratingCount).toLocaleString("en-GB")} reviews</span>`:""}</p>
+      ${match?`<div class="note" style="padding:9px 11px"><strong style="color:var(--brand-ink)">Roam Match ${match.pct}%</strong><br><span class="tiny">${esc(match.reason)}</span></div>`:""}
+      <p class="desc">${esc(x.description||"No description available.")}</p>
+      <div class="row">
+        <button class="btn btn-primary btn-sm" data-act="place-view" ${ref}>View</button>
+        ${i==null
+          ? `<button class="btn btn-sm" data-act="idea-plan" data-id="${esc(x.id)}">Add to plan</button>
+             <button class="btn btn-sm" data-act="idea-move" data-id="${esc(x.id)}">Trip</button>
+             <button class="btn btn-sm btn-danger" data-act="idea-remove" data-id="${esc(x.id)}">Remove</button>`
+          : `<button class="btn btn-sm" data-act="place-save" data-i="${i}"${kept?" disabled":""}>${kept?"Saved":"Save"}</button>
+             <button class="btn btn-sm" data-act="place-plan" data-i="${i}">Add to plan</button>`}
+      </div>
+    </div></article>`;
+}
+function renderExploreRecommendation(list){
+  if(!Array.isArray(list)||list.length===0)return "";
+  const ranked=list.map(x=>({x,m:roamMatch(x)})).filter(r=>r.m).sort((a,b)=>b.m.pct-a.m.pct).slice(0,5);
+  if(!ranked.length)return "";
+  const winner=ranked[0];
+  return `<section class="v434-recommend">
+    <div class="v434-recommend-head">
+      <div>
+        <div class="recommend-title"><span class="recommend-star">★</span><div><div class="label">Roam recommends</div><h2>Your strongest matches</h2></div></div>
+        <p class="recommend-sub">Based on your preferences, budget and travel style, these places could be perfect for you.</p>
+      </div>
+      <div class="pill">Best match · ${winner.m.pct}%</div>
+    </div>
+    <div class="v434-recommend-grid">${ranked.map((r,i)=>{
+      const idx=state.research.indexOf(r.x),img=photoUrl(r.x),cat=category(r.x.cat||r.x.category),rating=num(r.x.rating);
+      const drivers=(r.m.drivers||[]).slice(0,2).map(d=>`<span>${esc(d)}</span>`).join('');
+      return `<article class="v434-recommend-item${i===0?' top':''}">
+        <div class="recommend-photo">
+          ${img?`<img src="${esc(img)}" alt="${esc(r.x.name||'Destination')}" loading="lazy">`:`<div class="recommend-photo-fallback">${esc(r.x.icon||'✈️')}</div>`}
+          <span class="recommend-badge">${i===0?'🏆 Best match':i===1?'♥ Great fit':'✦ Strong match'}</span>
+          <button class="recommend-heart" aria-label="Save ${esc(r.x.name||'place')}" data-act="place-save" data-i="${idx}">♡</button>
+        </div>
+        <div class="recommend-body">
+          <div class="recommend-name-row"><h3>${esc(r.x.name)}</h3>${rating!=null?`<span class="recommend-weather">★ ${rating.toFixed(1)}</span>`:''}</div>
+          <p class="recommend-description">${esc(r.x.description||r.m.reason||'A strong match for your holiday preferences.')}</p>
+          <div class="recommend-tags"><span>${esc(cat)}</span>${drivers}</div>
+          <div class="recommend-footer"><strong>${r.m.pct}%</strong><span>Roam Match</span><button class="btn btn-sm" data-act="place-view" data-i="${idx}">View →</button></div>
+        </div>
+      </article>`;
+    }).join('')}</div>
+  </section>`;
+}
+function priceSignal(list){
+  const vals=(Array.isArray(list)?list:[]).map(x=>x.priceLevel||x.price_level||"").filter(Boolean).map(v=>String(v).toUpperCase());
+  if(!vals.length)return null;
+  const score=vals.reduce((n,v)=>n+(v.includes("FREE")?0:v.includes("INEXPENSIVE")?1:v.includes("MODERATE")?2:v.includes("EXPENSIVE")?3:v.includes("VERY_EXPENSIVE")?4:(v.match(/\$/g)||[]).length),0)/vals.length;
+  if(score<.9)return {label:"Budget-friendly",symbol:"£"};
+  if(score<1.8)return {label:"Lower mid-range",symbol:"££"};
+  if(score<2.7)return {label:"Mid-range",symbol:"£££"};
+  if(score<3.5)return {label:"Higher-priced",symbol:"££££"};
+  return {label:"Premium-priced",symbol:"£££££"};
+}
+async function loadDestinationIntel(destination,list){
+  const q=String(destination||"").trim(); if(!q)return;
+  state.destinationInfoBusy=true;state.destinationInfoError="";renderExplore();
+  try{
+    const geoRes=await fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(q)+"&count=1&language=en&format=json");
+    if(!geoRes.ok)throw new Error("Weather location lookup failed");
+    const geo=await geoRes.json(),place=geo.results&&geo.results[0];
+    if(!place)throw new Error("Weather location not found for "+q);
+    const wxRes=await fetch("https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(place.latitude)+"&longitude="+encodeURIComponent(place.longitude)+"&current=temperature_2m,apparent_temperature,precipitation,rain,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=7&timezone=auto");
+    if(!wxRes.ok)throw new Error("Weather forecast unavailable");
+    const wx=await wxRes.json();
+    const days=wx.daily||{},max=(days.temperature_2m_max||[]).filter(Number.isFinite),min=(days.temperature_2m_min||[]).filter(Number.isFinite),rain=(days.precipitation_probability_max||[]).filter(Number.isFinite);
+    const avgMax=max.length?Math.round(max.reduce((a,b)=>a+b,0)/max.length):null;
+    const avgMin=min.length?Math.round(min.reduce((a,b)=>a+b,0)/min.length):null;
+    const rainMax=rain.length?Math.max(...rain):null;
+    state.destinationInfo={name:place.name||q,country:place.country||"",current:wx.current||{},avgMax,avgMin,rainMax,price:priceSignal(list)};
+  }catch(err){console.warn("Destination intelligence:",err);state.destinationInfoError=err.message||"Destination information unavailable";state.destinationInfo=null}
+  finally{state.destinationInfoBusy=false;renderExplore()}
+}
+function weatherLabel(code){
+  const n=Number(code);
+  if(n===0)return "Clear sky";
+  if(n===1)return "Mainly clear";
+  if(n===2)return "Partly cloudy";
+  if(n===3)return "Overcast";
+  if([45,48].includes(n))return "Foggy";
+  if([51,53,55,56,57].includes(n))return "Drizzle";
+  if([61,63,65,66,67].includes(n))return "Rain";
+  if([71,73,75,77].includes(n))return "Snow";
+  if([80,81,82].includes(n))return "Rain showers";
+  if([85,86].includes(n))return "Snow showers";
+  if([95,96,99].includes(n))return "Thunderstorms";
+  return "Weather available";
+}
+function renderDestinationIntel(list){
+  if(!state.researchTitle)return "";
+  if(state.destinationInfoBusy)return `<section class="dest-intel card card-pad"><div class="label">DESTINATION SNAPSHOT</div><h3 style="margin-top:4px">Checking ${esc(state.researchTitle)}…</h3><p class="dest-intel-note">Fetching current weather and building a local price signal from the places Roam researched.</p></section>`;
+  const d=state.destinationInfo;if(!d)return state.destinationInfoError?`<section class="dest-intel card card-pad"><div class="label">DESTINATION SNAPSHOT</div><p class="dest-intel-note">${esc(state.destinationInfoError)}. Roam can still show the researched places below.</p></section>`:"";
+  const c=d.current||{}, temp=Number.isFinite(c.temperature_2m)?Math.round(c.temperature_2m):null, feels=Number.isFinite(c.apparent_temperature)?Math.round(c.apparent_temperature):null;
+  const rain=d.rainMax!=null?d.rainMax+"%":"—", price=d.price, condition=weatherLabel(c.weather_code);
+  return `<section class="dest-intel card card-pad"><div class="head" style="margin-top:0"><div><div class="label">DESTINATION WEATHER</div><h2>${esc(d.name)}${d.country?`, ${esc(d.country)}`:""}</h2></div><span class="pill">Open-Meteo · Live</span></div><div style="margin-top:10px;font-weight:800;color:var(--brand-ink)">${esc(condition)}</div><div class="dest-intel-grid" style="margin-top:14px"><div class="dest-intel-item"><small>Now</small><strong>${temp!=null?temp+"°C":"—"}</strong><span class="tiny muted">${feels!=null?"Feels "+feels+"°C":"Current temperature"}</span></div><div class="dest-intel-item"><small>7-day high</small><strong>${d.avgMax!=null?d.avgMax+"°C":"—"}</strong><span class="tiny muted">Average forecast high</span></div><div class="dest-intel-item"><small>7-day low</small><strong>${d.avgMin!=null?d.avgMin+"°C":"—"}</strong><span class="tiny muted">Average forecast low</span></div><div class="dest-intel-item"><small>Rain chance</small><strong>${rain}</strong><span class="tiny muted">Highest daily probability</span></div></div><p class="dest-intel-note">Live weather supplied by Open-Meteo. Forecasts are useful for current planning; they are not a guarantee of conditions for a future holiday.</p><p class="dest-intel-note" style="margin-top:5px">Weather data: Open-Meteo, CC BY 4.0.</p></section>`;
+}
+function renderExplore(){
+  const area=$("#researchArea");
+  $("#researchBtn").disabled=state.busy;
+  $("#researchBtn").textContent=state.busy?"Searching…":"Search";
+  if(state.busy){
+    area.innerHTML=`<div class="card card-pad"><h2>Searching ${esc(state.researchTitle)}</h2>
+      <p class="muted small" style="margin-top:6px">Asking your research endpoint for current places, ratings and photos.</p></div>`;
+    return;
+  }
+  if(state.researchError&&!state.research.length){
+    area.innerHTML=`<div class="card card-pad" style="border-color:var(--bad)">
+      <p class="label" style="color:var(--bad)">Search failed</p>
+      <h2>No results for ${esc(state.researchTitle)}</h2>
+      <p class="muted" style="margin-top:8px">${esc(state.researchError)}</p>
+      <p class="small muted" style="margin-top:10px">Endpoint: <code>${esc(endpointBase())}/api/research</code></p>
+      <div class="row" style="margin-top:16px">
+        <button class="btn btn-primary" data-act="research">Try again</button>
+        <button class="btn" data-act="setup-toggle">Change research source</button>
+      </div></div>`;
+    return;
+  }
+  if(!state.research.length){
+    area.innerHTML=`
+      <div class="card card-pad">
+        <h2>What Roam looks for</h2>
+        <p class="small muted" style="margin-top:6px">Search a destination and results come back grouped into these, each with photos, ratings and a link to the source.</p>
+        <div class="chips" style="margin-top:16px">
+          <div class="chip"><small>🏨 Hotels</small><b>Places to stay</b></div>
+          <div class="chip"><small>🍴 Restaurants</small><b>Where to eat</b></div>
+          <div class="chip"><small>🏖️ Beaches</small><b>Coast and swimming</b></div>
+          <div class="chip"><small>🎯 Things to do</small><b>Attractions</b></div>
+          <div class="chip"><small>🌄 Places to see</small><b>Views and landmarks</b></div>
+          <div class="chip"><small>🚐 Day trips</small><b>Further afield</b></div>
+        </div>
+      </div>`;
+    return;
+  }
+  const tabs=["All"].concat(CATS.filter(c=>state.research.some(x=>category(x.category)===c)));
+  if(!tabs.includes(state.researchTab))state.researchTab="All";
+  const list=state.research.filter(x=>state.researchTab==="All"||category(x.category)===state.researchTab);
+  area.innerHTML=`
+    <div class="head" style="margin-top:0"><h2>Ideas for ${esc(state.researchTitle)}</h2>
+      <span class="pill">${state.research.length} result${state.research.length===1?"":"s"}</span></div>
+    ${Object.keys(state.brief||{}).length?`<p class="note" style="margin-bottom:14px">🧠 Roam Match uses your saved Holiday DNA to show how closely each result fits the trip you described. It is Roam's score, not a Google rating.</p>`:`<p class="note" style="margin-bottom:14px">Fill in your Holiday Brief to add personalised Roam Match scores. <button class="btn btn-sm" data-act="go" data-view="brief" style="margin-left:8px">Set Holiday DNA</button></p>`}
+    ${renderDestinationIntel(list)}
+    ${renderExploreRecommendation(list)}
+    <div class="tabs">${tabs.map(t=>
+      `<button data-act="research-tab" data-tab="${esc(t)}" aria-pressed="${t===state.researchTab}">${esc(t)}</button>`).join("")}</div>
+    <div class="grid">${list.length?list.map((x,i)=>placeCard(x,state.research.indexOf(x))).join("")
+      :`<div class="empty"><div class="gl">🔎</div><h3>Nothing in this category</h3><p>Try another tab.</p></div>`}</div>`;
+}
+let researchSeq=0;
+async function research(){
+  const q=$("#destination").value.trim();
+  if(!q){toast("Type a destination first");$("#destination").focus();return}
+  if(state.abort)state.abort.abort();
+  const seq=++researchSeq,ctrl=new AbortController();
+  state.abort=ctrl;
+  state.busy=true;state.researchTitle=q;state.researchError="";state.research=[];
+  renderExplore();
+  try{
+    const res=await fetch(endpointBase()+"/api/research",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      signal:ctrl.signal,
+      body:JSON.stringify({
+        destination:q,
+        categories:["hotels","restaurants","beaches","things_to_do","places_to_see","day_trips"],
+        limit:60,
+        preferences:briefPreferences()
+      })
+    });
+    const text=await res.text();
+    if(seq!==researchSeq)return;
+    let data;
+    try{data=JSON.parse(text)}
+    catch(e){throw new Error("The endpoint answered HTTP "+res.status+" with something that is not JSON"+(text?": "+text.trim().slice(0,120):"."))}
+    if(!res.ok||data.ok===false)throw new Error(data.error||"The endpoint returned HTTP "+res.status);
+    const raw=[data.results,data.places,data.items,Array.isArray(data)?data:null].find(Array.isArray)||[];
+    if(!raw.length)throw new Error("No places came back for "+q+". Try a different spelling or a nearby town.");
+    state.research=raw.map(x=>({
+      id:x.id||x.placeId||x.googlePlaceId||"",
+      name:x.name||(x.displayName&&x.displayName.text)||"Unnamed place",
+      category:x.category||(x.primaryTypeDisplayName&&x.primaryTypeDisplayName.text)||x.primaryType||"",
+      icon:x.icon||"📍",
+      rating:num(x.rating),
+      ratingCount:num(x.ratingCount)||num(x.userRatingCount)||0,
+      description:x.description||(x.editorialSummary&&x.editorialSummary.text)||"",
+      sourceUrl:x.sourceUrl||x.websiteUri||x.googleMapsUri||"",
+      mapsUrl:x.mapsUrl||x.googleMapsUri||"",
+      photoUrl:x.photoUrl||(x.photo&&x.photo.photoUri)||"",
+      photos:x.photos,
+      reviewSummary:(x.reviewSummary&&x.reviewSummary.text)||x.reviewSummary||"",
+      reviewsUrl:x.reviewsUrl||x.mapsUrl||x.googleMapsUri||""
+    }));
+    loadDestinationIntel(q,state.research);
+  }catch(err){
+    if(err.name==="AbortError"||seq!==researchSeq)return;
+    console.error("Roam research failed:",err);
+    state.researchError=diagnose(err);
+  }finally{
+    if(seq===researchSeq){state.busy=false;state.abort=null;renderExplore()}
+  }
+}
+async function testEndpoint(){
+  const field=$("#endpointField"),dot=$("#testDot"),msg=$("#testMsg");
+  const base=(field.value.trim()||"https://roam-research.unpickgames.workers.dev")
+    .replace(/\/+$/,"").replace(/\/api\/research$/i,"").replace(/\/api$/i,"");
+  field.value=base;
+  dot.className="dot";msg.textContent="Testing…";
+  try{
+    const res=await fetch(base+"/api/research",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({destination:"Test destination",categories:["things_to_do"],limit:1,preferences:{}})
+    });
+    const text=await res.text();
+    if(!res.ok)throw new Error("HTTP "+res.status+(text?" — "+text.slice(0,110):""));
+    const data=JSON.parse(text);
+    if(!data||!Array.isArray(data.results||data.places))throw new Error("Replied without a results array");
+    store.set(K.endpoint,base);
+    dot.className="dot ok";msg.textContent="Connected and responding";
+  }catch(e){
+    dot.className="dot bad";
+    msg.textContent=diagnose(e);
+    console.error("Roam endpoint test failed:",e);
+  }
+}
+
+/* ============================================================
+   12. PLACE DETAIL
+   ============================================================ */
+function openDetail(x){
+  state.detail=x;
+  const url=photoUrl(x),rate=num(x.rating),cat=category(x.cat||x.category);
+  $("#detailCat").textContent=cat;
+  $("#detailTitle").textContent=x.name||"Unnamed place";
+  $("#detailHero").innerHTML=`<span>${esc(x.icon||"📍")}</span>${url?`<img src="${esc(url)}" alt="">`:""}`;
+  const saved=state.ideas.some(i=>i.name===x.name);
+  $("#detailSave").textContent=saved?"Already saved":"Save to shortlist";
+  $("#detailSave").disabled=saved;
+  $("#detailBody").innerHTML=`
+    <p class="score">${rate!=null?"★ "+rate.toFixed(1):"No rating"}${x.ratingCount?`<span>${Number(x.ratingCount).toLocaleString("en-GB")} reviews</span>`:""}</p>
+    <p style="margin-top:10px">${esc(x.description||"No description available.")}</p>
+    <div class="row" style="margin-top:14px">
+      ${x.sourceUrl?`<a class="btn btn-sm" href="${esc(x.sourceUrl)}" target="_blank" rel="noopener noreferrer">Source</a>`:""}
+      ${x.mapsUrl?`<a class="btn btn-sm" href="${esc(x.mapsUrl)}" target="_blank" rel="noopener noreferrer">Map</a>`:""}
+    </div>
+    <div class="card card-pad" id="opinions" style="margin-top:16px;box-shadow:none;background:var(--sunk)">
+      <h3>Traveller opinions</h3><p class="small muted" style="margin-top:6px">Loading…</p>
+    </div>`;
+  openModal("#detail");
+  loadOpinions(x);
+}
+async function loadOpinions(x){
+  const box=$("#opinions");
+  if(!box)return;
+  const id=x.placeId||x.id;
+  const fail=m=>{if($("#opinions")===box)box.innerHTML=`<h3>Traveller opinions</h3><p class="small muted" style="margin-top:6px">${esc(m)}</p>`};
+  if(!id)return fail("No place id, so reviews cannot be fetched.");
+  try{
+    const res=await fetch(endpointBase()+"/api/place?id="+encodeURIComponent(id));
+    const data=await res.json().catch(()=>null);
+    if(!res.ok||!data||data.ok===false)throw new Error((data&&data.error)||"Review request failed ("+res.status+")");
+    if(state.detail!==x)return;
+    const reviews=Array.isArray(data.reviews)?data.reviews:[];
+    box.innerHTML=`<h3>Traveller opinions</h3>
+      ${data.reviewSummary?`<p style="margin-top:8px">${esc(data.reviewSummary)}</p>`:""}
+      ${reviews.length?reviews.map(r=>`
+        <div class="review">
+          <div class="review-top"><strong>${esc(r.author||"Reviewer")}</strong>
+            <span>${num(r.rating)?"★".repeat(Math.max(1,Math.min(5,Math.round(num(r.rating))))):""}</span></div>
+          ${r.relativeTime?`<p class="tiny muted">${esc(r.relativeTime)}</p>`:""}
+          ${r.text?`<p class="review-text">${esc(r.text)}</p>`:""}
+        </div>`).join(""):`<p class="small muted" style="margin-top:6px">No individual reviews were returned.</p>`}
+      ${data.reviewSummaryDisclosure?`<p class="tiny muted" style="margin-top:9px">${esc(data.reviewSummaryDisclosure)}</p>`:""}
+      ${data.reviewsUrl?`<p style="margin-top:11px"><a href="${esc(data.reviewsUrl)}" target="_blank" rel="noopener noreferrer">Read all reviews</a></p>`:""}`;
+  }catch(err){
+    console.warn("Roam opinions unavailable:",err);
+    fail("Reviews could not be loaded for this place.");
+  }
+}
+function saveIdea(x){
+  const dupe=state.ideas.find(i=>i.name===x.name);
+  if(dupe){
+    if(state.current&&dupe.holidayId!==state.current){
+      dupe.holidayId=state.current;
+      persist();toast(dupe.name+" moved to "+tripName(state.current));render();
+    }else toast("Already on your shortlist");
+    return;
+  }
+  state.ideas.unshift(normIdea({
+    id:uid(),name:x.name,cat:category(x.cat||x.category),icon:x.icon,rating:x.rating,
+    ratingCount:x.ratingCount,description:x.description,photoUrl:photoUrl(x),
+    sourceUrl:x.sourceUrl,mapsUrl:x.mapsUrl,reviewSummary:x.reviewSummary,
+    reviewsUrl:x.reviewsUrl,placeId:x.placeId||x.id,savedAt:Date.now(),
+    holidayId:state.current||""
+  }));
+  persist();toast("Saved to your shortlist");render();
+}
+
+/* ============================================================
+   13. SHORTLIST
+   ============================================================ */
+function shortlistPick(src){
+  if(!src.length)return null;
+  const ranked=src.map(x=>{
+    const match=roamMatch(x);
+    const rating=num(x.rating)||0;
+    const reviews=num(x.ratingCount)||0;
+    const quality=rating?Math.min(1,rating/5):0;
+    const reviewConfidence=reviews?Math.min(1,Math.log10(reviews+1)/4):0;
+    const score=match ? match.pct*.78 + quality*14 + reviewConfidence*8
+                       : quality*78 + reviewConfidence*22;
+    return {x,match,score};
+  }).sort((a,b)=>b.score-a.score);
+  return ranked[0];
+}
+
+function renderShortlistPick(src){
+  const pick=shortlistPick(src);
+  if(!pick)return "";
+  const x=pick.x,match=pick.match;
+  const cat=category(x.cat||x.category),rate=num(x.rating);
+  const why=match
+    ? match.reason.replace(/based on your Holiday DNA\.?/i,"based on your Holiday DNA.")
+    : "The strongest rated option in your shortlist, with review confidence taken into account.";
+  return `<div class="card card-pad" style="margin-bottom:18px;border-color:var(--brand)">
+    <div class="row" style="align-items:flex-start">
+      <div class="grow">
+        <p class="label">🏆 Roam's pick</p>
+        <h2 style="margin-top:4px">${esc(x.name)}</h2>
+        <p class="small muted" style="margin-top:4px">${esc(cat)}${rate!=null?` · ★ ${rate.toFixed(1)}`:""}</p>
+      </div>
+      ${match?`<div class="ring" style="--pct:${match.pct}%"><b>${match.pct}%</b></div>`:""}
+    </div>
+    <p style="margin-top:13px">${esc(why)}</p>
+    <p class="small muted" style="margin-top:6px">Roam's pick is based on your saved shortlist and Holiday DNA. It is a recommendation, not a booking decision.</p>
+    <div class="row" style="margin-top:13px">
+      <button class="btn btn-primary btn-sm" data-act="place-view" data-id="${esc(x.id)}">View ${esc(x.name)}</button>
+    </div>
+  </div>`;
+}
+
+function renderOneShortlistComparison(list,label){
+  if(!Array.isArray(list)||list.length<2)return "";
+  const ranked=list.map(x=>({x,m:roamMatch(x)})).sort((a,b)=>{
+    const am=a.m?a.m.pct:0,bm=b.m?b.m.pct:0;
+    return (bm-am)||((num(b.x.rating)||0)-(num(a.x.rating)||0));
+  }).slice(0,3);
+  const winner=ranked[0];
+  return `<section class="short-compare">
+    <div class="short-compare-top">
+      <div class="label">Decision helper</div>
+      <h2 style="margin-top:3px">Compare your ${esc(label.toLowerCase())}</h2>
+      <p class="small muted" style="margin-top:5px">Roam has ranked these shortlisted options using your Holiday DNA, rating and review confidence.</p>
+    </div>
+    <div class="short-compare-grid">${ranked.map((r,i)=>{
+      const rate=num(r.x.rating),reviews=Number(r.x.ratingCount)||0;
+      return `<article class="short-compare-item${i===0?' winner':''}">
+        ${i===0?'<span class="pill">🏆 Roam\'s pick</span>':'<span class="tiny muted">Alternative '+(i+1)+'</span>'}
+        <h3>${esc(r.x.name)}</h3>
+        <div class="short-compare-score">${r.m?r.m.pct+'%':'—'}</div>
+        <div class="small"><strong>Roam Match</strong></div>
+        <div class="short-compare-meta">${rate!=null?'★ '+rate.toFixed(1):'No rating'}${reviews?' · '+reviews.toLocaleString('en-GB')+' reviews':''}</div>
+        <p class="tiny muted" style="margin-top:9px">${esc(r.m?r.m.reason:'No personalised score yet.')}</p>
+        <button class="btn btn-sm" style="margin-top:11px" data-act="place-view" data-id="${esc(r.x.id)}">View</button>
+      </article>`;
+    }).join('')}</div>
+    <div style="padding:12px 18px;border-top:1px solid var(--line-soft);font-size:13px;color:var(--ink-2)">
+      <strong>Why this wins:</strong> ${esc(winner.m?winner.m.reason:'Best available overall fit in this shortlist.')}
+    </div>
+  </section>`;
+}
+function renderShortlistComparison(list){
+  if(!Array.isArray(list)||list.length<2)return "";
+  if(state.savedFilter!=="All")return renderOneShortlistComparison(list,state.savedFilter);
+  const groups=CATS.map(cat=>({cat,list:list.filter(x=>category(x.cat)===cat)})).filter(g=>g.list.length>=2);
+  if(!groups.length)return `<section class="short-compare"><div class="short-compare-top"><div class="label">Decision helper</div><h2 style="margin-top:3px">Compare your shortlist</h2><p class="small muted" style="margin-top:5px">Save at least two places in the same category to compare them. Roam keeps hotels, restaurants and attractions separate so the comparison stays meaningful.</p></div></section>`;
+  return groups.map(g=>renderOneShortlistComparison(g.list,g.cat)).join("");
+}
+function renderSaved(){
+  const grid=$("#savedGrid"),stats=$("#savedStats"),filters=$("#savedFilters"),trip=$("#savedTrip");
+  const unassigned=state.ideas.filter(x=>!x.holidayId).length;
+  if(state.savedTrip!=="all"&&state.savedTrip!=="none"&&!state.holidays.some(h=>h.id===state.savedTrip))
+    state.savedTrip="all";
+  trip.innerHTML=`<option value="all">All trips (${state.ideas.length})</option>`
+    +state.holidays.map(h=>`<option value="${esc(h.id)}"${state.savedTrip===h.id?" selected":""}>${esc(h.name)} (${tripIdeas(h.id).length})</option>`).join("")
+    +(unassigned?`<option value="none"${state.savedTrip==="none"?" selected":""}>No trip yet (${unassigned})</option>`:"");
+  trip.value=state.savedTrip;
+  const src=state.savedTrip==="all"?state.ideas
+    :state.savedTrip==="none"?state.ideas.filter(x=>!x.holidayId)
+    :tripIdeas(state.savedTrip);
+  const rated=src.map(x=>num(x.rating)).filter(v=>v!=null);
+  stats.innerHTML=[
+    ["Saved places",src.length],
+    ["Categories",new Set(src.map(x=>category(x.cat))).size],
+    ["Top rating",rated.length?Math.max.apply(null,rated).toFixed(1):"—"],
+    [state.savedTrip==="all"?"Trips":"Not yet assigned",state.savedTrip==="all"?state.holidays.length:unassigned]
+  ].map(s=>`<div class="stat"><b>${s[1]}</b><span>${s[0]}</span></div>`).join("");
+
+  const present=CATS.filter(c=>src.some(x=>category(x.cat)===c));
+  filters.innerHTML=["All"].concat(present).map(c=>{
+    const n=c==="All"?src.length:src.filter(x=>category(x.cat)===c).length;
+    return `<button data-act="saved-filter" data-cat="${esc(c)}" aria-pressed="${c===state.savedFilter}">${esc(c)} ${n}</button>`;
+  }).join("");
+
+  const q=state.savedQuery.trim().toLowerCase();
+  let list=src.filter(x=>{
+    const hit=[x.name,x.cat,x.description].map(v=>String(v||"").toLowerCase()).join(" ");
+    return (state.savedFilter==="All"||category(x.cat)===state.savedFilter)&&(!q||hit.includes(q));
+  });
+  const s=state.savedSort;
+  if(s==="rating")list.sort((a,b)=>(num(b.rating)||0)-(num(a.rating)||0));
+  else if(s==="az")list.sort((a,b)=>a.name.localeCompare(b.name,"en-GB"));
+  else if(s==="za")list.sort((a,b)=>b.name.localeCompare(a.name,"en-GB"));
+  else list.sort((a,b)=>(b.savedAt||0)-(a.savedAt||0));
+
+  const bulk=state.savedTrip==="none"&&unassigned&&state.current
+    ? `<div class="note" style="margin-bottom:14px">These were saved before you had trips.
+        <button class="btn btn-sm" data-act="saved-assign-all" style="margin-left:8px">Add all ${unassigned} to ${esc(tripName(state.current))}</button></div>`
+    : "";
+  const pickSource=src.filter(x=>x&&x.name);
+  const pickHtml=state.savedFilter==="All"&&!q ? renderShortlistPick(pickSource) : "";
+  const compareHtml=!q ? renderShortlistComparison(list) : "";
+  if(!list.length){
+    const filtered=state.ideas.length>0;
+    grid.innerHTML=`<div class="empty"><div class="gl">${filtered?"🔎":"♡"}</div>
+      <h3>${filtered?"Nothing matches":"Your shortlist is empty"}</h3>
+      <p>${filtered?"Try another trip, search or category.":"Search a destination in Explore and save the places you like the look of."}</p>
+      ${filtered?`<button class="btn" data-act="saved-reset">Show everything</button>`
+                :`<button class="btn btn-primary" data-act="go" data-view="explore">Explore a destination</button>`}</div>`;
+  }else{
+    grid.innerHTML=pickHtml+compareHtml+list.map(x=>placeCard(x)).join("");
+  }
+  const row=$("#savedBulk");
+  if(row)row.innerHTML=bulk;
+}
+
+/* ============================================================
+   14. ITINERARY — real day grouping
+   ============================================================ */
+function renderHolidayOverview(){
+  const b=state.brief||{};
+  const days=Math.max(1,Number(b.nights)||0);
+  const items=Array.isArray(state.plan)?state.plan:[];
+  const plannedDays=new Set(items.map(x=>x.day).filter(Boolean));
+  const saved=Array.isArray(state.saved)?state.saved:[];
+  const readyItems=Array.isArray(state.readiness)?state.readiness:[];
+  const dest=b.destination||b.where||'Your destination';
+  const budget=b.budget?('£'+Number(b.budget).toLocaleString()):'Not set';
+  const next=!b.destination?'Set your destination':!b.nights?'Set your trip length':saved.length<2?'Build your shortlist':plannedDays.size<days?'Build your next day':'Review your holiday';
+  return `<section class="roam-overview"><h3>🧭 Your holiday at a glance</h3><div class="roam-overview-sub">${esc(dest)} · A quick view of where your holiday stands.</div><div class="roam-overview-grid"><div class="roam-overview-card"><div class="k">Trip</div><div class="v">${days} night${days===1?'':'s'}</div></div><div class="roam-overview-card"><div class="k">Budget</div><div class="v">${esc(budget)}</div></div><div class="roam-overview-card"><div class="k">Shortlist</div><div class="v">${saved.length}</div></div><div class="roam-overview-card"><div class="k">Planned</div><div class="v">${days?Math.round((plannedDays.size/days)*100):0}%</div></div></div><div class="roam-overview-next"><strong>Next best step</strong>${esc(next)}</div></section>`;
+}
+
+function renderTripCoverage(h){
+  const holidayOverview=renderHolidayOverview();
+
+  const box=$("#tripCoverage");
+  if(!box||!h)return;
+  const span=tripLength(h);
+  if(!span){box.innerHTML="";return}
+  const planned=new Set((h.activities||[]).map(a=>Number(a.day)||1));
+  const open=[];
+  for(let d=1;d<=span;d++)if(!planned.has(d))open.push(d);
+  const pct=Math.round(((span-open.length)/span)*100);
+  const next=open[0];
+  box.innerHTML=`<div class="card card-pad">
+    <div class="head" style="margin:0"><div><p class="label">Trip coverage</p><h2 style="margin-top:4px">${pct}% of your days planned</h2></div><span class="pill">${open.length} open day${open.length===1?"":"s"}</span></div>
+    <div class="dna-bar" style="margin-top:12px"><span style="width:${pct}%"></span></div>
+    <div class="row" style="justify-content:space-between;margin-top:10px">
+      <span class="small muted">${span-open.length} of ${span} days have at least one activity.</span>
+      ${next?`<button class="btn btn-sm btn-primary" data-act="day-suggest-open" data-day="${next}">Build Day ${next}</button>`:`<span class="small" style="font-weight:700">✓ Every day has a plan</span>`}
+    </div>
+  </div>`;
+}
+
+function renderItineraryBalance(h){
+  const box=$("#tripBalance");
+  if(!box||!h){if(box)box.innerHTML="";return}
+  const span=tripLength(h);
+  if(!span){box.innerHTML="";return}
+  const counts=[...Array(span)].map((_,i)=>({day:i+1,count:h.activities.filter(a=>Number(a.day)===i+1).length}));
+  const planned=counts.filter(x=>x.count>0), open=counts.filter(x=>x.count===0);
+  const busiest=counts.slice().sort((a,b)=>b.count-a.count)[0];
+  const overloaded=counts.filter(x=>x.count>=4);
+  let title="Your itinerary looks balanced", text="You have a reasonable spread of activities across the trip.";
+  if(!planned.length){box.innerHTML="";return}
+  if(overloaded.length){title="A few days look busy";text="Roam has spotted days with four or more activities. Consider leaving some breathing room."}
+  else if(open.length){title="You still have some free days";text=open.length===1?"One day is still completely open. That could be a good day for something spontaneous.":open.length+" days are completely open. You can keep them flexible or build another day."}
+  box.innerHTML=`<div class="card card-pad" style="margin-bottom:14px"><div class="head" style="margin:0"><div><p class="label">Itinerary balance</p><h2 style="margin-top:4px">${esc(title)}</h2></div><span class="pill">${planned.length} of ${span} days active</span></div><p class="small muted" style="margin-top:7px">${esc(text)}</p><div class="row" style="margin-top:12px;gap:8px;flex-wrap:wrap">${counts.map(x=>`<span class="pill" style="${x.count===0?'opacity:.65':''}">Day ${x.day}: ${x.count} item${x.count===1?'':'s'}</span>`).join('')}</div>${busiest&&busiest.count>=3?`<p class="tiny muted" style="margin-top:10px">Busiest day: Day ${busiest.day} with ${busiest.count} items.</p>`:''}</div>`;
+}
+
+function renderItinerary(){
+  const sel=$("#tripSelect"),tl=$("#timeline"),h=holiday();
+  sel.innerHTML=state.holidays.map(x=>
+    `<option value="${esc(x.id)}"${h&&x.id===h.id?" selected":""}>${esc(x.name)}</option>`).join("")
+    ||`<option value="">No holidays yet</option>`;
+  sel.disabled=!state.holidays.length;
+  if(h){renderTripCoverage(h);renderItineraryBalance(h);}
+  else {const box=$("#tripCoverage");if(box)box.innerHTML=""}
+  if(!h){
+    tl.innerHTML=`<div class="empty"><div class="gl">🗓️</div><h3>No holiday to plan</h3>
+      <p>Create a holiday and its days appear here.</p>
+      <button class="btn btn-primary" data-act="holiday-new">Create a holiday</button></div>`;
+    return;
+  }
+  if(!h.activities.length){
+    tl.innerHTML=`<div class="empty"><div class="gl">🗓️</div><h3>${esc(h.name)} is wide open</h3>
+      <p>Add an activity, or let Roam build a day around your saved shortlist and Holiday DNA. Roam avoids reusing places already planned.</p>
+      <button class="btn btn-primary" data-act="act-add">Add activity</button>
+      <button class="btn" data-act="day-suggest" style="margin-left:8px">Build my day</button></div>`;
+    return;
+  }
+  const days=[...new Set(h.activities.map(a=>a.day))].sort((a,b)=>a-b);
+  const span=tripLength(h);
+  const hint=!h.details.start
+    ? `<p class="note" style="margin-bottom:14px">Add your dates to the trip and these days show the real date.
+        <button class="btn btn-sm" data-act="holiday-edit" style="margin-left:8px">Add dates</button></p>`
+    : "";
+  tl.innerHTML=hint+days.map(day=>{
+    const items=h.activities.filter(a=>a.day===day);
+    const when=dayLabel(h,day);
+    const over=span&&day>span;
+    return `${holidayOverview}<section class="day">
+      <div class="day-top">
+        <div><strong style="font-family:var(--font-display);font-size:20px">Day ${day}</strong>
+          ${when?`<div class="tiny" style="font-weight:600;color:var(--brand-ink)">${esc(when)}</div>`:""}
+          <div class="tiny muted">${items.length} item${items.length===1?"":"s"}</div></div>
+        <div class="row" style="gap:7px">
+          ${over?`<span class="pill" style="background:var(--bad-bg);color:var(--bad)">after you travel home</span>`:""}
+          <button class="btn btn-sm" data-act="act-add" data-day="${day}">Add</button>
+        </div>
+      </div>
+      ${items.map((a,i)=>`
+        <div class="act">
+          <div class="act-time">${esc(a.time||"Any time")}</div>
+          <div>
+            <div class="act-name">${esc(a.name)}</div>
+            <div class="act-meta">${esc(a.type||"Activity")}${a.note?" · "+esc(a.note):""}</div>
+          </div>
+          <div class="act-tools">
+            <button class="btn btn-sm btn-icon" data-act="act-up" data-id="${esc(a.id)}" ${i===0?"disabled":""} aria-label="Move earlier">↑</button>
+            <button class="btn btn-sm btn-icon" data-act="act-down" data-id="${esc(a.id)}" ${i===items.length-1?"disabled":""} aria-label="Move later">↓</button>
+            <button class="btn btn-sm" data-act="act-edit" data-id="${esc(a.id)}">Edit</button>
+            <button class="btn btn-sm btn-danger btn-icon" data-act="act-delete" data-id="${esc(a.id)}" aria-label="Delete ${esc(a.name)}">✕</button>
+          </div>
+        </div>`).join("")}
+    </section>`;
+  }).join("");
+}
+function activityForm(a){
+  const h=holiday(),span=tripLength(h||{}),when=h?dayLabel(h,a.day||1):"";
+  const hint=when?`Day ${a.day||1} is ${when}`+(span?` · your trip runs ${span} days`:""):"";
+  return `<div class="form-grid">
+    <label class="fld"><span>What is it?</span><input class="field" id="f-name" data-autofocus value="${esc(a.name||"")}" placeholder="Dinner at La Caleta"></label>
+    <label class="fld"><span>Day</span><input class="field" id="f-day" type="number" min="1" inputmode="numeric" value="${a.day||1}">
+      ${hint?`<span class="tiny muted" style="display:block;margin-top:5px">${esc(hint)}</span>`:""}</label>
+    <label class="fld"><span>Time</span><input class="field" id="f-time" value="${esc(a.time||"")}" placeholder="14:00 or Afternoon"></label>
+    <label class="fld"><span>Type</span><input class="field" id="f-type" value="${esc(a.type||"Activity")}" placeholder="Beach, Food, Sightseeing"></label>
+    <label class="fld wide"><span>Note</span><input class="field" id="f-note" value="${esc(a.note||"")}" placeholder="Booked, table for four"></label>
+  </div>`;
+}
+function readActivity(){
+  const name=$("#f-name").value.trim();
+  if(!name){toast("Give the activity a name");$("#f-name").focus();return null}
+  return {name,day:Math.max(1,num($("#f-day").value)||1),time:$("#f-time").value.trim(),
+          type:$("#f-type").value.trim()||"Activity",note:$("#f-note").value.trim()};
+}
+function moveActivity(id,dir){
+  const h=holiday();if(!h)return;
+  const list=h.activities,i=list.findIndex(a=>a.id===id);
+  if(i<0)return;
+  let j=i+dir;
+  while(j>=0&&j<list.length&&list[j].day!==list[i].day)j+=dir;
+  if(j<0||j>=list.length)return;
+  const tmp=list[i];list[i]=list[j];list[j]=tmp;
+  persist();renderItinerary();
+}
+
+/* ============================================================
+   15. PHOTOS
+   ============================================================ */
+function renderPhotos(){
+  const g=$("#photosGrid");
+  if(!state.photosReady){
+    g.innerHTML=`<div class="empty"><div class="gl">📷</div><h3>Opening your photos</h3><p>One moment.</p></div>`;
+    return;
+  }
+  g.innerHTML=state.photos.length?state.photos.map(p=>
+    `<div class="shot"><img src="${esc(photoSrc(p))}" alt="${esc(p.name||"Photo")}" loading="lazy">
+     <button data-act="photo-delete" data-id="${esc(p.id)}" aria-label="Delete ${esc(p.name||"photo")}">✕</button></div>`).join("")
+    :`<div class="empty"><div class="gl">📷</div><h3>No photos yet</h3><p>Add a few and they stay with your trip.</p></div>`;
+  const mb=state.photos.reduce((t,p)=>t+photoBytes(p),0)/1048576;
+  $("#photoUsage").textContent=state.photos.length
+    ? state.photos.length+" photo"+(state.photos.length===1?"":"s")+", "+(mb<0.1?"under 0.1":mb.toFixed(1))+" MB"
+      +(state.photoFallback?" — this browser has no IndexedDB, so photos still use the small localStorage quota":"")
+    : "";
+}
+/* resize once, then store a Blob — no base64, no 33% overhead */
+function shrink(file){
+  return new Promise(res=>{
+    const reader=new FileReader();
+    reader.onerror=()=>res(null);
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>res(null);
+      img.onload=()=>{
+        const max=1600,scale=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+        const c=document.createElement("canvas");
+        c.width=Math.max(1,Math.round(img.naturalWidth*scale));
+        c.height=Math.max(1,Math.round(img.naturalHeight*scale));
+        c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+        if(c.toBlob)c.toBlob(bl=>res(bl||null),"image/jpeg",.78);
+        else res(dataUrlToBlob(c.toDataURL("image/jpeg",.78)));
+      };
+      img.src=String(reader.result||"");
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function addPhotos(files){
+  const list=[...files].filter(f=>f.type.indexOf("image/")===0);
+  if(!list.length)return;
+  toast("Adding "+list.length+" photo"+(list.length===1?"":"s")+"…");
+  let added=0;
+  for(const f of list){
+    const blob=await shrink(f);
+    if(!blob)continue;
+    const rec={id:uid(),name:f.name,blob,added:Date.now()};
+    if(state.photoFallback){
+      rec.data=await blobToDataUrl(blob);
+      delete rec.blob;
+      state.photos.push(rec);
+      if(!persist()){state.photos.pop();persist();break}
+    }else{
+      if(await photoStore.put(rec)===null){
+        toast("Could not store that photo","warn");
+        break;
+      }
+      state.photos.push(rec);
+    }
+    added++;
+    if(state.view==="photos")renderPhotos();
+  }
+  toast(added?added+" photo"+(added===1?"":"s")+" added":"No photos were added","warn");
+  render();
+}
+async function deletePhoto(id){
+  const p=state.photos.find(x=>x.id===id);
+  if(!p)return;
+  const i=state.photos.indexOf(p);
+  state.photos.splice(i,1);
+  if(state.photoFallback)persist(); else await photoStore.remove(id);
+  renderPhotos();
+  state.undo=async()=>{
+    state.photos.splice(i,0,p);
+    if(state.photoFallback)persist(); else await photoStore.put(p);
+    renderPhotos();toast(p.name+" put back");
+  };
+  toast((p.name||"Photo")+" removed",null,"Undo");
+}
+
+/* ============================================================
+   16. BRIEF + SETTINGS
+   ============================================================ */
+const DNA_LABELS={
+  beach:"Beach lover",food:"Foodie",sight:"Explorer",activity:"Activity seeker",relax:"Relaxer",night:"Nightlife"
+};
+function renderHolidayDna(){
+  const box=$("#dnaList");
+  if(!box)return;
+  const b=state.brief||{};
+  box.innerHTML=PRIORITIES.map(p=>{
+    const raw=Math.max(0,Math.min(5,num(b[p[0]])==null?3:num(b[p[0]])));
+    const pct=Math.round(raw*20);
+    return `<div class="dna-row">
+      <div class="dna-name">${p[2]} ${esc(DNA_LABELS[p[0]]||p[1])}</div>
+      <div class="dna-bar" aria-label="${esc(DNA_LABELS[p[0]]||p[1])}: ${pct}%"><span style="width:${pct}%"></span></div>
+      <div class="dna-value">${pct}%</div>
+    </div>`;
+  }).join("");
+}
+function fillBrief(){
+  const b=state.brief||{};
+  const set=(id,v)=>{const el=$(id);if(el&&v!=null&&v!=="")el.value=v};
+  set("#bBudget",b.budget);set("#bNights",b.nights);set("#bAdults",b.adults);
+  set("#bAirport",b.airport);set("#bWarmth",b.warmth);set("#bStyle",b.style);
+  const box=$("#briefSliders");
+  if(!box.childElementCount){
+    box.innerHTML=PRIORITIES.map(p=>
+      `<label class="fld"><span>${p[2]} ${p[1]} <output id="o-${p[0]}"></output></span>
+       <input type="range" id="s-${p[0]}" min="0" max="5" step="1" style="width:100%"></label>`).join("");
+  }
+  PRIORITIES.forEach(p=>{
+    const el=$("#s-"+p[0]);
+    el.value=b[p[0]]!=null?b[p[0]]:3;
+    $("#o-"+p[0]).textContent=el.value;
+    el.oninput=()=>{
+      $("#o-"+p[0]).textContent=el.value;
+      const b={...state.brief};PRIORITIES.forEach(q=>b[q[0]]=num($("#s-"+q[0]).value)||0);
+      state.brief=b;renderHolidayDna();
+    };
+  });
+  renderHolidayDna();
+}
+function saveBrief(){
+  const b={
+    budget:$("#bBudget").value.trim(),nights:$("#bNights").value,adults:$("#bAdults").value,
+    airport:$("#bAirport").value.trim(),warmth:$("#bWarmth").value,style:$("#bStyle").value
+  };
+  PRIORITIES.forEach(p=>b[p[0]]=num($("#s-"+p[0]).value)||0);
+  state.brief=b;
+  store.set(K.brief,JSON.stringify(b));
+  renderHolidayDna();
+  toast("Brief saved — searches will use it");
+}
+const OFFLINE_TEXT={
+  file:["ok","Fully offline. Roam is running from a local file, so nothing is fetched to start it."],
+  ready:["ok","Offline ready. This copy is cached, so it opens with no connection."],
+  pending:["","Cached. Close the tab and reopen it once, then it will open offline."],
+  missing:["bad","Not offline yet. Put the companion sw.js file next to this page on the server."],
+  unsupported:["bad","This browser will not cache the page. Save the file locally, or add it to your home screen."],
+  checking:["","Checking…"]
+};
+function renderOffline(){
+  const box=$("#offlineInfo");
+  if(!box)return;
+  const [cls,text]=OFFLINE_TEXT[state.offline]||OFFLINE_TEXT.checking;
+  box.innerHTML=`<span class="dot ${cls}"></span><span>${esc(text)}</span>`;
+}
+function checkOffline(){
+  if(location.protocol==="file:"){state.offline="file";renderOffline();return}
+  if(!("serviceWorker" in navigator)||typeof caches==="undefined"){
+    state.offline="unsupported";renderOffline();return;
+  }
+  state.offline="checking";renderOffline();
+  navigator.serviceWorker.register("sw.js").then(async ()=>{
+    state.offline=navigator.serviceWorker.controller?"ready":"pending";
+    renderOffline();
+    /* make sure the page itself is cached on the very first visit */
+    try{
+      const c=await caches.open("roam-v42");
+      await c.add(new Request(location.href,{cache:"reload"}));
+    }catch(e){}
+  }).catch(()=>{state.offline="missing";renderOffline()});
+  if(navigator.serviceWorker.addEventListener)
+    navigator.serviceWorker.addEventListener("controllerchange",()=>{
+      if(state.offline!=="missing"){state.offline="ready";renderOffline()}
+    });
+}
+function renderSettings(){
+  applyTheme();
+  renderOffline();
+  $("#endpointNow").textContent=endpointBase();
+  const bytes=[K.holidays,K.ideas,K.photos,K.brief].reduce((s,k)=>s+((store.get(k)||"").length),0);
+  const mb=state.photos.reduce((t,p)=>t+photoBytes(p),0)/1048576;
+  $("#storageInfo").innerHTML=
+    state.holidays.length+" trip"+(state.holidays.length===1?"":"s")+", "
+    +state.ideas.length+" saved place"+(state.ideas.length===1?"":"s")
+    +" — "+Math.round(bytes/1024)+" KB in browser storage.<br>"
+    +state.photos.length+" photo"+(state.photos.length===1?"":"s")+" — "
+    +(mb<0.1?"under 0.1":mb.toFixed(1))+" MB in "
+    +(state.photoFallback?"browser storage (no IndexedDB here, so the small quota still applies)":"IndexedDB")
+    +".<br><span class=\"tiny muted\">Roam v42</span>";
+}
+async function exportData(){
+  toast("Building your backup…");
+  const photos=[];
+  let skipped=0;
+  for(const p of state.photos){
+    let data="";
+    try{data=p.blob?await blobToDataUrl(p.blob):(p.data||"")}catch(e){data=""}
+    if(data)photos.push({id:p.id,name:p.name,added:p.added||0,data});
+    else skipped++;
+  }
+  const blob=new Blob([JSON.stringify({
+    app:"roam",version:42,exported:new Date().toISOString(),
+    holidays:state.holidays,ideas:state.ideas,photos,brief:state.brief
+  },null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="roam-backup-"+new Date().toISOString().slice(0,10)+".json";
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  if(skipped)toast("Backup downloaded, but "+skipped+" photo"+(skipped===1?" could":"s could")+" not be read","warn");
+  else toast("Backup downloaded");
+}
+function importData(file){
+  const reader=new FileReader();
+  reader.onload=()=>{
+    let data;
+    try{data=JSON.parse(reader.result)}catch(e){toast("That file is not a Roam backup");return}
+    if(!data||typeof data!=="object"){toast("That file is not a Roam backup");return}
+    confirmSheet("Restore this backup?",
+      "Everything currently in this browser is replaced by the contents of the file.",
+      "Restore",async()=>{
+        state.holidays=(Array.isArray(data.holidays)?data.holidays:[]).map(normHoliday);
+        state.ideas=(Array.isArray(data.ideas)?data.ideas:[]).map(normIdea);
+        state.brief=data.brief&&typeof data.brief==="object"?data.brief:{};
+        state.current=state.holidays.length?state.holidays[0].id:null;
+        store.set(K.brief,JSON.stringify(state.brief));
+        persist();
+        state.photos.forEach(p=>forgetPhotoUrl(p.id));
+        state.photos=[];
+        const incoming=(Array.isArray(data.photos)?data.photos:[]).filter(p=>p&&p.data);
+        if(state.photoFallback){
+          state.photos=incoming;persist();
+        }else{
+          await photoStore.clear();
+          for(const p of incoming){
+            const bl=dataUrlToBlob(p.data);
+            if(!bl)continue;
+            const rec={id:p.id||uid(),name:p.name||"Photo",blob:bl,added:p.added||Date.now()};
+            if(await photoStore.put(rec)!==null)state.photos.push(rec);
+          }
+        }
+        toast("Backup restored");show("home");
+      });
+  };
+  reader.readAsText(file);
+}
+
+/* ============================================================
+   17. EDITORS
+   ============================================================ */
+const STATUSES=["Considering","Shortlisted","Booked","Travelling","Completed"];
+const EXPENSE_CATS=["Flights","Accommodation","Food and drink","Transport","Activities","Shopping","Other"];
+function options(list,selected){
+  return list.map(o=>`<option${o===selected?" selected":""}>${esc(o)}</option>`).join("");
+}
+function openNewHoliday(){
+  openSheet({label:"New",title:"Create a holiday",submit:"Create holiday",body:`
+    <div class="form-grid">
+      <label class="fld wide"><span>Where are you going?</span><input class="field" id="f-name" data-autofocus placeholder="Tenerife"></label>
+      <label class="fld"><span>Start date</span><input class="field" id="f-start" type="date"></label>
+      <label class="fld"><span>End date</span><input class="field" id="f-end" type="date"></label>
+      <label class="fld"><span>Budget (£)</span><input class="field" id="f-budget" type="number" min="0" step="1" inputmode="decimal" placeholder="1500"></label>
+      <label class="fld"><span>Status</span><select class="field" id="f-status">${options(STATUSES,"Considering")}</select></label>
+      <label class="fld wide"><span>Notes</span><textarea class="field" id="f-notes" placeholder="What do you want from this holiday?"></textarea></label>
+    </div>`,
+    onSubmit(){
+      const name=$("#f-name").value.trim();
+      if(!name){toast("Give the holiday a destination");$("#f-name").focus();return false}
+      const h=normHoliday({
+        id:uid(),name,
+        details:{start:$("#f-start").value,end:$("#f-end").value,
+                 budget:money($("#f-budget").value),status:$("#f-status").value,
+                 notes:$("#f-notes").value.trim()}
+      });
+      state.holidays.unshift(h);
+      state.current=h.id;
+      persist();toast(name+" created");show("overview");
+      return true;
+    }});
+}
+function openHolidayEditor(id){
+  const h=state.holidays.find(x=>x.id===id)||holiday();
+  if(!h){toast("Create a holiday first");return}
+  state.current=h.id;
+  const d=h.details;
+  openSheet({label:"Edit",title:h.name,submit:"Save changes",body:`
+    <div class="form-grid">
+      <label class="fld wide"><span>Destination</span><input class="field" id="f-name" data-autofocus value="${esc(h.name)}"></label>
+      <label class="fld"><span>Start date</span><input class="field" id="f-start" type="date" value="${esc(d.start)}"></label>
+      <label class="fld"><span>End date</span><input class="field" id="f-end" type="date" value="${esc(d.end)}"></label>
+      <label class="fld"><span>Budget (£)</span><input class="field" id="f-budget" type="number" min="0" step="1" inputmode="decimal" value="${money(d.budget)||""}"></label>
+      <label class="fld"><span>Status</span><select class="field" id="f-status">${options(STATUSES,d.status)}</select></label>
+      <label class="fld wide"><span>Notes</span><textarea class="field" id="f-notes">${esc(d.notes)}</textarea></label>
+    </div>`,
+    onSubmit(){
+      const name=$("#f-name").value.trim();
+      if(!name){toast("The holiday needs a destination");return false}
+      h.name=name;
+      h.details={start:$("#f-start").value,end:$("#f-end").value,
+                 budget:money($("#f-budget").value),status:$("#f-status").value,
+                 notes:$("#f-notes").value.trim()};
+      h.notes=h.details.notes;
+      h.dates="";
+      persist();toast("Saved");render();
+      return true;
+    }});
+}
+function openTravelEditor(){
+  const h=holiday();
+  if(!h){toast("Create a holiday first");return}
+  const t=h.travel;
+  openSheet({label:"Logistics",title:"Travel and bookings",submit:"Save details",body:`
+    <div class="form-grid">
+      <label class="fld"><span>Outbound flight</span><input class="field" id="f-out" data-autofocus value="${esc(t.outbound||"")}" placeholder="MAN → TFS, 08:20"></label>
+      <label class="fld"><span>Return flight</span><input class="field" id="f-ret" value="${esc(t.returnFlight||"")}" placeholder="TFS → MAN, 21:10"></label>
+      <label class="fld"><span>Hotel</span><input class="field" id="f-hotel" value="${esc(t.hotel||"")}"></label>
+      <label class="fld"><span>Booking reference</span><input class="field" id="f-ref" value="${esc(t.reference||"")}"></label>
+      <label class="fld"><span>Check in</span><input class="field" id="f-in" type="date" value="${esc(t.checkin||"")}"></label>
+      <label class="fld"><span>Check out</span><input class="field" id="f-out2" type="date" value="${esc(t.checkout||"")}"></label>
+      <label class="fld wide"><span>Booking link</span><input class="field" id="f-link" type="url" value="${esc(t.link||"")}" placeholder="https://"></label>
+      <label class="fld wide"><span>Travel notes</span><textarea class="field" id="f-notes">${esc(t.notes||"")}</textarea></label>
+    </div>`,
+    onSubmit(){
+      h.travel={outbound:$("#f-out").value.trim(),returnFlight:$("#f-ret").value.trim(),
+                hotel:$("#f-hotel").value.trim(),reference:$("#f-ref").value.trim(),
+                checkin:$("#f-in").value,checkout:$("#f-out2").value,
+                link:$("#f-link").value.trim(),notes:$("#f-notes").value.trim()};
+      persist();toast("Travel details saved");render();
+      return true;
+    }});
+}
+function openExpenseEditor(index){
+  const h=holiday();
+  if(!h){toast("Create a holiday first");return}
+  const editing=index!=null&&index>=0;
+  const e=editing?h.expenses[index]:{};
+  if(editing&&!e)return;
+  openSheet({label:"Money",title:editing?"Edit spending":"Add spending",submit:"Save",body:`
+    <div class="form-grid">
+      <label class="fld wide"><span>What was it?</span><input class="field" id="f-desc" data-autofocus value="${esc(e.description||"")}" placeholder="Flights, hotel, dinner"></label>
+      <label class="fld"><span>Amount (£)</span><input class="field" id="f-amount" type="number" min="0" step="0.01" inputmode="decimal" value="${e.amount!=null?money(e.amount):""}"></label>
+      <label class="fld"><span>Category</span><select class="field" id="f-cat">${options(EXPENSE_CATS,e.category||"Other")}</select></label>
+      <label class="fld wide"><span>Date</span><input class="field" id="f-date" type="date" value="${esc(e.date||"")}"></label>
+    </div>`,
+    onSubmit(){
+      const row={description:$("#f-desc").value.trim()||"Expense",
+                 amount:money($("#f-amount").value),
+                 category:$("#f-cat").value,date:$("#f-date").value};
+      if(editing)h.expenses[index]=row;else h.expenses.push(row);
+      persist();toast("Spending saved");render();
+      return true;
+    }});
+}
+
+/* ============================================================
+   18. ACTIONS — every button in the app routes through here
+   ============================================================ */
+function researchItem(el){return state.research[Number(el.dataset.i)]}
+function ideaItem(el){return state.ideas.find(x=>x.id===el.dataset.id)}
+function planFrom(name){
+  const h=holiday();
+  if(!h){toast("Create a holiday first");return}
+  const day=h.activities.length?Math.max.apply(null,h.activities.map(a=>a.day)):1;
+  h.activities.push(normActivity({name,day,type:"From shortlist"}));
+  persist();toast("Added to day "+day);show("itinerary");
+}
+const ACT={
+  nav:el=>show(el.dataset.view),
+  go:el=>show(el.dataset.view),
+  more:()=>$("#mobMore").classList.toggle("open"),
+  theme:()=>{
+    const order=["light","dark","auto"],now=store.get(K.theme)||"auto";
+    store.set(K.theme,order[(order.indexOf(now)+1)%3]);
+    applyTheme();toast("Theme: "+(store.get(K.theme)));
+  },
+  "theme-set":el=>{store.set(K.theme,el.dataset.theme);applyTheme()},
+
+  "holiday-new":openNewHoliday,
+  "holiday-open":el=>{state.current=el.dataset.id;show("overview")},
+  "holiday-edit":el=>openHolidayEditor(el.dataset.id),
+  "holiday-delete":el=>{
+    const h=state.holidays.find(x=>x.id===el.dataset.id);
+    if(!h)return;
+    confirmSheet("Delete "+h.name+"?","Its itinerary, spending and travel details go with it. Your shortlist is not affected.","Delete holiday",()=>{
+      state.holidays=state.holidays.filter(x=>x.id!==h.id);
+      if(state.current===h.id)state.current=state.holidays.length?state.holidays[0].id:null;
+      persist();toast(h.name+" deleted");render();
+    });
+  },
+  "travel-edit":openTravelEditor,
+  "flight-edit":openTravelEditor,
+  "expense-add":()=>openExpenseEditor(),
+  "expense-edit":el=>openExpenseEditor(Number(el.dataset.i)),
+  "expense-delete":el=>{
+    const h=holiday(),i=Number(el.dataset.i);
+    if(!h||!h.expenses[i])return;
+    confirmSheet("Delete this spending?",h.expenses[i].description+" — "+gbp(h.expenses[i].amount),"Delete",()=>{
+      h.expenses.splice(i,1);persist();render();
+    });
+  },
+
+  "brief-save":saveBrief,
+  research,
+  "quick-destination":el=>{const d=$("#destination"),v=el.dataset.value||"";if(d){d.value=v;research()}},
+  "research-tab":el=>{state.researchTab=el.dataset.tab;renderExplore()},
+  "setup-toggle":()=>{
+    const s=$("#setup");
+    s.hidden=!s.hidden;
+    if(!s.hidden){$("#endpointField").value=store.get(K.endpoint)||"";$("#endpointField").focus()}
+  },
+  "endpoint-save":()=>{
+    const base=$("#endpointField").value.trim()
+      .replace(/\/+$/,"").replace(/\/api\/research$/i,"").replace(/\/api$/i,"");
+    store.set(K.endpoint,base);
+    $("#endpointField").value=base||"";
+    toast("Endpoint saved");
+    renderSettings();
+  },
+  "endpoint-test":testEndpoint,
+
+  "place-view":el=>{
+    const x=el.dataset.i!=null?researchItem(el):ideaItem(el);
+    if(x)openDetail(x);
+  },
+  "place-save":el=>{const x=researchItem(el);if(x)saveIdea(x)},
+  "place-plan":el=>{const x=researchItem(el);if(x)planFrom(x.name)},
+  "detail-save":()=>{if(state.detail){saveIdea(state.detail);closeModal("#detail")}},
+  "detail-close":()=>closeModal("#detail"),
+  "idea-plan":el=>{const x=ideaItem(el);if(x)planFrom(x.name)},
+  "idea-remove":el=>{
+    const i=state.ideas.findIndex(k=>k.id===el.dataset.id);
+    if(i<0)return;
+    const x=state.ideas.splice(i,1)[0];
+    persist();render();
+    state.undo=()=>{state.ideas.splice(i,0,x);persist();render();toast(x.name+" put back")};
+    toast(x.name+" removed",null,"Undo");
+  },
+  "saved-filter":el=>{state.savedFilter=el.dataset.cat;renderSaved()},
+  "saved-assign-all":()=>{
+    if(!state.current)return;
+    const moved=state.ideas.filter(x=>!x.holidayId);
+    moved.forEach(x=>x.holidayId=state.current);
+    persist();
+    state.savedTrip=state.current;
+    toast(moved.length+" place"+(moved.length===1?"":"s")+" added to "+tripName(state.current));
+    renderSaved();
+  },
+  "idea-move":el=>{
+    const x=ideaItem(el);
+    if(!x)return;
+    if(!state.holidays.length){toast("Create a trip first");return}
+    openSheet({label:"Shortlist",title:x.name,submit:"Save",body:`
+      <label class="fld"><span>Which trip is this for?</span>
+      <select class="field" id="f-trip" data-autofocus>
+        <option value="">No trip yet</option>
+        ${state.holidays.map(h=>`<option value="${esc(h.id)}"${x.holidayId===h.id?" selected":""}>${esc(h.name)}</option>`).join("")}
+      </select></label>`,
+      onSubmit(){
+        x.holidayId=$("#f-trip").value;
+        persist();
+        toast(x.holidayId?x.name+" is now on "+tripName(x.holidayId):x.name+" has no trip");
+        renderSaved();
+        return true;
+      }});
+  },
+  "saved-reset":()=>{state.savedQuery="";state.savedFilter="All";state.savedTrip="all";
+    $("#savedSearch").value="";renderSaved()},
+  "saved-clear":()=>{
+    const scope=state.savedTrip,inScope=scope==="all"?state.ideas
+      :scope==="none"?state.ideas.filter(x=>!x.holidayId):tripIdeas(scope);
+    if(!inScope.length){toast("Nothing to clear here");return}
+    const label=scope==="all"?"the whole shortlist":scope==="none"?"the unassigned places":tripName(scope)+"'s shortlist";
+    confirmSheet("Clear "+label+"?",
+      inScope.length+" saved place"+(inScope.length===1?" is":"s are")+" removed. Trips and itineraries stay.",
+      "Clear",()=>{
+        const removed=inScope.slice();
+        state.ideas=state.ideas.filter(x=>inScope.indexOf(x)<0);
+        persist();render();
+        state.undo=()=>{state.ideas=state.ideas.concat(removed);persist();render();toast("Shortlist restored")};
+        toast(removed.length+" removed",null,"Undo");
+      });
+  },
+
+  "plan-build":()=>{
+    const h=holiday();if(!h)return;
+    const plan=buildHolidayPlan(h);if(!plan.length){toast('Roam needs some shortlist evidence first','warn');return}
+    confirmSheet('Use Roam’s proposed plan?',plan.length+' days will be added to your existing itinerary. Your current activities will not be removed.', 'Add to itinerary',()=>{
+      const existing=new Set(h.activities.map(a=>String(a.name||'').trim().toLowerCase()));
+      plan.forEach(d=>d.rows.forEach(r=>{
+        const key=String(r.name||'').trim().toLowerCase();
+        if(existing.has(key))return;
+        h.activities.push(normActivity({day:d.day,time:r.time,name:r.name,type:r.type,note:'Proposed by Roam from your Holiday DNA and shortlist.'}));
+        existing.add(key);
+      }));
+      persist();toast('Roam plan added to your itinerary');show('itinerary');
+    });
+  },
+  "act-add":el=>{
+    const h=holiday();
+    if(!h){toast("Create a holiday first");return}
+    const day=num(el.dataset.day)||(h.activities.length?Math.max.apply(null,h.activities.map(a=>a.day)):1);
+    openSheet({label:"Itinerary",title:"Add an activity",submit:"Add activity",
+      body:activityForm({day}),
+      onSubmit(){
+        const a=readActivity();
+        if(!a)return false;
+        h.activities.push(normActivity(a));
+        persist();toast("Added to day "+a.day);
+        if(state.view!=="itinerary")show("itinerary");else renderItinerary();
+        return true;
+      }});
+  },
+  "act-edit":el=>{
+    const h=holiday();if(!h)return;
+    const a=h.activities.find(x=>x.id===el.dataset.id);
+    if(!a)return;
+    openSheet({label:"Itinerary",title:"Edit activity",submit:"Save",body:activityForm(a),
+      onSubmit(){
+        const next=readActivity();
+        if(!next)return false;
+        Object.assign(a,next);
+        persist();renderItinerary();
+        return true;
+      }});
+  },
+  "act-delete":el=>{
+    const h=holiday();if(!h)return;
+    const i=h.activities.findIndex(x=>x.id===el.dataset.id);
+    if(i<0)return;
+    const a=h.activities.splice(i,1)[0];
+    persist();renderItinerary();
+    state.undo=()=>{h.activities.splice(i,0,a);persist();renderItinerary();toast(a.name+" put back")};
+    toast(a.name+" removed",null,"Undo");
+  },
+  "act-up":el=>moveActivity(el.dataset.id,-1),
+  "act-down":el=>moveActivity(el.dataset.id,1),
+  "day-suggest":()=>{
+    const h=holiday();
+    if(!h){toast("Create a holiday first");return}
+    const span=tripLength(h);
+    const planned=new Set(h.activities.map(a=>Number(a.day)||1));
+    const open=span?[...Array(span)].map((_,i)=>i+1).find(d=>!planned.has(d)):null;
+    const day=open||((h.activities.length?Math.max.apply(null,h.activities.map(a=>a.day)):0)+1);
+    const used=new Set(h.activities.map(a=>String(a.name||'').trim().toLowerCase()).filter(Boolean));
+    const shortlist=tripIdeas(h.id).filter(x=>!used.has(String(x.name||'').trim().toLowerCase())).slice().sort((a,b)=>(roamMatch(b)?.pct||0)-(roamMatch(a)?.pct||0));
+    const picks=shortlist.slice(0,3);
+    const morning=picks.find(x=>/place|see|sight|museum|park|landmark|attraction/i.test((x.cat||"")+" "+(x.description||"")))||picks[0];
+    const afternoon=picks.find(x=>x!==morning&&/beach|pool|activity|thing|day trip/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning);
+    const evening=picks.find(x=>x!==morning&&x!==afternoon&&/restaurant|food|nightlife|bar/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning&&x!==afternoon);
+    const rows=[];
+    if(morning)rows.push(["Morning",morning.name,"From your shortlist"]);
+    else rows.push(["Morning","Explore the local area","Sightseeing"]);
+    if(afternoon)rows.push(["Afternoon",afternoon.name,"From your shortlist"]);
+    else rows.push(["Afternoon","Beach or pool time","Relax"]);
+    if(evening)rows.push(["Evening",evening.name,"From your shortlist"]);
+    else rows.push(["Evening","Dinner somewhere good","Food and drink"]);
+    rows.forEach(s=>h.activities.push(normActivity({day,time:s[0],name:s[1],type:s[2]})));
+    persist();
+    const when=dayLabel(h,day);
+    toast("Day "+day+(when?" ("+when+")":"")+" built from your shortlist");
+    if(state.view!=="itinerary")show("itinerary");else renderItinerary();
+  },
+
+  "day-suggest-open":el=>{
+    const h=holiday();if(!h)return;
+    const target=Math.max(1,num(el.dataset.day)||1);
+    const used=new Set(h.activities.map(a=>String(a.name||'').trim().toLowerCase()).filter(Boolean));
+    const shortlist=tripIdeas(h.id).filter(x=>!used.has(String(x.name||'').trim().toLowerCase())).slice().sort((a,b)=>(roamMatch(b)?.pct||0)-(roamMatch(a)?.pct||0));
+    const picks=shortlist.slice(0,3);
+    const morning=picks.find(x=>/place|see|sight|museum|park|landmark|attraction/i.test((x.cat||"")+" "+(x.description||"")))||picks[0];
+    const afternoon=picks.find(x=>x!==morning&&/beach|pool|activity|thing|day trip/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning);
+    const evening=picks.find(x=>x!==morning&&x!==afternoon&&/restaurant|food|nightlife|bar/i.test((x.cat||"")+" "+(x.description||"")))||picks.find(x=>x!==morning&&x!==afternoon);
+    const rows=[];
+    if(morning)rows.push(["Morning",morning.name,"From your shortlist"]);else rows.push(["Morning","Explore the local area","Sightseeing"]);
+    if(afternoon)rows.push(["Afternoon",afternoon.name,"From your shortlist"]);else rows.push(["Afternoon","Beach or pool time","Relax"]);
+    if(evening)rows.push(["Evening",evening.name,"From your shortlist"]);else rows.push(["Evening","Dinner somewhere good","Food and drink"]);
+    rows.forEach(s=>h.activities.push(normActivity({day:target,time:s[0],name:s[1],type:s[2]})));
+    persist();toast("Day "+target+" built from your shortlist");renderItinerary();
+  },
+
+  "photo-delete":el=>deletePhoto(el.dataset.id),
+  "offline-check":checkOffline,
+  "data-export":()=>exportData().catch(err=>{
+    console.error("Roam export failed:",err);
+    toast("The backup could not be built","warn");
+  }),
+  "data-reset":()=>confirmSheet("Delete everything?",
+    "Holidays, shortlist, photos and your brief are wiped from this browser. Export a backup first if you might want them.",
+    "Delete everything",()=>{
+      [K.holidays,K.ideas,K.photos,K.brief].forEach(store.del);
+      state.photos.forEach(p=>forgetPhotoUrl(p.id));
+      photoStore.clear();
+      state.holidays=[];state.ideas=[];state.photos=[];state.brief={};state.current=null;
+      toast("All data deleted");show("home");
+    }),
+
+  undo:()=>{const u=state.undo;state.undo=null;hideToast();if(u)u()},
+  "sheet-close":closeSheet,
+  "sheet-submit":submitSheet
+};
+
+/* one click listener for the whole app */
+document.addEventListener("click",e=>{
+  const el=e.target.closest("[data-act]");
+  if(!el)return;
+  const fn=ACT[el.dataset.act];
+  if(!fn)return;
+  if(el.tagName==="BUTTON")e.preventDefault();
+  try{fn(el,e)}catch(err){console.error("Roam action failed:",el.dataset.act,err);toast("That did not work — see the console")}
+});
+/* one input listener for the fields that filter or select */
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.id==="savedSearch"){state.savedQuery=t.value;renderSaved()}
+  else if(t.id&&t.id.indexOf("s-")===0){const o=$("#o"+t.id.slice(1));if(o)o.textContent=t.value}
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.id==="savedSort"){state.savedSort=t.value;renderSaved()}
+  else if(t.id==="savedTrip"){state.savedTrip=t.value;renderSaved()}
+  else if(t.id==="tripSelect"){state.current=t.value;renderItinerary()}
+  else if(t.id==="photoInput"){addPhotos(t.files);t.value=""}
+  else if(t.id==="importInput"&&t.files[0]){importData(t.files[0]);t.value=""}
+});
+$("#destination").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();research()}});
+/* broken images fall back to the glyph behind them — one mechanism, no inline handlers */
+document.addEventListener("error",e=>{
+  if(e.target&&e.target.tagName==="IMG")e.target.classList.add("img-failed");
+},true);
+/* photo drop zone */
+(function(){
+  const dz=$("#drop");
+  ["dragenter","dragover"].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.add("over")}));
+  ["dragleave","drop"].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.remove("over")}));
+  dz.addEventListener("drop",e=>{if(e.dataTransfer&&e.dataTransfer.files)addPhotos(e.dataTransfer.files)});
+})();
+window.addEventListener("error",e=>console.error("Roam runtime error:",e.error||e.message));
+window.addEventListener("unhandledrejection",e=>console.error("Roam promise error:",e.reason));
+
+/* ============================================================
+   19. BOOT
+   ============================================================ */
+applyTheme();
+loadAll();
+fillBrief();
+show("home");
+if(!store.set("roam-write-test","1"))toast("This browser will not save data — nothing in this session will persist","warn");
+store.del("roam-write-test");
+loadPhotos().then(()=>render()).catch(err=>{
+  console.error("Roam could not open the photo store:",err);
+  state.photosReady=true;render();
+});
+checkOffline();
+</script>
+</body>
+</html>
