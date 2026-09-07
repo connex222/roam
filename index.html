@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- ROAM v42.3 — Open-Meteo destination weather. -->
+<!-- ROAM v42.5 — Date-aware Open-Meteo weather. -->
 <html lang="en-GB" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -1970,7 +1970,10 @@ async function loadDestinationIntel(destination,list){
     if(!geoRes.ok)throw new Error("Weather location lookup failed");
     const geo=await geoRes.json(),place=geo.results&&geo.results[0];
     if(!place)throw new Error("Weather location not found for "+q);
-    const wxRes=await fetch("https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(place.latitude)+"&longitude="+encodeURIComponent(place.longitude)+"&current=temperature_2m,apparent_temperature,precipitation,rain,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=7&timezone=auto");
+    const hw=holidayWeatherDates();
+    let wxUrl="https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(place.latitude)+"&longitude="+encodeURIComponent(place.longitude)+"&current=temperature_2m,apparent_temperature,precipitation,rain,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=7&timezone=auto";
+    if(hw){const today=new Date();today.setHours(0,0,0,0);const diff=Math.ceil((hw.start-today)/86400000);const endDiff=Math.ceil((hw.end-today)/86400000);if(diff>=0&&endDiff<=16){wxUrl="https://api.open-meteo.com/v1/forecast?latitude="+encodeURIComponent(place.latitude)+"&longitude="+encodeURIComponent(place.longitude)+"&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&start_date="+isoDate(hw.start)+"&end_date="+isoDate(hw.end)+"&timezone=auto";}}
+    const wxRes=await fetch(wxUrl);
     if(!wxRes.ok)throw new Error("Weather forecast unavailable");
     const wx=await wxRes.json();
     const days=wx.daily||{},max=(days.temperature_2m_max||[]).filter(Number.isFinite),min=(days.temperature_2m_min||[]).filter(Number.isFinite),rain=(days.precipitation_probability_max||[]).filter(Number.isFinite);
@@ -2002,7 +2005,7 @@ function renderDestinationIntel(list){
   const d=state.destinationInfo;if(!d)return state.destinationInfoError?`<section class="dest-intel card card-pad"><div class="label">DESTINATION SNAPSHOT</div><p class="dest-intel-note">${esc(state.destinationInfoError)}. Roam can still show the researched places below.</p></section>`:"";
   const c=d.current||{}, temp=Number.isFinite(c.temperature_2m)?Math.round(c.temperature_2m):null, feels=Number.isFinite(c.apparent_temperature)?Math.round(c.apparent_temperature):null;
   const rain=d.rainMax!=null?d.rainMax+"%":"—", price=d.price, condition=weatherLabel(c.weather_code);
-  return `<section class="dest-intel card card-pad"><div class="head" style="margin-top:0"><div><div class="label">DESTINATION WEATHER</div><h2>${esc(d.name)}${d.country?`, ${esc(d.country)}`:""}</h2></div><span class="pill">Open-Meteo · Live</span></div><div style="margin-top:10px;font-weight:800;color:var(--brand-ink)">${esc(condition)}</div><div class="dest-intel-grid" style="margin-top:14px"><div class="dest-intel-item"><small>Now</small><strong>${temp!=null?temp+"°C":"—"}</strong><span class="tiny muted">${feels!=null?"Feels "+feels+"°C":"Current temperature"}</span></div><div class="dest-intel-item"><small>7-day high</small><strong>${d.avgMax!=null?d.avgMax+"°C":"—"}</strong><span class="tiny muted">Average forecast high</span></div><div class="dest-intel-item"><small>7-day low</small><strong>${d.avgMin!=null?d.avgMin+"°C":"—"}</strong><span class="tiny muted">Average forecast low</span></div><div class="dest-intel-item"><small>Rain chance</small><strong>${rain}</strong><span class="tiny muted">Highest daily probability</span></div></div><p class="dest-intel-note">Live weather supplied by Open-Meteo. Forecasts are useful for current planning; they are not a guarantee of conditions for a future holiday.</p><p class="dest-intel-note" style="margin-top:5px">Weather data: Open-Meteo, CC BY 4.0.</p></section>`;
+  return `<section class="dest-intel card card-pad"><div class="head" style="margin-top:0"><div><div class="label">DESTINATION WEATHER</div><h2>${esc(d.name)}${d.country?`, ${esc(d.country)}`:""}</h2></div><span class="pill">Open-Meteo · Live</span></div><div style="margin-top:10px;font-weight:800;color:var(--brand-ink)">${esc(condition)}</div><div class="dest-intel-grid" style="margin-top:14px"><div class="dest-intel-item"><small>Now</small><strong>${temp!=null?temp+"°C":"—"}</strong><span class="tiny muted">${feels!=null?"Feels "+feels+"°C":"Current temperature"}</span></div><div class="dest-intel-item"><small>7-day high</small><strong>${d.avgMax!=null?d.avgMax+"°C":"—"}</strong><span class="tiny muted">Average forecast high</span></div><div class="dest-intel-item"><small>7-day low</small><strong>${d.avgMin!=null?d.avgMin+"°C":"—"}</strong><span class="tiny muted">Average forecast low</span></div><div class="dest-intel-item"><small>Rain chance</small><strong>${rain}</strong><span class="tiny muted">Highest daily probability</span></div></div>${d.inTripForecast?`<div class="dest-intel-item" style="margin-top:12px"><small>Your holiday</small><strong>${esc(d.tripAssessment||"Forecast available")}</strong><span class="tiny muted">${formatDateShort(d.tripDates.start)} – ${formatDateShort(d.tripDates.end)}</span></div>`:`<div class="dest-intel-note" style="margin-top:12px"><strong>No trip forecast yet.</strong> ${d.tripDates?`Your dates are ${formatDateShort(d.tripDates.start)} – ${formatDateShort(d.tripDates.end)}. Open-Meteo forecasts cover the near term; for dates further away Roam will show typical climate data in a later weather layer.`:"Add your holiday dates to assess weather for the trip."}</div>`}<p class="dest-intel-note">Live weather supplied by Open-Meteo. Forecasts are useful for current planning; they are not a guarantee of conditions for a future holiday.</p><p class="dest-intel-note" style="margin-top:5px">Weather data: Open-Meteo, CC BY 4.0.</p></section>`;
 }
 function renderExplore(){
   const area=$("#researchArea");
@@ -2072,7 +2075,7 @@ async function research(){
       body:JSON.stringify({
         destination:q,
         categories:["hotels","restaurants","beaches","things_to_do","places_to_see","day_trips"],
-        limit:60,
+        limit:140,
         preferences:briefPreferences()
       })
     });
